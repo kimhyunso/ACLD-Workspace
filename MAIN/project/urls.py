@@ -6,7 +6,6 @@ from . import views
 app_name = 'project'
 
 urlpatterns = [
-    path('', views.dashBoard , name='dashBoard'),
     path('view/', views.view, name='view'),
-    path('<int:view_pk>/detail/', views.detail ,name='detail'),
+    path('<int:part_pk>/detail/', views.detail ,name='detail'),
 ]
