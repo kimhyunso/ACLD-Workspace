@@ -37,6 +37,13 @@ $RECYCLE.BIN/
 *.msix
 *.msm
 *.msp
+*.h5
+*.plk
+*.pt
+*.hwp
+*.pdf
+
+
 
 # Windows shortcuts
 *.lnk
