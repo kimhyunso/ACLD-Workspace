@@ -5,8 +5,6 @@ from django.shortcuts import render
 def home(request):
     return render(request, 'home.html')
 
-def dection(request):
-    return render(request, 'dection.html')
 
 def detail(request):
     return render(request, 'detail.html')

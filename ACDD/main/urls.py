@@ -1,5 +1,5 @@
-from . import views
 from django.urls import path
+from . import views
 
 app_name = 'app'
 
@@ -11,3 +11,5 @@ urlpatterns = [
     path('agree/', views.agree, name='agree'),
     path('disagree/', views.disagree, name='disagree'),
 ]
+
+
