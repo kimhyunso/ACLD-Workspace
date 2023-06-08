@@ -1,135 +1,254 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class = "dashboard-container"> 
-    <h1>탐지된 인원</h1>
-    {% comment %} <div class="dashboard"> {% endcomment %}
+<div class="dashboard">
+
+     <div class="container-recent-detecting">최근탐지건수
+        <div>1,500건</div>
+    
+
+    </div>
+    <div class="container-form">사유서 처리 현황
+          
+        <div>처리완료</div>
+        <div>대기중</div>
+        <div>미처리</div>
+    
+    </div>
+
+    
+    <div>스토리지 사용량
+    <!--차트가 그려질 부분-->   
+
+    <canvas id="os_chart"></canvas>
+    <script type="text/javascript">
+        var context = document
+        .getElementById('os_chart')
+        .getContext('2d');
+        var myChart = new Chart(context, {
+        type: 'doughnut', // 차트의 형태
+        data: { // 차트에 들어갈 데이터
+        labels: [
+            //x 축
+        '스토리지', '데이터베이스 사용량','네트워크 트래픽','CPU사용량'
+    ],
+    datasets: [
+        { //데이터
+            label: '스토리지', //차트 제목
+            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
+            data: [
+            10,20,37,56 //x축 label에 대응되는 데이터 값
+            ],
+            backgroundColor: [
+                //색상
+            'rgba(255, 99, 132, 1)',
+            'rgba(255, 56, 138, 1)',
+            'rgba(198, 56, 138, 1)',
+            'rgba(176, 56, 138, 1)',
+
+            ],
+            borderColor: [
+            //경계선 색상
+            'rgba(255, 99, 132, 1)',
+            
+        ],
+                        borderWidth:  1 //경계선 굵기
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+        </script> 
+          
+        </div>
+    </div>
+</div>
+</div>
+    
+    <div class="dashboard-table">
     <table class="table caption-top">
-        <caption>탐지된 인원</caption>
+        <caption style="font-size: 30px;">미처리 탐지건수</caption>
         <thead class="table-light">
         <tr>
-            <td><B>ip</B></td>
+            <td><B>번호</B></td>
+            <td><B>날짜</B></td>
+            <td><B>IP</B></td>
             <td><B>이름</B></td>
-            <td><B>시간</B></td>
-            <td><B>부서</B></td>
-            <td><B>상세보기</B></td>            
+            <td><B>부서</B></td>            
+            <td><B>상세보기</B></td>
         </tr>
         </thead>
         <tbody>
 
         <tr>
-            <td>192.168.3</td>
-            <td>허우영(5,000)</td>
-            <td>2023/06/05</td>
-            <td>개발팀</td>
-            <td><button class="primary btn">상세보기</button></td>
-        </tr>
-        
-        <tr>
-            <td>192.168.2</td>
-            <td>이로아</td>
-            <td>2023/06/05</td>
-            <td>개발팀</td>
-            <td><button class="primary btn">상세보기</button></td>
-        </tr>
-        
-        <tr>
-            <td>192.168.1</td>
+            <td>8</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
             <td>허우영</td>
-            <td>2023/06/05</td>
-            <td>개발팀</td>
-            <td><button class="primary btn">상세보기</button></td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        
+        <tr>
+            <td>7</td>
+            <td>2023-06-05 13:47</td>
+            <td>192.168.0.4</td>
+            <td>김효경</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        
+        <tr>
+            <td>6</td>
+            <td>2023-06-05 9:43</td>
+            <td>192.168.0.2</td>
+            <td>김현수</td>
+            <td>백엔드</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>5</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>2023-06-05 15:27</td>
+            <td>192.168.255.1</td>
+            <td>허우영</td>
+            <td>AI</td>
+            <td><button class="primary btn">처리하기</button></td>
         </tr>
         <tbody>
     </table>
 
         
-    <div style="width: 700px; height: 100px;"></div>
+    <!-- <div style="width: 700px; height: 100px;"></div> -->
 
 </div>
 
-<div class="dashboard3-container"></div>
-    <h1>승인 3 반려4 대기 6 / 전체 13</h1>
-<div class="dashboard"></div>
-<div style="width: 700px; height: 100px;"></div>
 
 
-<h1>연도별 탐지건수</h1>  
-<div class="dashboard2-container">
-    <div class="dashboard">      
-        <div style="width: 700px; height: 150px;">
-            <!--차트가 그려질 부분-->   
-            <canvas id="os_chart"></canvas>
-        </div>
-    </div>
-</div>
-        
-         <script type="text/javascript">
-            var context = document
-              .getElementById('os_chart')
-              .getContext('2d');
-          var myChart = new Chart(context, {
-              type: 'bar', // 차트의 형태
-              data: { // 차트에 들어갈 데이터
-                labels: [
-                //x 축
-                '1월','2월','3월','4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'
-                ],
-                datasets: [
-                { //데이터
-                    label: '월별 탐지건수', //차트 제목
-                    fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-                    data: [
-                    10,14,12,8,9,11,13,9,17,10,11,14 //x축 label에 대응되는 데이터 값
-                    ],
-                    backgroundColor: [
-                    //색상
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(37, 154, 128, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 137, 64, 1)',
-                    ],
-                    borderColor: [
-                    //경계선 색상
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)',
-                              ],
-                              borderWidth:  1 //경계선 굵기
-                            }
-                            ]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [
-                                {
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
-                                }
-                                ]
-                            }
-                        }
-                    });
-                </script> 
-            
+ 
+
 
 
 {% endblock content %}
