@@ -6,18 +6,24 @@ def home(request):
     return render(request, 'app/home.html')
 
 
-def detail(request):
-    return render(request, 'app/detail.html')
+def log(request):
+    return render(request, 'app/log.html')
 
 
 
-def processing(request):
-    return render(request, 'app/processing.html')
+def log_detail(request):
+    return render(request, 'app/log_detail.html')
 
 
-def agree(request):
-    return render(request, 'app/agree.html')
+def report(request):
+    return render(request, 'app/report.html')
 
 
-def disagree(request):
-    return render(request, 'app/disagree.html')
+def report_detail(request):
+    return render(request, 'app/report_detail.html')
+
+def chart(request):
+    return render(request, 'app/chart.html')
+
+def employee(request):
+    return render(request, 'app/employee.html')

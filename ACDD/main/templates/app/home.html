@@ -1,27 +1,46 @@
 {% extends 'base.html' %}
 {% block content %}
 
-<div class="dashboard">
 
-     <div class="container-recent-detecting">최근탐지건수
+
+<div class="row">
+    <div class="position-relative col-md-12 px-5">
+            <div class="bg-primary-subtle text-end">
+                <div>마지막 접속 시간</div>
+                <div>2023-06-06 15:30</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 px-5">
+        <div class="border fs-3 text-center">
+            최근 3일 누적 탐지건수
         <div>1,500건</div>
-    
-
+        </div>
+        <div>
+            <div class="border fs-3 text-center">사유서 처리 현황
+            <div class="fs-2 text-start">처리완료</div>
+            <div class="fs-2 text-end">1,445건</div>
+            <div class="fs-2 text-start">대기</div>
+            <div class="fs-2 text-end">4건</div>
+            <div class="fs-2 text-start">미처리</div>
+            <div class="fs-2 text-end">50건</div>
+            </div>
+        </div>
     </div>
-    <div class="container-form">사유서 처리 현황
-          
-        <div>처리완료</div>
-        <div>대기중</div>
-        <div>미처리</div>
-    
-    </div>
 
-    
-    <div>스토리지 사용량
-    <!--차트가 그려질 부분-->   
-
+<div class="col">
+<div class="row">
+    <h1>서버 사용량</h1>
+    <!-- <div class="dashboard"></div> -->
     <canvas id="os_chart"></canvas>
-    <script type="text/javascript">
+
+
+
+
+        <script type="text/javascript">
         var context = document
         .getElementById('os_chart')
         .getContext('2d');
@@ -73,177 +92,174 @@
         </div>
     </div>
 </div>
-</div>
+
+<div class="fixed-table-container">
+    <div class="fixed-table-body">
+        <table class="table table-light table-hover  caption-top">
+            <caption style="font-size: 30px;">미처리 탐지건수</caption>
+            <tr>
+                <th><B>번호</B></th>
+                <th><B>날짜</B></th>
+                <th><B>IP</B></th>
+                <th><B>이름</B></th>
+                <th><B>부서</B></th>            
+                <th><B>상세보기</B></th>
+            </tr>
+            </thead>
+            <tbody>
     
-    <div class="dashboard-table">
-    <table class="table caption-top">
-        <caption style="font-size: 30px;">미처리 탐지건수</caption>
-        <thead class="table-light">
-        <tr>
-            <td><B>번호</B></td>
-            <td><B>날짜</B></td>
-            <td><B>IP</B></td>
-            <td><B>이름</B></td>
-            <td><B>부서</B></td>            
-            <td><B>상세보기</B></td>
-        </tr>
-        </thead>
-        <tbody>
-
-        <tr>
-            <td>8</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        
-        <tr>
-            <td>7</td>
-            <td>2023-06-05 13:47</td>
-            <td>192.168.0.4</td>
-            <td>김효경</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        
-        <tr>
-            <td>6</td>
-            <td>2023-06-05 9:43</td>
-            <td>192.168.0.2</td>
-            <td>김현수</td>
-            <td>백엔드</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>5</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>4</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>3</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>2</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tr>
-            <td>1</td>
-            <td>2023-06-05 15:27</td>
-            <td>192.168.255.1</td>
-            <td>허우영</td>
-            <td>AI</td>
-            <td><button class="primary btn">처리하기</button></td>
-        </tr>
-        <tbody>
-    </table>
-
-        
-    <!-- <div style="width: 700px; height: 100px;"></div> -->
-
+            <tr>
+                <td>8</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
+            </tr>
+            
+            <tr>
+                <td>7</td>
+                <td>2023-06-05 13:47</td>
+                <td>192.168.0.4</td>
+                <td>김효경</td>
+                <td>AI</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
+            </tr>
+            
+            <tr>
+                <td>6</td>
+                <td>2023-06-05 9:43</td>
+                <td>192.168.0.2</td>
+                <td>김현수</td>
+                <td>백엔드</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+    
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05 15:27</td>
+                <td>192.168.255.1</td>
+                <td>허우영</td>
+                <td>AI</td>
+                <td><button class="primary btn">처리하기</button></td>
+            </tr>
+            <tbody>
+        </table>
+    </div>
 </div>
+
 
 
 

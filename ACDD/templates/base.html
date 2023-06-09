@@ -12,53 +12,54 @@
     <title>{% block title %}{% endblock title  %}</title>
 
 </head>
+<!-- <style type="text/css">
 
-<body style="color: black;">
-<div>
-        
-    <ul class="navbar">
-        <li><a href="/">ACDD</a></li>
-    </ul>
-</div>
 
-<div>
-    
-    <aside class="side-bar">
-        <section class="side-bar__icon-box">
-            <section class="side-bar__icon-1">
-                <div></div>
-                <div></div>
-                <div></div>
-            </section>
-        </section>
-        <ul>
-            <li>
-                <a href="#"> 대시보드</a>
-                
-            </li>
-            <li>
-                <a href="#">로그보기</a>
-                
-            </li>
-      <li>
-        <a href="#">분석차트</a>
-        
-    </li>
-    <li>
-        <a href="#">사유서현황</a>
-        
-    </li>
-    <li>
-        <a href="#">사원등록</a>
-        
-    </li>
-</ul>
-</aside>
-</div>
+ul {
+    list-style-type: none;
+    background-color: rgb(247, 247, 245);
+    width: 13%;
+    padding: 0;
+    margin: 0;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+li a {
+    text-decoration: none;
+    display: block;
+    color: #000;
+    padding: 8px 15px 8px 15px;
+    font-weight: bold;
+}
+
+li a.job {
+    background-color: hsl(329, 93%, 88%);
+    color: #fff;
+}
+
+li a:hover:not(.job) {
+    background-color: #333;
+    color: #fff;
+}
+
+</style>
+</head>
+
+<div class="container">
+    <ul>
+    <li><a class="job" href="#">대시보드</a></li>
+    <li><a href="#">로그보기</a></li>
+    <li><a href="#">분석차트</a></li>
+    <li><a href="#">사유서현황</a></li>
+    <li><a href="#">사원등록</a></li>
+    </ul> -->
 
 
 {% block content %}
-  {% endblock content %}
+{% endblock content %}
+</div>
     
 </body>
 </html>
