@@ -1,100 +1,79 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-
-<div class="row">
-    <div class="position-relative col-md-12 px-5">
-            <div class="bg-primary-subtle text-end">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 px-5">
+            <div class="bg-primary-subtle text-end" style="margin: 100px;">
                 <div>마지막 접속 시간</div>
                 <div>2023-06-06 15:30</div>
             </div>
         </div>
     </div>
-</div>
 
-<div class="row">
-    <div class="col-md-6 px-5">
-        <div class="border fs-3 text-center">
-            최근 3일 누적 탐지건수
-        <div>1,500건</div>
-        </div>
-        <div>
-            <div class="border fs-3 text-center">사유서 처리 현황
-            <div class="fs-2 text-start">처리완료</div>
-            <div class="fs-2 text-end">1,445건</div>
-            <div class="fs-2 text-start">대기</div>
-            <div class="fs-2 text-end">4건</div>
-            <div class="fs-2 text-start">미처리</div>
-            <div class="fs-2 text-end">50건</div>
+    <div class="row">
+        <div class="col-md-6 px-5">
+            <div class="border fs-3 text-center">
+                최근 3일 누적 탐지건수
+                <div>1,500건</div>
+            </div>
+            <div>
+                <div class="border fs-3 text-center">사유서 처리 현황
+                    <div class="fs-2 text-start">처리완료</div>
+                    <div class="fs-2 text-end">1,445건</div>
+                    <div class="fs-2 text-start">대기</div>
+                    <div class="fs-2 text-end">4건</div>
+                    <div class="fs-2 text-start">미처리</div>
+                    <div class="fs-2 text-end">50건</div>
+                </div>
             </div>
         </div>
-    </div>
 
-<div class="col">
-<div class="row">
-    <h1>서버 사용량</h1>
-    <!-- <div class="dashboard"></div> -->
-    <canvas id="os_chart"></canvas>
-
-
-
-
-        <script type="text/javascript">
-        var context = document
-        .getElementById('os_chart')
-        .getContext('2d');
-        var myChart = new Chart(context, {
-        type: 'doughnut', // 차트의 형태
-        data: { // 차트에 들어갈 데이터
-        labels: [
-            //x 축
-        '스토리지', '데이터베이스 사용량','네트워크 트래픽','CPU사용량'
-    ],
-    datasets: [
-        { //데이터
-            label: '스토리지', //차트 제목
-            fill: false, // line 형태일 때, 선 안쪽을 채우는지 안채우는지
-            data: [
-            10,20,37,56 //x축 label에 대응되는 데이터 값
-            ],
-            backgroundColor: [
-                //색상
-            'rgba(255, 99, 132, 1)',
-            'rgba(255, 56, 138, 1)',
-            'rgba(198, 56, 138, 1)',
-            'rgba(176, 56, 138, 1)',
-
-            ],
-            borderColor: [
-            //경계선 색상
-            'rgba(255, 99, 132, 1)',
-            
-        ],
-                        borderWidth:  1 //경계선 굵기
-                    }
-                ]
-            },
-            options: {
-                scales: {
-                    yAxes: [
-                        {
-                            ticks: {
-                                beginAtZero: true
-                            }
+        <div class="col">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="chart-container" style="position: relative; height: 400px; width: 400px;">
+                        <canvas id="os_chart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                var context = document.getElementById('os_chart').getContext('2d');
+                var myChart = new Chart(context, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+                        datasets: [{
+                            label: '스토리지',
+                            fill: false,
+                            data: [10, 20, 37, 56],
+                            backgroundColor: [
+                                'rgba(197, 99, 132, 1)',
+                                'rgba(187, 56, 138, 1)',
+                                'rgba(167, 56, 138, 1)',
+                                'rgba(157, 56, 138, 1)',
+                            ],
+                            borderColor: ['rgba(255, 99, 132, 1)'],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
                         }
-                    ]
-                }
-            }
-        });
-        </script> 
-          
+                    }
+                });
+            </script>
         </div>
     </div>
 </div>
+<div class="container">
 
-<div class="fixed-table-container">
-    <div class="fixed-table-body">
+    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 400px; margin: 50px;">
         <table class="table table-light table-hover  caption-top">
             <caption style="font-size: 30px;">미처리 탐지건수</caption>
             <tr>
@@ -102,171 +81,72 @@
                 <th><B>날짜</B></th>
                 <th><B>IP</B></th>
                 <th><B>이름</B></th>
-                <th><B>부서</B></th>            
-                <th><B>상세보기</B></th>
+                <th><B>부서</B></th>
+                <th><B>비고</B></th>
             </tr>
-            </thead>
-            <tbody>
-    
             <tr>
                 <td>8</td>
-                <td>2023-06-05 15:27</td>
+                <td>2023-06-05</td>
                 <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
+                <td>송재원</td>
+                <td>디자인</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
-            
+
             <tr>
-                <td>7</td>
-                <td>2023-06-05 13:47</td>
-                <td>192.168.0.4</td>
-                <td>김효경</td>
-                <td>AI</td>
+                <td>8</td>
+                <td>2023-06-05</td>
+                <td>192.168.255.1</td>
+                <td>송재원</td>
+                <td>디자인</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
-            
+
             <tr>
-                <td>6</td>
-                <td>2023-06-05 9:43</td>
-                <td>192.168.0.2</td>
-                <td>김현수</td>
-                <td>백엔드</td>
+                <td>8</td>
+                <td>2023-06-05</td>
+                <td>192.168.255.1</td>
+                <td>송재원</td>
+                <td>디자인</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+
             <tr>
-                <td>5</td>
-                <td>2023-06-05 15:27</td>
+                <td>8</td>
+                <td>2023-06-05</td>
                 <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
+                <td>송재원</td>
+                <td>디자인</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+
             <tr>
-                <td>4</td>
-                <td>2023-06-05 15:27</td>
+                <td>8</td>
+                <td>2023-06-05</td>
                 <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
+                <td>송재원</td>
+                <td>디자인</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+
             <tr>
-                <td>3</td>
-                <td>2023-06-05 15:27</td>
+                <td>8</td>
+                <td>2023-06-05</td>
                 <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
+                <td>송재원</td>
+                <td>디자인</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+
             <tr>
-                <td>2</td>
-                <td>2023-06-05 15:27</td>
+                <td>8</td>
+                <td>2023-06-05</td>
                 <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
+                <td>송재원</td>
+                <td>디자인</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-    
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05 15:27</td>
-                <td>192.168.255.1</td>
-                <td>허우영</td>
-                <td>AI</td>
-                <td><button class="primary btn">처리하기</button></td>
-            </tr>
-            <tbody>
         </table>
     </div>
 </div>
-
-
-
-
- 
-
-
-
-{% endblock content %}
-
-
+{% endblock %}

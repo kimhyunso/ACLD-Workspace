@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chart-container" style="height: 800px; width: 800px; center">
+                <canvas id="detect"></canvas>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var context = document.getElementById('detect').getContext('2d');
+        var myChart = new Chart(context, {
+            type: 'bar',
+            data: {
+                labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+                datasets: [{
+                    label: '스토리지',
+                    fill: false,
+                    data: [10, 20, 37, 56],
+                    backgroundColor: [
+                        'rgba(197, 99, 132, 1)',
+                        'rgba(187, 56, 138, 1)',
+                        'rgba(167, 56, 138, 1)',
+                        'rgba(157, 56, 138, 1)',
+                    ],
+                    borderColor: ['rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</div>
+
+
+<div class="col">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="chart-container" style="position: relative; height: 400px; width: 400px;">
+                <canvas id="os_chart"></canvas>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var context = document.getElementById('os_chart').getContext('2d');
+        var myChart = new Chart(context, {
+            type: 'doughnut',
+            data: {
+                labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+                datasets: [{
+                    label: '스토리지',
+                    fill: false,
+                    data: [10, 20, 37, 56],
+                    backgroundColor: [
+                        'rgba(197, 99, 132, 1)',
+                        'rgba(187, 56, 138, 1)',
+                        'rgba(167, 56, 138, 1)',
+                        'rgba(157, 56, 138, 1)',
+                    ],
+                    borderColor: ['rgba(255, 99, 132, 1)'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+</div>
+
+{% endblock content %}
