@@ -1,5 +1,6 @@
 from django.shortcuts import render
 
+<<<<<<< HEAD
 
 
 # Create your views here.
@@ -42,3 +43,6 @@ def chart(request):
 
 def employee(request):
     return render(request, 'app/employee.html')
+=======
+# Create your views here.
+>>>>>>> 6602885ca57e98cdc13907e450258ddbe443a29b

@@ -40,8 +40,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+<<<<<<< HEAD
     'django_extensions',
     'main',
+=======
+>>>>>>> 6602885ca57e98cdc13907e450258ddbe443a29b
 ]
 
 MIDDLEWARE = [
@@ -80,6 +83,7 @@ WSGI_APPLICATION = 'ACDD.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
+<<<<<<< HEAD
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ACDD',
@@ -91,6 +95,19 @@ DATABASES = {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
         }
     }
+=======
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'ACDD',
+    #     'USER': 'root',
+    #     'PASSWORD': '1735',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    #     'OPTIONS': {
+    #         'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+    #     }
+    # }
+>>>>>>> 6602885ca57e98cdc13907e450258ddbe443a29b
 }
 
 

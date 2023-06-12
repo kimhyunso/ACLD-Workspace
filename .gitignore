@@ -13,7 +13,10 @@
 [Ss]cripts
 pyvenv.cfg
 venv
+*.png
+*.jpg
 pip-selfcheck.json
+*.pyc
 
 ### Windows ###
 # Windows thumbnail cache files
