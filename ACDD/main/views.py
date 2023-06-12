@@ -1,16 +1,9 @@
 from django.shortcuts import render
-<<<<<<< HEAD
-from django.http import HttpResponse
-from django.middleware.csrf import get_token
-=======
-
-
-
-# Create your views here.
+from .models import Agent, Department, Employee, Log, Report
+from .server_image import Server
+import json
 
 def home(request):
-    
-    
     # Cam.objects.filter(name='홍길동')
 
     # # 'select * from cam where name = "홍길동"'
@@ -21,7 +14,7 @@ def home(request):
     #     cur.
     # except Exception as e:
     #     print(e)
-
+   
     return render(request, 'app/home.html')
 
 
@@ -45,5 +38,5 @@ def chart(request):
     return render(request, 'app/chart.html')
 
 def employee(request):
+
     return render(request, 'app/employee.html')
->>>>>>> 7f468186dd7d9a89be3a3816d9584f81d4a89e8e

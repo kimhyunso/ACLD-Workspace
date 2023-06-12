@@ -3,3 +3,5 @@ django
 django-extensions
 numpy
 pandas
+mysqlclient
+requests

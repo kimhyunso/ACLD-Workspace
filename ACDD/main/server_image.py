@@ -7,6 +7,8 @@ import threading
 from datetime import datetime
 import time
 from .util import Util
+import json
+import requests
 
 class Server:
     def __init__(self, HOST : str, PORT : int):
@@ -46,15 +48,14 @@ class Server:
         img_count = 0
         while True:
             try:
+                cam_img = self.get_data()
+                self.save_data(cam_img, img_count, 1)
 
-                data1 = self.get_data()
-                self.save_data(data1, img_count, 1)
-
-                data2 = self.get_data()
-                self.save_data(data2, img_count, 0)
+                scrennshot_img = self.get_data()
+                self.save_data(scrennshot_img, img_count, 0)
                 
-                data3 = self.get_data()
-                print(data3)
+                data = self.get_data()
+                self.send_data_to_django(data.decode('utf-8'))
 
                 img_count += 1
                 time.sleep(0.95)
@@ -62,6 +63,21 @@ class Server:
                 print(e)
                 self.get_client_socket().close()
                 break
+
+    def send_data_to_django(self, data):
+        url = 'http://localhost:8000/employee'
+
+        headers = {
+            "Content-Type": "application/json"
+        }
+
+        json_data = data
+        response = requests.get(url, headers=headers, data=json_data)
+
+        if response.status_code == 200:
+            print("Data sent to Django successfully")
+        else:
+            print("Failed to send data to Django")
 
     def recive_data(self, count : int) -> bytes:
         buf = b''
@@ -76,7 +92,7 @@ class Server:
         length = self.recive_data(self.STREAM_BYTE).decode('utf-8')
         print(length)
         return self.recive_data(int(length))
-
+    
     def save_data(self, data, count, flag):
         decode_data = np.frombuffer(base64.b64decode(data), dtype='uint8')
         decimg = cv2.imdecode(decode_data, cv2.IMREAD_COLOR)
@@ -84,8 +100,7 @@ class Server:
             cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
         else:
             cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
-        print('ok')
-    
+
     def get_client_ip(self):
         return self.__addr[0]
 
