@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 from pathlib import Path
-import os
+import os, socket
+from main.server_image import Server
+import threading
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -78,17 +80,17 @@ WSGI_APPLICATION = 'ACDD.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'ACDD',
-    #     'USER': 'jeawon',
-    #     'PASSWORD': '1735',
-    #     'HOST': '192.168.50.248',
-    #     'PORT': '3306',
-    #     'OPTIONS': {
-    #         'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-    #     }
-    # }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ACDD',
+        'USER': 'jeawon',
+        'PASSWORD': '1735',
+        'HOST': '192.168.50.131',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+        }
+    }
 }
 
 
@@ -133,3 +135,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+
+host_name = socket.gethostname()
+HOST = socket.gethostbyname(host_name)
+PORT = 9999
+
+thread = threading.Thread(target=Server, args=(HOST, PORT))
+thread.start()
+# server = Server(HOST, PORT)
