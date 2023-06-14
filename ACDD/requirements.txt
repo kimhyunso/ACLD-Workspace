@@ -5,3 +5,5 @@ numpy
 pandas
 mysqlclient
 requests
+mariadb
+torch
