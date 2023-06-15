@@ -3,3 +3,7 @@ django
 django-extensions
 numpy
 pandas
+mysqlclient
+requests
+mariadb
+torch
