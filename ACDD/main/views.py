@@ -18,28 +18,32 @@ def home(request):
    
     return render(request, 'app/home.html')
 
+def detail(request):
+    return render(request, 'app/detail.html')
 
-def log(request):
-    return render(request, 'app/log.html')
+def agent(request):
+    return render(request, 'app/agent.html')
 
-
-
-def log_detail(request):
-    return render(request, 'app/log_detail.html')
-
-
-def report(request):
-    return render(request, 'app/report.html')
+# def log(request):
+#     return render(request, 'app/log.html')
 
 
-def report_detail(request):
-    return render(request, 'app/report_detail.html')
+
+# def log_detail(request):
+#     return render(request, 'app/log_detail.html')
+
+
+# def report(request):
+#     return render(request, 'app/report.html')
+
+
+# def report_detail(request):
+#     return render(request, 'app/report_detail.html')
 
 def chart(request):
     return render(request, 'app/chart.html')
 
 def employee(request):
-
     return render(request, 'app/employee.html')
 
 @require_http_methods(['POST', 'GET'])
@@ -85,12 +89,10 @@ def addEmp(request):
 @require_http_methods(['POST', 'GET'])
 def addDepart(request):
     if request.method == 'GET':
-        return render(request, 'app/addEmp.html')
+        return render(request, 'app/addDepart.html')
     else:
         reqData = json.loads(request.body)
         
-
-
         
        
 

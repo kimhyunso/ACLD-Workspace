@@ -1,21 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-<<<<<<< HEAD
-    {% comment %} <div class="row">
-=======
-
-
 
 <div class="container">
-    <div class="row">
->>>>>>> main
-        <div class="col-md-12 px-5">
-            <div class="bg-primary-subtle text-end" style="margin: 100px;">
-                <div>마지막 접속 시간</div>
-                <div>2023-06-06 15:30</div>
-            </div>
-        </div>
+    <!-- <div class="chart-container" style="position: relative; height: 400px; width: 400px;"> -->
+        <canvas id="today_detection"></canvas>
     </div>
+</div>
+</div>
+<script type="text/javascript">
+var context = document.getElementById('today_dection').getContext('2d');
+var myChart = new Chart(context, {
+    type: 'line',
+    data: {
+        labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+        datasets: [{
+            label: '스토리지',
+            fill: false,
+            data: [30, 100],
+            backgroundColor: [
+                'rgb(70, 87, 145)',
+                'rgb(70, 107, 145)',
+                'rgb(70, 37, 145)',
+                'rgb(70, 57, 145)',
+            ],
+            // borderColor: ['rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    },
+    centerText: {
+        display: true,
+        text: "tests"
+    },
+});
+</script>
+</div>
+</div>
+
+
+</div>
 
     <div class="row" style="margin-left: 10%;">
         <div class="col-md-6 px-5">
@@ -59,10 +81,7 @@
                                 'rgb(70, 37, 145)',
                                 'rgb(70, 57, 145)',
                             ],
-<<<<<<< HEAD
-=======
                             // borderColor: ['rgba(255, 99, 132, 1)'],
->>>>>>> main
                             borderWidth: 1
                         }]
                     },
@@ -151,27 +170,20 @@
                 </tr>
             </table>
         </div>
-    </div> {% endcomment %}
-
-
-    <script>
-        var eventSource = new EventSource('/sse_stream/');
-
-        eventSource.onmessage = function (event) {
-            var html = event.data;
-            document.getElementById('content').innerHTML = html;
-        };
-
-        function sendHTML() {
-            var html = '<h1>Hello, SSE!</h1>';
-            fetch('/send_html/', {
-                method: 'POST',
-                body: html
-            });
-        }
-    </script>
-    <h1>Button Example</h1>
-    <button onclick="sendHTML()">Send HTML</button>
-    <div id="content"></div>
-
-{% endblock %}
+    </div>
+    <div>
+    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 400px; margin: 50px; margin-left: 10%;">
+            <table class="table table-light table-hover  caption-top">
+                <caption style="font-size: 30px;">미처리 탐지건수</caption>
+            <tr>
+                <td>1</td>
+                <td>2023-06-05</td>
+                <td>192.168.255.1</td>
+                <td>송재원</td>
+                <td>디자인</td>
+                <td><button class="btn btn-primary">처리하기</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endblock content %}

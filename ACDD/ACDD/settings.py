@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ACDD',
-        'USER': 'root',
+        'USER': 'jeawon',
         'PASSWORD': '1735',
         'HOST': '192.168.50.131',
         'PORT': '3306',
@@ -143,9 +143,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-
 # host_name = socket.gethostname()
 # HOST = socket.gethostbyname(host_name)
 # PORT = 9999
-# SERVER = threading.Thread(target=Server, args=(HOST, PORT))
-# SERVER.start()
+
+# thread = threading.Thread(target=Server, args=(HOST, PORT))
+# thread.start()
+# server = Server(HOST, PORT)
