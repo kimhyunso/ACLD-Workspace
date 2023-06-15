@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="input-form-backgroud row">
+		<div class="input-form col-md-12 mx-auto">
+			<h3 class="mb-3"><strong>부서 등록</strong></h3>
+			<div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="emp_name">부서명</label>
+    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." value="" required>
+        	      	<div class="invalid-feedback">
+						이름을 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+
+            <div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="emp_name">부서위치</label>
+    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." value="" required>
+        	      	<div class="invalid-feedback">
+						이름을 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+            <div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="emp_name">유선번호</label>
+    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." value="" required>
+        	      	<div class="invalid-feedback">
+						이름을 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+            <div class="row mt-3">
+				<div class="mb-12">
+  					<button id="addBtn" class="btn btn-outline-primary" type="button">등록</button>
+  				</div>
+			</div>
+
+            
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

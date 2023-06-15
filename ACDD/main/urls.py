@@ -13,7 +13,7 @@ urlpatterns = [
     path('agent/', views.agent, name='agent'),
     path('chart/', views.chart, name='chart'),
     path('addEmp/', views.addEmp, name='addEmp'),
-    path('addDepart', views.addDepart, name='depart'),
+    path('addDepart/', views.addDepart, name='addDepart'),
     
 ] + static(settings.MEDIA_URL, doucment_root=settings.MEDIA_ROOT)
 

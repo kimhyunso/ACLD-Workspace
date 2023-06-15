@@ -1,17 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-
 <div class="container">
-    <div class="row">
-        <div class="col-md-12 px-5">
-            <div class="bg-primary-subtle text-end" style="margin: 100px;">
-                <div>마지막 접속 시간</div>
-                <div>2023-06-06 15:30</div>
-            </div>
-        </div>
+    <!-- <div class="chart-container" style="position: relative; height: 400px; width: 400px;"> -->
+        <canvas id="today_detection"></canvas>
     </div>
+</div>
+</div>
+<script type="text/javascript">
+var context = document.getElementById('today_dection').getContext('2d');
+var myChart = new Chart(context, {
+    type: 'line',
+    data: {
+        labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+        datasets: [{
+            label: '스토리지',
+            fill: false,
+            data: [30, 100],
+            backgroundColor: [
+                'rgb(70, 87, 145)',
+                'rgb(70, 107, 145)',
+                'rgb(70, 37, 145)',
+                'rgb(70, 57, 145)',
+            ],
+            // borderColor: ['rgba(255, 99, 132, 1)'],
+            borderWidth: 1
+        }]
+    },
+    centerText: {
+        display: true,
+        text: "tests"
+    },
+});
+</script>
+</div>
+</div>
+
+
+</div>
 
     <div class="row" style="margin-left: 10%;">
         <div class="col-md-6 px-5">
