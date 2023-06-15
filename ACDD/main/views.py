@@ -40,5 +40,5 @@ def report_detail(request):
 def chart(request):
     return render(request, 'app/chart.html')
 
-def employee(request):
-    return render(request, 'app/employee.html')
+def addEmp(request):
+    return render(request, 'app/addEmp.html')

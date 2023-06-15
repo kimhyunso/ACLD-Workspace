@@ -3,7 +3,6 @@
 {% block content %}
 
 
-
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -26,15 +25,30 @@
 
 <div class="container">
     <table class="table table-striped table-bordered table-hover text-center">
+        <div class="table{
+            display:flex;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            overflow-x: auto;
+            overflow-y: hidden;
+            }
+            
+            tbody
+            {display:flex}
+            
+            th,td{display:block}">   </div>
         <thead>
         <tr>
-            <td>이름</td>
-            <td>부서</td>
+            <th>이름</th>
+            <th>부서</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td>송재원</td>
+            <th>송재원</th>
+            <td>디자인</td>
+            <td>디자인</td>
+            <td>디자인</td>
             <td>디자인</td>
         </tr>
     </table>
