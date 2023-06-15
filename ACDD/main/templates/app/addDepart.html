@@ -22,14 +22,13 @@ $(document).ready(function() {
 			success : function(response){
 				window.location.href="{% url 'main:addEmp' %}";
 			},
-			error : function(){
+			error : function(request, status, error){
 				alert("잘 못 입력하셨습니다.");
 			}
 		});
 	});
 });
 </script>
-
 
 <div class="container">
     <div class="input-form-backgroud row">
@@ -59,7 +58,7 @@ $(document).ready(function() {
             <div class="row">
             	<div class="col-md-12 mb-3">
 	              	<label for="landline">유선번호</label>
-    	          	<input type="text" class="form-control" id="landline" placeholder="유선번호를 입력해주세요." required>
+    	          	<input type="number" class="form-control" id="landline" placeholder="유선번호를 입력해주세요." required>
         	      	<div class="invalid-feedback">
 						유선번호를 입력해주세요.
               		</div>

@@ -45,7 +45,7 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-md-12 mb-3">
 					<label for="emp_no">사번</label>
-					<input type="text" class="form-control" id="emp_no" placeholder="사번을 입력해주세요." value="" required>
+					<input type="number" class="form-control" id="emp_no" placeholder="사번을 입력해주세요." required>
 					<div class="invalid-feedback">
 						사번을 입력해주세요.
 					</div>
@@ -55,7 +55,7 @@ $(document).ready(function() {
 			<div class="row">
             	<div class="col-md-6 mb-3">
 	              	<label for="emp_name">이름</label>
-    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." value="" required>
+    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." required>
         	      	<div class="invalid-feedback">
 						이름을 입력해주세요.
               		</div>
@@ -63,7 +63,7 @@ $(document).ready(function() {
 
 				<div class="col-md-6 mb-3">
 					<label for="rank">직급</label>
-					<input type="text" class="form-control" id="rank" placeholder="직급을 입력해주세요." value="" required>
+					<input type="text" class="form-control" id="rank" placeholder="직급을 입력해주세요." required>
 					<div class="invalid-feedback">
 					  직급을 입력해주세요.
 					</div>
@@ -75,10 +75,9 @@ $(document).ready(function() {
 					<label for="depmt_no">부서</label>
 					<select class="custom-select d-block w-100" id="depmt_no">
 						<option>부서를 선택해주세요.</option>
-						<option value="1">AI</option>
-						<option value="2">개발</option>
-						<option value="3">디자인</option>
-						<option value="4">기획</option>
+						{% for name_list  in  depmt_name_list %}
+							<option value="name_list.depmt_no">{{name_list.depmt_name}}</option>
+						{% endfor %}
 					</select>
 				</div>
 			</div>

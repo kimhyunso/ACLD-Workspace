@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.http import JsonResponse 
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 import json
 from .models import Agent, Dection, Report, identify, Department, Employee
+from django.core import serializers
 
 def home(request):
     # # 'select * from cam where name = "홍길동"'
@@ -73,12 +74,14 @@ def addDepart(request):
         department.location = location
         department.depmt_name = demp_name
         department.save()
+
+        department = Department.objects.all()
+        depmt_name_list = serializers.serialize('json', department)
         
-        return JsonResponse(reqData)
+        return HttpResponse(depmt_name_list, content_type="text/json-comment-filtered")
 
         
-        
-       
+
 
 
 
