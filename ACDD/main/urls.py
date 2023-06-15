@@ -13,6 +13,10 @@ urlpatterns = [
     path('report_detail/', views.report_detail, name='report_detail'),
     path('chart/', views.chart, name='chart'),
     path('employee/', views.employee, name='employee'),
+    path('sse/', views.sse_stream, name='sse_stream'),
+    path('send_html/', views.send_html_to_clients, name='send_html'),
 ]
+
+
 
 

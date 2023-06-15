@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="row">
+    {% comment %} <div class="row">
         <div class="col-md-12 px-5">
             <div class="bg-primary-subtle text-end" style="margin: 100px;">
                 <div>마지막 접속 시간</div>
@@ -139,5 +139,27 @@
                 </tr>
             </table>
         </div>
-    </div>
+    </div> {% endcomment %}
+
+
+    <script>
+        var eventSource = new EventSource('/sse_stream/');
+
+        eventSource.onmessage = function (event) {
+            var html = event.data;
+            document.getElementById('content').innerHTML = html;
+        };
+
+        function sendHTML() {
+            var html = '<h1>Hello, SSE!</h1>';
+            fetch('/send_html/', {
+                method: 'POST',
+                body: html
+            });
+        }
+    </script>
+    <h1>Button Example</h1>
+    <button onclick="sendHTML()">Send HTML</button>
+    <div id="content"></div>
+
 {% endblock %}

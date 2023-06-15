@@ -33,6 +33,7 @@ class Server:
                 self.__client_socket, self.__addr = self.get_server_socket().accept()
                 self.get_util().create_folder(self.get_client_ip())
                 self.get_client_socket().settimeout(10000)
+                socket.SO_KEEPALIVE
                 thread = threading.Thread(target=self.receiveTarget)
                 thread.start()
                 self.COUNT += 1
