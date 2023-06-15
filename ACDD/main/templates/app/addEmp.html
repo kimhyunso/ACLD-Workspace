@@ -1,164 +1,179 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<script>
+$(document).ready(function() {
+	$("#addBtn").click(function(){
+		var emp_name = $("#emp_name").val();
+		var rank = $("#rank").val();
+		var demp_name = $("#demp_name").val();
+		var emp_no = $("#emp_no").val();
+		var MAC = $("#MAC").val();
+		var IP = $("#IP").val();
+		var phone_no = $("#phone_no").val();
+		var landline = $("#landline").val();
+		var email = $("#email").val();
+		var location = $("#location").val();
+		var emp_data = {
+			'emp_name' : emp_name,
+			'rank' : rank,
+			'demp_name' : demp_name,
+			'emp_no' : emp_no,
+			'MAC' : MAC,
+			'IP' : IP,
+			'phone_no' : phone_no,
+			'landline' : landline,
+			'email' : email,
+			'location' : location
+		}
+
+		$.ajax({
+			type :"POST",
+			url : "{% url 'main:addDepart' %}",
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			data : JSON.stringify(emp_data),
+			dataType : "JSON",
+			success : function(response){
+				location.href="{% url 'main:addEmp' %}";
+			},
+      error : fuction(){
+        alert("잘 못된 입력입니다.");
+      },
+		});
+	});
+});
+</script>
 
 
-<style>
 
-    .input-form {
-      max-width: 680px;
-
-      margin-top: 80px;
-      padding: 32px;
-
-      background: #fff;
-      -webkit-border-radius: 10px;
-      -moz-border-radius: 10px;
-      border-radius: 10px;
-      -webkit-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      -moz-box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15);
-      box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.15)
-    }
-  </style>
-</head>
-
-<body>
-  <div class="container">
+<div class="container">
     <div class="input-form-backgroud row">
-      <div class="input-form col-md-12 mx-auto">
-        <h3 class="mb-3"><strong>직원 등록</strong></h3>
-        <form class="validation-form" novalidate>
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <label for="name">이름</label>
-              <input type="text" class="form-control" id="name" placeholder="이름을 입력해주세요." value="" required>
-              <div class="invalid-feedback">
-                이름을 입력해주세요.
-              </div>
+		<div class="input-form col-md-12 mx-auto">
+			<h3 class="mb-3"><strong>직원 등록</strong></h3>
+			<div class="row">
+            	<div class="col-md-6 mb-3">
+	              	<label for="emp_name">이름</label>
+    	          	<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." value="" required>
+        	      	<div class="invalid-feedback">
+						이름을 입력해주세요.
+              		</div>
+				</div>
+
+				<div class="col-md-6 mb-3">
+					<label for="rank">직급</label>
+					<input type="text" class="form-control" id="rank" placeholder="직급을 입력해주세요." value="" required>
+					<div class="invalid-feedback">
+					  직급을 입력해주세요.
+					</div>
+				</div>
             </div>
 
-            <div class="col-md-6 mb-3">
-              <label for="rank">직급</label>
-              <input type="text" class="form-control" id="rank" placeholder="직급을 입력해주세요." value="" required>
-              <div class="invalid-feedback">
-                직급을 입력해주세요.
-              </div>
+			<div class="row">
+				<div class="mb-12">
+					<label for="demp_name">부서</label>
+					<input type="text" class="form-control" id="demp_name" placeholder="부서를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  부서를 입력해주세요.
+					</div>
+				</div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label for="class">부서</label>
-            <input type="text" class="form-control" id="class" placeholder="부서를 입력해주세요." required>
-            <div class="invalid-feedback">
-              부서를 입력해주세요.
+			<div class="row">
+				<div class="mb-12">
+					<label for="emp_no">사원번호</label>
+					<input type="text" class="form-control" id="emp_no" placeholder="사원번호를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  사원번호를 입력해주세요.
+					</div>
+				</div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label for="employee_num">사원번호</label>
-            <input type="text" class="form-control" id="employee_num" placeholder="사원번호를 입력해주세요." required>
-            <div class="invalid-feedback">
-              사원번호를 입력해주세요.
+			<div class="row">
+				<div class="mb-12">
+					<label for="MAC">MAC</label>
+					<input type="text" class="form-control" id="MAC" placeholder="MAC Address를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  MAC Address를 입력해주세요.
+					</div>
+				  </div>
             </div>
-          </div>
 
-          <div class="mb-3">
-            <label for="MAC">MAC</label>
-            <input type="MAC" class="form-control" id="MAC" placeholder="MAC Address를 입력해주세요." required>
-            <div class="invalid-feedback">
-              MAC Address를 입력해주세요.
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <label for="IP">IP</label>
-            <input type="text" class="form-control" id="IP" placeholder="IP정보를 입력해주세요." required>
-            <div class="invalid-feedback">
-              IP정보를 입력해주세요.
-            </div>
-          </div>
-          
-                    <div class="mb-3">
-                      <label for="phone">휴대폰번호</label>
-                      <input type="phone" class="form-control" id="phone" placeholder="휴대폰번호를 입력해주세요." required>
-                      <div class="invalid-feedback">
-                        휴대폰번호를 입력해주세요
-                      </div>
-                    </div>
+			<div class="row">
+				<div class="mb-12">
+					<label for="IP">IP</label>
+					<input type="text" class="form-control" id="IP" placeholder="IP정보를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  IP정보를 입력해주세요.
+					</div>
+				</div>
+			</div>
 
+			<div class="row">
+				<div class="mb-12">
+					<label for="phone_no">휴대폰번호</label>
+					<input type="tel" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  휴대폰번호를 입력해주세요
+					</div>
+				</div>
+			</div>
 
-          <div class="mb-3">
-            <label for="tel">유선번호</label>
-            <input type="tel" class="form-control" id="tel" placeholder="유선번호를 입력해주세요." required>
-            <div class="invalid-feedback">
-              유선번호를 입력해주세요
-            </div>
-          </div>
+			<div class="row">
+				<div class="mb-12">
+					<label for="landline">유선번호</label>
+					<input type="tel" class="form-control" id="landline" placeholder="유선번호를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  유선번호를 입력해주세요
+					</div>
+				</div>
+			</div>
 
-          <div class="mb-3">
-            <label for="email">이메일</label>
-            <input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요." required>
-            <div class="invalid-feedback">
-              이메일을 입력해주세요
-            </div>
-          </div>
+			<div class="row">
+				<div class="mb-12">
+					<label for="email">이메일</label>
+					<input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요." required>
+					<div class="invalid-feedback">
+					  이메일을 입력해주세요
+					</div>
+				</div>
+			</div>
 
-          <div class="mb-3">
-            <label for="class_position">부서위치</label>
-            <input type="class_position" class="form-control" id="class_position" placeholder="부서위치를 입력해주세요." required>
-            <div class="invalid-feedback">
-              부서위치를 입력해주세요
-            </div>
-          </div>
+			<div class="row">
+				<div class="mb-12">
+					<label for="location">부서위치</label>
+					<input type="text" class="form-control" id="location" placeholder="부서위치를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  	부서위치를 입력해주세요
+					</div>
+				</div>
+			</div>
 
-<div>
-  직원 이미지 업로드
-   <div class="input-group">
-     <input type="file" class="form-control" id="inputGroupFile02">
-      <label class="input-group-text" for="inputGroupFile02">업로드</label>
-    </div>
-  </div>
-  <div>
-    csv파일 업로드
-    <div class="input-group">
-      <input type="file" class="form-control" id="inputGroupFile03">
-      <label class="input-group-text" for="inputGroupFile02">업로드</label>
-    </div>
-  </div>
-  <div class="mb-4"></div>
-  <button type="button" class="btn btn-outline-primary" type="submit" style="center">등록</button>
-  </div>
+			<div class="row">
+				<div class="mb-12">
+					<span>직원 이미지 업로드</span>
+					<div class="input-group">
+						<input type="file" class="form-control" id="empt_img">
+						<label class="input-group-text" for="empt_img">업로드</label>
+					</div>
+				</div>
+			</div>
+
+			
+			<div class="row">
+				<div class="mb-12">
+					<span>csv파일 업로드</span>
+					<div class="input-group">
+						<input type="file" class="form-control" id="file_csv">
+						<label class="input-group-text" for="file_csv">업로드</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-3">
+				<div class="mb-12">
+  					<button id="addBtn" class="btn btn-outline-primary" type="button">등록</button>
+  				</div>
+			</div>
+		</div>
+	</div>
 </div>
-
-        
-            
-        {% comment %} <div class="row">
-            <div class="col-md-8 mb-3">
-              <label for="root">부서 선택</label>
-              <select class="custom-select d-block w-100" id="root">
-                <option value=""></option>
-                <option>1번부서</option>
-                <option>2번부서</option>
-              </select>
-
-            </div> {% endcomment %}
-
-          </div>
-
-        </form>
-      </div>
-    </div>
-
-  </div>
-
-</body>
-
-
-
-
-
-
-
-
-
 {% endblock content %}

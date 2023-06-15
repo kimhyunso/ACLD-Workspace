@@ -59,7 +59,7 @@ ROOT_URLCONF = 'ACDD.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', BASE_DIR / 'static'],
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,7 +83,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ACDD',
-        'USER': 'root',
+        'USER': 'jeawon',
         'PASSWORD': '1735',
         'HOST': '192.168.50.131',
         'PORT': '3306',
@@ -130,6 +130,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 # STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -137,14 +143,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-
-<<<<<<< HEAD
-host_name = socket.gethostname()
-HOST = socket.gethostbyname(host_name)
-PORT = 9999
-SERVER = threading.Thread(target=Server, args=(HOST, PORT))
-SERVER.start()
-=======
 # host_name = socket.gethostname()
 # HOST = socket.gethostbyname(host_name)
 # PORT = 9999
@@ -152,4 +150,3 @@ SERVER.start()
 # thread = threading.Thread(target=Server, args=(HOST, PORT))
 # thread.start()
 # server = Server(HOST, PORT)
->>>>>>> c379fb9cee47203adfb60ee20c4bd57fa2f22e7a
