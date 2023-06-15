@@ -67,25 +67,19 @@ $(document).ready(function() {
 				</div>
             </div>
 
-			<div class="row">
-				<div class="mb-12">
-					<label for="demp_name">부서</label>
-					<input type="text" class="form-control" id="demp_name" placeholder="부서를 입력해주세요." required>
-					<div class="invalid-feedback">
-					  부서를 입력해주세요.
-					</div>
-				</div>
-            </div>
+      <div class="row">
+        <div class="col-md-12 mb-3">
+            <label for="department">부서</label>
+            <select class="custom-select d-block w-100" id="department">
+                <option>부서를 선택해주세요.</option>
+                <option value="ai">AI</option>
+                <option value="development">개발</option>
+                <option value="design">디자인</option>
+                <option value="planning">기획</option>
+            </select>
+        </div>
+    </div>
 
-			<div class="row">
-				<div class="mb-12">
-					<label for="emp_no">사원번호</label>
-					<input type="text" class="form-control" id="emp_no" placeholder="사원번호를 입력해주세요." required>
-					<div class="invalid-feedback">
-					  사원번호를 입력해주세요.
-					</div>
-				</div>
-            </div>
 
 			<div class="row">
 				<div class="mb-12">
