@@ -1,14 +1,43 @@
 {% extends 'base.html' %}
-
 {% block content %}
+<script>
+$(document).ready(function() {
+	$("#addPartBtn").click(function(){
+		var demp_name = $("#demp_name").val();
+		var landline = $("#landline").val();
+		var location = $("#location").val();
+		var emp_data = {
+			'demp_name' : demp_name,
+			'landline' : landline,
+			'location' : location
+		}
+
+		$.ajax({
+			type :"POST",
+			url : "{% url 'main:addDepart' %}",
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			data : JSON.stringify(emp_data),
+			dataType : "JSON",
+			success : function(response){
+				window.location.href="{% url 'main:addEmp' %}";
+			},
+			error : function(){
+				alert("잘 못 입력하셨습니다.");
+			}
+		});
+	});
+});
+</script>
+
+
 <div class="container">
     <div class="input-form-backgroud row">
 		<div class="input-form col-md-12 mx-auto">
 			<h3 class="mb-3"><strong>부서 등록</strong></h3>
 			<div class="row">
             	<div class="col-md-12 mb-3">
-	              	<label for="emp_name">부서명</label>
-    	          	<input type="text" class="form-control" id="emp_name" placeholder="부서명을 입력해주세요." required>
+	              	<label for="demp_name">부서명</label>
+    	          	<input type="text" class="form-control" id="demp_name" placeholder="부서명을 입력해주세요." required>
         	      	<div class="invalid-feedback">
 						부서명을 입력해주세요.
               		</div>
