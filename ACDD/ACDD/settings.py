@@ -138,8 +138,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
+<<<<<<< HEAD
 host_name = socket.gethostname()
 HOST = socket.gethostbyname(host_name)
 PORT = 9999
 SERVER = threading.Thread(target=Server, args=(HOST, PORT))
 SERVER.start()
+=======
+# host_name = socket.gethostname()
+# HOST = socket.gethostbyname(host_name)
+# PORT = 9999
+
+# thread = threading.Thread(target=Server, args=(HOST, PORT))
+# thread.start()
+# server = Server(HOST, PORT)
+>>>>>>> c379fb9cee47203adfb60ee20c4bd57fa2f22e7a
