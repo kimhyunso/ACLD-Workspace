@@ -79,35 +79,19 @@ WSGI_APPLICATION = 'ACDD.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ACDD',
         'USER': 'root',
         'PASSWORD': '1735',
-        'HOST': '127.0.0.1',
+        'HOST': '192.168.50.131',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
         }
     }
 }
-=======
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ACDD',
-#         'USER': 'jeawon',
-#         'PASSWORD': '1735',
-#         'HOST': '192.168.50.131',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-#         }
-#     }
-# }
->>>>>>> 39c9a068743b5c61c4bd5c7239eadf1bcf67eeb7
 
 
 # Password validation
@@ -140,7 +124,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
@@ -160,4 +143,3 @@ HOST = socket.gethostbyname(host_name)
 PORT = 9999
 SERVER = threading.Thread(target=Server, args=(HOST, PORT))
 SERVER.start()
-# server = Server(HOST, PORT)

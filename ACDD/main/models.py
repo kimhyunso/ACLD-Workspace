@@ -3,46 +3,20 @@ from django.db import models
 
 class Agent(models.Model):
     agent_no = models.AutoField(primary_key=True)
-    mac_address_fk = models.ForeignKey('Employee', models.DO_NOTHING, db_column='MAC_Address_FK')  # Field name made lowercase.
-    log_no_fk = models.ForeignKey('Log', models.DO_NOTHING, db_column='log_no_FK')  # Field name made lowercase.
-    ip = models.CharField(db_column='IP', max_length=20)  # Field name made lowercase.
+    status = models.IntegerField()
+    create_at = models.DateTimeField()
+    update_at = models.DateTimeField()
 
     class Meta:
         managed = False
         db_table = 'agent'
 
 
-class Department(models.Model):
-    part_no_pk = models.AutoField(db_column='part_no_PK', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(max_length=10)
-    position = models.CharField(max_length=20)
-
-    class Meta:
-        managed = False
-        db_table = 'department'
-
-
-class Employee(models.Model):
-    mac_address_pk = models.CharField(db_column='MAC_Address_PK', primary_key=True, max_length=20)  # Field name made lowercase.
-    part_no_fk = models.ForeignKey(Department, models.DO_NOTHING, db_column='part_no_FK')  # Field name made lowercase.
-    name = models.CharField(max_length=10)
-    employee_img_path = models.TextField()
-    phone_number = models.IntegerField()
-    position = models.CharField(max_length=10)
-    rank = models.IntegerField()
-    join_day = models.DateTimeField()
-    create_at = models.DateTimeField()
-    update_at = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'employee'
-
-
-class Log(models.Model):
-    log_no_pk = models.AutoField(db_column='log_no_PK', primary_key=True)  # Field name made lowercase.
-    camimage_path = models.TextField(db_column='CAMimage_path')  # Field name made lowercase.
-    screenshot_path = models.TextField()
+class Dection(models.Model):
+    dect_no = models.AutoField(primary_key=True)
+    agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no')
+    cam_path = models.CharField(db_column='CAM_path', max_length=300)  # Field name made lowercase.
+    screen_path = models.CharField(max_length=300)
     detectiontype = models.IntegerField()
     status = models.IntegerField()
     create_at = models.DateTimeField()
@@ -50,12 +24,41 @@ class Log(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'log'
+        db_table = 'dection'
+
+
+class Department(models.Model):
+    depmt_no = models.AutoField(primary_key=True)
+    depmt_name = models.CharField(max_length=20)
+    landline = models.IntegerField()
+    location = models.CharField(max_length=100)
+
+    class Meta:
+        managed = False
+        db_table = 'department'
+
+
+class Employee(models.Model):
+    emp_no = models.IntegerField(primary_key=True)
+    depmt_no = models.ForeignKey(Department, models.DO_NOTHING, db_column='depmt_no')
+    emp_name = models.CharField(max_length=10)
+    emp_img_path = models.TextField()
+    phone_no = models.CharField(max_length=20)
+    email = models.CharField(max_length=20)
+    rank = models.IntegerField()
+    emp_no = models.ForeignKey(Employee, models.DO_NOTHING, db_column='emp_no')
+    agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no')
+    ip = models.CharField(db_column='IP', max_length=100)  # Field name made lowercase.
+    mac = models.CharField(db_column='MAC', max_length=100)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'identify'
 
 
 class Report(models.Model):
-    report_no_pk = models.AutoField(db_column='report_no_PK', primary_key=True)  # Field name made lowercase.
-    log_no_fk = models.ForeignKey(Log, models.DO_NOTHING, db_column='log_no_FK')  # Field name made lowercase.
+    report_no = models.AutoField(primary_key=True)
+    dect_no = models.ForeignKey(Dection, models.DO_NOTHING, db_column='dect_no')
     content = models.TextField()
     status = models.IntegerField()
     create_at = models.DateTimeField()
