@@ -94,6 +94,7 @@ var myChart = new Chart(context, {
         </div>
     </div>
 
+    <div class="container">
     <div class="row">
         <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 400px; margin: 50px; margin-left: 10%;">
             <table class="table table-light table-hover  caption-top">
@@ -104,6 +105,7 @@ var myChart = new Chart(context, {
                     <th><B>IP</B></th>
                     <th><B>이름</B></th>
                     <th><B>부서</B></th>
+                    <th><B>상태</B></th>
                     <th><B>비고</B></th>
                 </tr>
                 <tr>
@@ -171,16 +173,27 @@ var myChart = new Chart(context, {
             </table>
         </div>
     </div>
-    <div>
-    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 400px; margin: 50px; margin-left: 10%;">
-            <table class="table table-light table-hover  caption-top">
+</div>
+<div>
+    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 250px; margin: 50px; margin-left: 10%;">
+        <table class="table table-light table-hover  caption-top">
                 <caption style="font-size: 30px;">미처리 탐지건수</caption>
+            <tr>
+                <th><B>번호</B></th>
+                <th><B>날짜</B></th>
+                <th><B>IP</B></th>
+                <th><B>이름</B></th>
+                <th><B>부서</B></th>
+                <th><B>상태</B></th>
+                <th><B>비고</B></th>
+            </tr>
             <tr>
                 <td>1</td>
                 <td>2023-06-05</td>
                 <td>192.168.255.1</td>
                 <td>송재원</td>
                 <td>디자인</td>
+                <td>미처리</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
         </table>
