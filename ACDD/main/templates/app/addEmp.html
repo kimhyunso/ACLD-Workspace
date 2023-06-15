@@ -2,53 +2,56 @@
 {% block content %}
 <script>
 $(document).ready(function() {
-	$("#addPartBtn").click(function(){
+	$("#addEmpBtn").click(function(){
 		var emp_name = $("#emp_name").val();
 		var rank = $("#rank").val();
-		var demp_name = $("#demp_name").val();
 		var emp_no = $("#emp_no").val();
 		var MAC = $("#MAC").val();
 		var IP = $("#IP").val();
 		var phone_no = $("#phone_no").val();
-		var landline = $("#landline").val();
 		var email = $("#email").val();
-		var location = $("#location").val();
+		var depmt_no = $("#depmt_no").val();
+
 		var emp_data = {
 			'emp_name' : emp_name,
 			'rank' : rank,
-			'demp_name' : demp_name,
 			'emp_no' : emp_no,
 			'MAC' : MAC,
 			'IP' : IP,
 			'phone_no' : phone_no,
-			'landline' : landline,
 			'email' : email,
-			'location' : location
+			'depmt_no' : depmt_no,
 		}
 
 		$.ajax({
 			type :"POST",
-			url : "{% url 'main:addDepart' %}",
+			url : "{% url 'main:addEmp' %}",
 			headers: { "X-CSRFToken": '{{csrf_token}}' },
 			data : JSON.stringify(emp_data),
 			dataType : "JSON",
 			success : function(response){
-				location.href="{% url 'main:addEmp' %}";
+				alert("테스트123");
 			},
-      error : fuction(){
-        alert("잘 못된 입력입니다.");
-      },
 		});
 	});
 });
 </script>
 
 
-
 <div class="container">
     <div class="input-form-backgroud row">
 		<div class="input-form col-md-12 mx-auto">
 			<h3 class="mb-3"><strong>직원 등록</strong></h3>
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="emp_no">사번</label>
+					<input type="text" class="form-control" id="emp_no" placeholder="사번을 입력해주세요." value="" required>
+					<div class="invalid-feedback">
+						사번을 입력해주세요.
+					</div>
+				</div>
+			</div>
+
 			<div class="row">
             	<div class="col-md-6 mb-3">
 	              	<label for="emp_name">이름</label>
@@ -67,18 +70,18 @@ $(document).ready(function() {
 				</div>
             </div>
 
-      <div class="row">
-        <div class="col-md-12 mb-3">
-            <label for="department">부서</label>
-            <select class="custom-select d-block w-100" id="department">
-                <option>부서를 선택해주세요.</option>
-                <option value="ai">AI</option>
-                <option value="development">개발</option>
-                <option value="design">디자인</option>
-                <option value="planning">기획</option>
-            </select>
-        </div>
-    </div>
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="depmt_no">부서</label>
+					<select class="custom-select d-block w-100" id="depmt_no">
+						<option>부서를 선택해주세요.</option>
+						<option value="1">AI</option>
+						<option value="2">개발</option>
+						<option value="3">디자인</option>
+						<option value="4">기획</option>
+					</select>
+				</div>
+			</div>
 
 
 			<div class="row">
@@ -107,16 +110,6 @@ $(document).ready(function() {
 					<input type="tel" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
 					<div class="invalid-feedback">
 					  휴대폰번호를 입력해주세요
-					</div>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="mb-12">
-					<label for="landline">유선번호</label>
-					<input type="tel" class="form-control" id="landline" placeholder="유선번호를 입력해주세요." required>
-					<div class="invalid-feedback">
-					  유선번호를 입력해주세요
 					</div>
 				</div>
 			</div>
@@ -164,7 +157,7 @@ $(document).ready(function() {
 
 			<div class="row mt-3">
 				<div class="mb-12">
-  					<button id="addBtn" class="btn btn-outline-primary" type="button">등록</button>
+  					<button id="addEmpBtn" class="btn btn-outline-primary" type="button">등록</button>
   				</div>
 			</div>
 		</div>

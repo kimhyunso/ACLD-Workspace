@@ -40,29 +40,23 @@ def addEmp(request):
         MAC = reqData['MAC']
         IP = reqData['IP']
         phone_no = reqData['phone_no']
-        
         email = reqData['email']
-        
+        depmt_no = reqData['depmt_no']
         employee = Employee()
 
-        department['depmt_name'] = demp_name
+        department = Department.objects.get(depmt_no=depmt_no)
 
-        employee['emp_no'] = emp_no
-        employee['depmt_no'] = emp_no
-        employee['emp_name'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-        employee['emp_no'] = emp_no
-
+        employee.emp_name = emp_name
+        employee.emp_no = emp_no
+        employee.depmt_no = department
+        employee.rank = rank
+        employee.phone_no = phone_no
+        employee.email = email
+        employee.save()
 
         return JsonResponse(reqData)
+    
+
 
 @require_http_methods(['POST', 'GET'])
 def addDepart(request):
