@@ -46,6 +46,12 @@ class Employee(models.Model):
     phone_no = models.CharField(max_length=20)
     email = models.CharField(max_length=20)
     rank = models.IntegerField()
+    class Meta:
+        managed = False
+        db_table = 'employee'
+
+
+class identify(models.Model):
     emp_no = models.ForeignKey(Employee, models.DO_NOTHING, db_column='emp_no')
     agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no')
     ip = models.CharField(db_column='IP', max_length=100)  # Field name made lowercase.
@@ -54,7 +60,6 @@ class Employee(models.Model):
     class Meta:
         managed = False
         db_table = 'identify'
-
 
 class Report(models.Model):
     report_no = models.AutoField(primary_key=True)
