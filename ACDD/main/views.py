@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_list_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 import json
@@ -12,14 +12,11 @@ import os
 def home(request):
     dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
     report_list = Report.objects.all().filter(status=0).order_by('-report_no')
-
-    detection_emp_no = Dection.objects.get(status=0).emp_no
+    # detection_emp_no = Dection.objects.get(status=0).emp_no
 
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
-
-
     context = {
         'dection_list' : dection_list,
         'report_list' : report_list,
@@ -31,6 +28,8 @@ def home(request):
 
 
 def detail(request):
+
+
     return render(request, 'app/detail.html')
 
 def agent(request):
