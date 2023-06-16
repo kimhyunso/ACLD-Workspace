@@ -1,45 +1,118 @@
 {% extends 'base.html' %}
 {% block content %}
+<script>
+$(document).ready(function() {
+    /*var context = document.getElementById('today_dection').getContext('2d');
+    var myChart = new Chart(context, {
+        type: 'line',
+        data: {
+            labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+            datasets: [{
+                label: '스토리지',
+                fill: false,
+                data: [30, 100],
+                backgroundColor: [
+                    'rgb(70, 87, 145)',
+                    'rgb(70, 107, 145)',
+                    'rgb(70, 37, 145)',
+                    'rgb(70, 57, 145)',
+                ],
+                // borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        centerText: {
+            display: true,
+            text: "tests"
+        },
+    });*/
 
-<div class="container">
-    <!-- <div class="chart-container" style="position: relative; height: 400px; width: 400px;"> -->
+    var context = document.getElementById('os_chart').getContext('2d');
+    var myChart = new Chart(context, {
+        type: 'doughnut',
+        data: {
+            labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
+            datasets: [{
+                label: '스토리지',
+                fill: false,
+                data: [30, 100],
+                backgroundColor: [
+                    'rgb(70, 87, 145)',
+                    'rgb(70, 107, 145)',
+                    'rgb(70, 37, 145)',
+                    'rgb(70, 57, 145)',
+                ],
+                // borderColor: ['rgba(255, 99, 132, 1)'],
+                borderWidth: 1
+            }]
+        },
+        centerText: {
+            display: true,
+            text: "tests"
+        },
+    });
+
+});
+
+    
+</script>
+
+
+
+
+
+
+<div class="container-fluid">
+
+    <div class="row mtse-5">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-4" style="text-align: left; font-size: 14px;">
+                    <div class="item col-2" style="background-color: #F8ECD1; width: 200px; height:200px;">
+                        사유서 처리 대기
+                        <div>70건</div>
+                    </div>   
+                </div>
+                
+                <div class="col-4" style="text-align: left; font-size: 14px;">
+                    <div class="item col-2" style="background-color: #a47810;">처리 완료
+                        <div>120건</div>
+                    </div>    
+                </div>
+        
+                <div class="col-4" style="text-align: left; font-size: 14px;">
+                    <div class="item col-2" style="background-color: #b5a788;">미처리
+                        <div>120건</div>
+                    </div> 
+                </div>
+            </div>
+        </div>
+
+        <div class="col-6">
+            tetsets
+        </div>
+    </div>
+
+
+    <div class="row mtse-5">
+        
+    </div> 
+</div>
+
+ <div class="container">
+     <div class="chart-container" style="position: relative; height: 400px; width: 400px;">
         <canvas id="today_detection"></canvas>
     </div>
 </div>
 </div>
-<script type="text/javascript">
-var context = document.getElementById('today_dection').getContext('2d');
-var myChart = new Chart(context, {
-    type: 'line',
-    data: {
-        labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
-        datasets: [{
-            label: '스토리지',
-            fill: false,
-            data: [30, 100],
-            backgroundColor: [
-                'rgb(70, 87, 145)',
-                'rgb(70, 107, 145)',
-                'rgb(70, 37, 145)',
-                'rgb(70, 57, 145)',
-            ],
-            // borderColor: ['rgba(255, 99, 132, 1)'],
-            borderWidth: 1
-        }]
-    },
-    centerText: {
-        display: true,
-        text: "tests"
-    },
-});
-</script>
+
 </div>
 </div>
 
 
 </div>
 
-    <div class="row" style="margin-left: 10%;">
+    <div style="margin-left: 10%;">
         <div class="col-md-6 px-5">
             <div class="border fs-3 text-center">
                 최근 3일 누적 탐지건수
@@ -58,7 +131,7 @@ var myChart = new Chart(context, {
         </div>
 
         <div class="col">
-            <div class="row">
+            <div>
                 <div class="col-md-12">
                     <div class="chart-container" style="position: relative; height: 400px; width: 400px;">
                         <canvas id="os_chart"></canvas>
@@ -66,36 +139,13 @@ var myChart = new Chart(context, {
                 </div>
             </div>
             <script type="text/javascript">
-                var context = document.getElementById('os_chart').getContext('2d');
-                var myChart = new Chart(context, {
-                    type: 'doughnut',
-                    data: {
-                        labels: ['스토리지', '데이터베이스 사용량', '네트워크 트래픽', 'CPU사용량'],
-                        datasets: [{
-                            label: '스토리지',
-                            fill: false,
-                            data: [30, 100],
-                            backgroundColor: [
-                                'rgb(70, 87, 145)',
-                                'rgb(70, 107, 145)',
-                                'rgb(70, 37, 145)',
-                                'rgb(70, 57, 145)',
-                            ],
-                            // borderColor: ['rgba(255, 99, 132, 1)'],
-                            borderWidth: 1
-                        }]
-                    },
-                    centerText: {
-                        display: true,
-                        text: "tests"
-                    },
-                });
+                
             </script>
         </div>
     </div>
 
     <div class="container">
-    <div class="row">
+    <div>
         <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 400px; margin: 50px; margin-left: 10%;">
             <table class="table table-light table-hover  caption-top">
                 <caption style="font-size: 30px;">미처리 탐지건수</caption>
