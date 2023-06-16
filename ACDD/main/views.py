@@ -4,6 +4,9 @@ from django.views.decorators.http import require_http_methods
 import json
 from .models import Agent, Dection, Report, Identify, Department, Employee
 from django.core import serializers
+from django.core.files.storage import FileSystemStorage
+from django.conf import settings
+import os
 
 def home(request):
     # # 'select * from cam where name = "홍길동"'
@@ -14,8 +17,14 @@ def home(request):
     #     cur.
     # except Exception as e:
     #     print(e)
-   
-    return render(request, 'app/home.html')
+
+    dection_list = Dection.objects.all()
+
+    context = {
+        'dection_list' : dection_list,
+    }
+    return render(request, 'app/home.html', context)
+
 
 def detail(request):
     return render(request, 'app/detail.html')
@@ -38,15 +47,28 @@ def addEmp(request):
         }
         return render(request, 'app/addEmp.html', context)
     else:
-        reqData = json.loads(request.body)
-        emp_name = reqData['emp_name']
-        rank = reqData['rank']
-        emp_no = reqData['emp_no']
-        MAC = reqData['MAC']
-        IP = reqData['IP']
-        phone_no = reqData['phone_no']
-        email = reqData['email']
-        depmt_no = reqData['depmt_no']
+        if 'file_csv' in request.FILES:
+            csv_file = request.FILES['file_csv']
+            employee_csv_folder = 'employee_csv'
+            employee_csv_path = os.path.join(employee_csv_folder, csv_file.name)
+            csv_filename = fs.save(employee_csv_path, csv_file)
+            return JsonResponse({'success': True})
+
+        emp_name =request.POST.get('emp_name')
+        rank = request.POST.get('rank')
+        emp_no = request.POST.get('emp_no')
+        MAC = request.POST.get('MAC')
+        IP = request.POST.get('IP')
+        phone_no = request.POST.get('phone_no')
+        email = request.POST.get('email')
+        depmt_no = request.POST.get('depmt_no')
+
+        emp_img = request.FILES['empt_img']
+        fs = FileSystemStorage()
+
+        employee_folder = 'employee' 
+        employee_path = os.path.join(employee_folder, f'{emp_no}_{emp_img.name}')
+        filename = fs.save(employee_path, emp_img)
 
         employee = Employee()
         department = Department.objects.get(depmt_no=depmt_no)
@@ -57,13 +79,13 @@ def addEmp(request):
         employee.rank = rank
         employee.phone_no = phone_no
         employee.email = email
+        employee.emp_img_path = os.path.join(settings.MEDIA_ROOT, f'{emp_no}_{emp_img.name}')
         employee.save()
 
         agent = Agent()
         agent.agent_no = emp_no
         agent.status = 0
         agent.save()
-
 
         identify = Identify()
         employee = Employee.objects.get(emp_no=emp_no)
@@ -74,10 +96,7 @@ def addEmp(request):
         identify.ip = IP
         identify.mac = MAC
         identify.save()
-
-        return JsonResponse(reqData)
-    
-
+        return JsonResponse({'success': True})
 
 @require_http_methods(['POST', 'GET'])
 def addDepart(request):
@@ -98,6 +117,7 @@ def addDepart(request):
         # dempt_list = Department.objects.all()
         # depmt_name_list = serializers.serialize('json', department)
         return JsonResponse(reqData)
+
 
         
 

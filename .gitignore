@@ -109,6 +109,8 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+*.xlsx
+*.csv
 
 # Translations
 *.mo

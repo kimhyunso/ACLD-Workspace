@@ -3,31 +3,25 @@
 <script>
 $(document).ready(function() {
 	$("#addEmpBtn").click(function(){
-		var emp_name = $("#emp_name").val();
-		var rank = $("#rank").val();
-		var emp_no = $("#emp_no").val();
-		var MAC = $("#MAC").val();
-		var IP = $("#IP").val();
-		var phone_no = $("#phone_no").val();
-		var email = $("#email").val();
-		var depmt_no = $("#depmt_no").val();
-
-		var emp_data = {
-			'emp_name' : emp_name,
-			'rank' : rank,
-			'emp_no' : emp_no,
-			'MAC' : MAC,
-			'IP' : IP,
-			'phone_no' : phone_no,
-			'email' : email,
-			'depmt_no' : depmt_no,
-		}
-
+		var emp_datas = new FormData();
+		emp_datas.append("emp_name", $("#emp_name").val());
+		emp_datas.append("rank", $("#rank").val());
+		emp_datas.append("emp_no", $("#emp_no").val());
+		emp_datas.append("MAC", $("#MAC").val());
+		emp_datas.append("IP", $("#IP").val());
+		emp_datas.append("phone_no", $("#phone_no").val());
+		emp_datas.append("email", $("#email").val());
+		emp_datas.append("depmt_no",  $("#depmt_no").val());
+		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
+		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
+	
 		$.ajax({
 			type :"POST",
 			url : "{% url 'main:addEmp' %}",
 			headers: { "X-CSRFToken": '{{csrf_token}}' },
-			data : JSON.stringify(emp_data),
+			processData: false, 
+    		contentType: false,
+			data : emp_datas,
 			dataType : "JSON",
 			success : function(response){
 				window.location.replace("{% url 'main:home' %}");
@@ -44,6 +38,8 @@ $(document).ready(function() {
 <div class="container">
     <div class="input-form-backgroud row">
 		<div class="input-form col-md-12 mx-auto">
+
+			<form enctype="multipart/form-data">
 			<h3 class="mb-3"><strong>직원 등록</strong></h3>
 			<div class="row">
 				<div class="col-md-12 mb-3">
@@ -162,6 +158,7 @@ $(document).ready(function() {
   					<button id="addEmpBtn" class="btn btn-outline-primary" type="button">등록</button>
   				</div>
 			</div>
+			</form>
 		</div>
 	</div>
 </div>
