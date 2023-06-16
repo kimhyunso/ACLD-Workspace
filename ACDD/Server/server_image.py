@@ -6,8 +6,8 @@ import base64
 import threading
 import time
 import json
-from util import Util
-from database import DataBase
+from server.util import Util
+from server.database import DataBase
 
 class Server:
     def __init__(self, HOST : str, PORT : int):

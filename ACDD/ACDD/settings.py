@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os, socket
-from Server.server_image import Server
+from server.server_image import Server
 import threading
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -143,10 +143,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-host_name = socket.gethostname()
-HOST = socket.gethostbyname(host_name)
-PORT = 9999
+# host_name = socket.gethostname()
+# HOST = socket.gethostbyname(host_name)
+# PORT = 9999
 
-thread = threading.Thread(target=Server, args=(HOST, PORT))
-thread.start()
-server = Server(HOST, PORT)
+# thread = threading.Thread(target=Server, args=(HOST, PORT))
+# thread.start()
+# server = Server(HOST, PORT)

@@ -6,22 +6,24 @@ from .models import Agent, Dection, Report, Identify, Department, Employee
 from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
+from django.db.models import Count
 import os
 
 def home(request):
-    # # 'select * from cam where name = "홍길동"'
+    dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
+    report_list = Report.objects.all().filter(status=0).order_by('-report_no')
 
-    # try:
-    #     cur = conn.cursor()
-    #     sql = 'select * from cam where name = "홍길동"'
-    #     cur.
-    # except Exception as e:
-    #     print(e)
+    dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
+    report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
+    report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
 
-    dection_list = Dection.objects.all()
 
     context = {
         'dection_list' : dection_list,
+        'report_list' : report_list,
+        'dect_count' : dect_count['count'],
+        'report_count' : report_count['count'],
+        'report_done_count' : report_done_count['count'],
     }
     return render(request, 'app/home.html', context)
 

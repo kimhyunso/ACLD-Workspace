@@ -36,8 +36,7 @@ var myChart = new Chart(context, {
                 text: '금일탐지건수'
             }
         }
-    },
-
+    }
     // var num = Math.random(); 
 	// var data = { 
 	// 	labels: [ 
@@ -81,91 +80,92 @@ var myChart = new Chart(context, {
    
 });
 
-    
 </script>
 
+
 <div class="container-fluid">
-    <div class="row" style="margin-top: 70px; margin-left: 70px;">
+    <div class="row mt-4">
         <div class="col-6">
             <div class="row">
-                <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2" style="background-color: #ffffff; width: 200px; height:100px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
-                        사유서 처리 대기
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #FCD34D;">70건</div>
+                <div class="col-4">
+                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
+                        <div class="text-center">
+                            <span class="fs-4">사유서 처리 대기<span>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-5 text-warning p-3">{{report_count}}건</span>
+                        </div>
                     </div>   
                 </div>
                 
-                <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2" style="background-color: #ffffff; width: 200px; height:100px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">
-                        처리 완료
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #3B82F6;">120건</div>
+                <div class="col-4">
+                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
+                        <div class="text-center">
+                            <span class="fs-4">처리완료<span>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-5 text-primary p-3">{{report_done_count}}건</span>
+                        </div>
                     </div>    
                 </div>
         
                 <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2" style="background-color: #ffffff; width: 200px; height:100px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);">미처리
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #DC2626;">37건</div>
-                    </div> 
+                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
+                        <div class="text-center">
+                            <span class="fs-4">미처리<span>
+                        </div>
+                        <div class="text-end">
+                            <span class="fs-5 text-danger p-3">{{dect_count}}건</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-
         <div class="col-6">
-        
-                    스토리지 사용량 DB사용량 CPU사용량 네트워크트래픽
-        
+            스토리지 사용량 DB사용량 CPU사용량 네트워크트래픽
         </div>
-
 
     <div class="row mt-6">
         <div class="container" style="margin-top: 50px;">
-            <div class="chart-container" style=" height: 300px; width: 500px; margin-top: 50px;">
+            <div class="chart-container" style="height: 300px; width: 500px; margin-top: 50px;">
                 <canvas id="os_chart"></canvas>
             </div>
         </div>
     </div>
-</div>
 
-
-
-
-<div>
-    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 250px; margin: 50px; margin-left: 10%;">
-        <table class="table table-light table-hover  caption-top">
-                <caption style="font-size: 30px;">미처리 탐지건수</caption>
+    <div class="row">
+        <table class="table table-light table-hover  caption-top mse-5">
+            <caption class="fs-4">미처리 탐지건수({{dect_count}})</caption>
             <tr>
-                <th><B>번호</B></th>
-                <th><B>날짜</B></th>
-                <th><B>IP</B></th>
-                <th><B>이름</B></th>
-                <th><B>부서</B></th>
-                <th><B>상태</B></th>
-                <th><B>비고</B></th>
+                <th>번호</th>
+                <th>날짜</th>
+                <th>IP</th>
+                <th>이름</th>
+                <th>부서</th>
+                <th>상태</th>
+                <th>비고</th>
             </tr>
+            {% for dection in dection_list %}
             <tr>
-                <td>1</td>
-                <td>2023-06-05</td>
+                <td>{{dection.dect_no}}</td>
+                <td>{{dection.create_at}}</td>
                 <td>192.168.255.1</td>
                 <td>송재원</td>
                 <td>디자인</td>
                 <td>미처리</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+            {% endfor %}
         </table>
     </div>
+
 </div>
+
 
 <div>
     <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 250px; margin: 50px; margin-left: 10%;">
         <table class="table table-light table-hover  caption-top">
-                <caption style="font-size: 30px;">미처리 탐지건수</caption>
+                <caption style="font-size: 30px;">미처리 탐지건수({{report_count}})</caption>
             <tr>
                 <th><B>번호</B></th>
                 <th><B>날짜</B></th>
