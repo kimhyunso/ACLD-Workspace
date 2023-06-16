@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-import json
+from django.conf import settings
 
 class Util:
     def __init__(self):
@@ -12,16 +12,16 @@ class Util:
 
     def create_folder(self, ip) -> None:
         try:
-            if not os.path.exists(self.get_path() + '\\' + str(ip)):
-                os.makedirs(self.get_path() + '\\' + str(ip))
+            if not os.path.exists(os.path(settings.MEDIA_ROOT) + '\\' + str(ip)):
+                os.makedirs(os.path(settings.MEDIA_ROOT) + '\\' + str(ip))
         except OSError:
             print('Error : Creating directory')
 
     def get_save_path(self, ip):
-        return self.get_pwd_path() + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY + '\\' + str(ip)
+        return os.path(settings.MEDIA_ROOT) + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY + '\\' + str(ip)
     
     def get_path(self):
-        return self.get_pwd_path() + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY
+        return os.path(settings.MEDIA_ROOT)  + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY
     
     def get_pwd_path(self):
         return self.__path
