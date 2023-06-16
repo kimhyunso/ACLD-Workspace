@@ -20,7 +20,7 @@ $(document).ready(function() {
 			data : JSON.stringify(emp_data),
 			dataType : "JSON",
 			success : function(response){
-				window.location.replace("{% url 'main:addEmp' %}");
+				window.location.replace("{% url 'main:addDepart' %}");
 			},
 			error : function(request, status, error){
 				alert("잘 못 입력하셨습니다.", error, status);

@@ -72,24 +72,28 @@ class Server:
                 screen_path = self.save_data(screen_data, img_count, 0, save_path)
                 
                 json_data = self.get_data()
-                result_data = json.loads(json_data)
+                self.result_data = json.loads(json_data)
 
-                agent_no = self.connectDB.select_identify(result_data['IP'], result_data['MACAddress'])
-                self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
+                agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
+                self.connectDB.update_agent(self.result_data['IP'], self.result_data['MACAddress'], self.is_alive(), agent_no)
                 self.connectDB.insert_dection(agent_no, cam_path, screen_path)
 
                 img_count += 1
                 time.sleep(0.95)
             except socket.timeout:
-                self.get_client_socket().close()
-                self.set_alive(False)
-                agent_no = self.connectDB.select_identify(result_data['IP'], result_data['MACAddress'])
-                self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
+                print('>> set timeout agent status OFF')
+                self.agent_OFF(self.result_data)
                 
             except Exception as e:
-                print(e)
-                self.get_client_socket().close()
+                print('>> set timeout agent status OFF')
+                self.agent_OFF(self.result_data)
                 break
+
+    def agent_OFF(self, result_data):
+        self.get_client_socket().close()
+        self.set_alive(False)
+        agent_no = self.connectDB.select_identify(result_data['IP'], result_data['MACAddress'])
+        self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
 
     def recive_data(self, count : int) -> bytes:
         buf = b''
@@ -102,7 +106,6 @@ class Server:
 
     def get_data(self):
         length = self.recive_data(self.STREAM_BYTE).decode('utf-8')
-        print(length)
         return self.recive_data(int(length))
 
     def save_data(self, data, count, flag, save_path):
@@ -145,10 +148,4 @@ class Server:
     def set_alive(self, is_alive):
         self.__is_alive = is_alive
 
-host_name = socket.gethostname()
-HOST = socket.gethostbyname(host_name)
-print(HOST)
-PORT = 9999
-
-server = Server(HOST, PORT)
 

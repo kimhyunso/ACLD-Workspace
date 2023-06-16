@@ -24,7 +24,7 @@ $(document).ready(function() {
 			data : emp_datas,
 			dataType : "JSON",
 			success : function(response){
-				window.location.replace("{% url 'main:home' %}");
+				window.location.replace("{% url 'main:addEmp' %}");
 			},
 			error : function(request, status, error){
 				alert("잘 못 입력하셨습니다.", error, status);
@@ -55,7 +55,7 @@ $(document).ready(function() {
 					<div class="invalid-feedback">
 						사원번호을 입력해주세요.
 					</div>
-					</div>
+				</div>
 			</div>
 
 			<div class="row">
