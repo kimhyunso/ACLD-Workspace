@@ -51,7 +51,8 @@ class Employee(models.Model):
         db_table = 'employee'
 
 
-class identify(models.Model):
+class Identify(models.Model):
+    ident_no = models.AutoField(primary_key=True)
     emp_no = models.ForeignKey(Employee, models.DO_NOTHING, db_column='emp_no')
     agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no')
     ip = models.CharField(db_column='IP', max_length=100)  # Field name made lowercase.

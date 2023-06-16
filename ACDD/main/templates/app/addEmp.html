@@ -30,8 +30,11 @@ $(document).ready(function() {
 			data : JSON.stringify(emp_data),
 			dataType : "JSON",
 			success : function(response){
-				alert("테스트123");
+				window.location.replace("{% url 'main:home' %}");
 			},
+			error : function(request, status, error){
+				alert("잘 못 입력하셨습니다.", error, status);
+			}
 		});
 	});
 });
@@ -75,8 +78,8 @@ $(document).ready(function() {
 					<label for="depmt_no">부서</label>
 					<select class="custom-select d-block w-100" id="depmt_no">
 						<option>부서를 선택해주세요.</option>
-						{% for name_list  in  depmt_name_list %}
-							<option value="name_list.depmt_no">{{name_list.depmt_name}}</option>
+						{% for name_list  in  dempt_list %}
+							<option value="{{name_list.depmt_no}}">{{name_list.depmt_name}}</option>
 						{% endfor %}
 					</select>
 				</div>

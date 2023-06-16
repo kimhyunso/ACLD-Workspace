@@ -20,10 +20,10 @@ $(document).ready(function() {
 			data : JSON.stringify(emp_data),
 			dataType : "JSON",
 			success : function(response){
-				window.location.href="{% url 'main:addEmp' %}";
+				window.location.replace("{% url 'main:addEmp' %}");
 			},
 			error : function(request, status, error){
-				alert("잘 못 입력하셨습니다.");
+				alert("잘 못 입력하셨습니다.", error, status);
 			}
 		});
 	});

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 import json
-from .models import Agent, Dection, Report, identify, Department, Employee
+from .models import Agent, Dection, Report, Identify, Department, Employee
 from django.core import serializers
 
 def home(request):
@@ -32,7 +32,11 @@ def employee(request):
 @require_http_methods(['POST', 'GET'])
 def addEmp(request):
     if request.method == 'GET':
-        return render(request, 'app/addEmp.html')
+        dempt_list = Department.objects.all()
+        context = {
+            'dempt_list' : dempt_list,
+        }
+        return render(request, 'app/addEmp.html', context)
     else:
         reqData = json.loads(request.body)
         emp_name = reqData['emp_name']
@@ -43,8 +47,8 @@ def addEmp(request):
         phone_no = reqData['phone_no']
         email = reqData['email']
         depmt_no = reqData['depmt_no']
-        employee = Employee()
 
+        employee = Employee()
         department = Department.objects.get(depmt_no=depmt_no)
 
         employee.emp_name = emp_name
@@ -54,6 +58,22 @@ def addEmp(request):
         employee.phone_no = phone_no
         employee.email = email
         employee.save()
+
+        agent = Agent()
+        agent.agent_no = emp_no
+        agent.status = 0
+        agent.save()
+
+
+        identify = Identify()
+        employee = Employee.objects.get(emp_no=emp_no)
+        agent = Agent.objects.get(agent_no=emp_no)
+
+        identify.emp_no = employee
+        identify.agent_no = agent
+        identify.ip = IP
+        identify.mac = MAC
+        identify.save()
 
         return JsonResponse(reqData)
     
@@ -75,10 +95,9 @@ def addDepart(request):
         department.depmt_name = demp_name
         department.save()
 
-        department = Department.objects.all()
-        depmt_name_list = serializers.serialize('json', department)
-        
-        return HttpResponse(depmt_name_list, content_type="text/json-comment-filtered")
+        # dempt_list = Department.objects.all()
+        # depmt_name_list = serializers.serialize('json', department)
+        return JsonResponse(reqData)
 
         
 
