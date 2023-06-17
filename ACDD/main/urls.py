@@ -14,6 +14,7 @@ urlpatterns = [
     path('chart/', views.chart, name='chart'),
     path('addEmp/', views.addEmp, name='addEmp'),
     path('addDepart/', views.addDepart, name='addDepart'),
+    path('get_updated_data/', views.get_updated_data, name='get_updated_data'),
     
 ] + static(settings.MEDIA_URL, doucment_root=settings.MEDIA_ROOT)
 

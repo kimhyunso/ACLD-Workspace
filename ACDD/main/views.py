@@ -8,13 +8,23 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count
 import os
+from django.core.serializers import serialize
+from django.core.paginator import Paginator
 
 def home(request):
-    #dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
+    context = home_data('HOME')
+    return render(request, 'app/home.html', context)
+
+@require_http_methods(['POST'])
+def get_updated_data(request):
+    context = home_data('REALTIME')
+    return JsonResponse(context)
+
+def home_data(isFlag):
     report_list = Report.objects.filter(status=0).order_by('-report_no').select_related('dect_no', 'dect_no__emp_no', 'emp_no__depmt_no').values(
         'dect_no', 'create_at', 'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 'dect_no__emp_no__depmt_no__depmt_name'
     )
-
+    
     for report in report_list:
         employee = report['dect_no__emp_no__emp_no']
         identify = Identify.objects.filter(emp_no=employee).first()
@@ -37,23 +47,89 @@ def home(request):
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
-    context = {
-        'dection_list' : dection_list,
-        'report_list' : report_list,
-        'dect_count' : dect_count['count'],
-        'report_count' : report_count['count'],
-        'report_done_count' : report_done_count['count'],
-    }
-    return render(request, 'app/home.html', context)
+    if isFlag == 'HOME':
+        context = {
+            'dection_list' : dection_list,
+            'report_list' : report_list,
+            'dect_count' : dect_count['count'],
+            'report_count' : report_count['count'],
+            'report_done_count' : report_done_count['count'],
+        }
+    else:
+        context = {
+            'dection_list' : list(dection_list),
+            'report_list' : list(report_list),
+            'dect_count' : dect_count['count'],
+            'report_count' : report_count['count'],
+            'report_done_count' : report_done_count['count'],
+        }
+
+    return context
+
 
 
 def detail(request):
-
-
     return render(request, 'app/detail.html')
 
+@require_http_methods(['GET', 'POST'])
 def agent(request):
-    return render(request, 'app/agent.html')
+    if request.method == 'GET':
+
+
+        page = request.GET.get('page', '1')
+        search_key = request.GET.get('search_key')
+
+        if search_key:
+            agent_list = (
+                Agent.objects
+                .filter(identifies__emp_no__emp_name__icontains=search_key)
+                .order_by('-agent_no')
+                .prefetch_related('identifies__emp_no__depmt_no')
+                .values(
+                    'agent_no',
+                    'status',
+                    'identifies__ip',
+                    'identifies__mac',
+                    'identifies__emp_no__emp_name',
+                    'identifies__emp_no__email',
+                    'identifies__emp_no__rank',
+                    'identifies__emp_no__depmt_no__depmt_name',
+                    'identifies__emp_no__depmt_no__location',
+                    'identifies__emp_no__depmt_no__landline',
+                    'identifies__emp_no__phone_no',
+                )
+            )
+        else:
+            agent_list = (
+                Agent.objects
+                .order_by('-agent_no')
+                .prefetch_related('identifies__emp_no__depmt_no')
+                .values(
+                    'agent_no',
+                    'status',
+                    'identifies__ip',
+                    'identifies__mac',
+                    'identifies__emp_no__emp_name',
+                    'identifies__emp_no__email',
+                    'identifies__emp_no__rank',
+                    'identifies__emp_no__depmt_no__depmt_name',
+                    'identifies__emp_no__depmt_no__location',
+                    'identifies__emp_no__depmt_no__landline',
+                    'identifies__emp_no__phone_no',
+                )
+            )
+
+
+        paginator = Paginator(agent_list, 10)  # 페이지당 10개씩 보여주기
+        page_obj = paginator.get_page(page)
+
+        context = {
+            'agent_list' : page_obj,
+        }
+
+        return render(request, 'app/agent.html', context)
+    else:
+        pass
 
 def chart(request):
     return render(request, 'app/chart.html')

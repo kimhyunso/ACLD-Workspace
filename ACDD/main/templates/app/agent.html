@@ -23,242 +23,55 @@
                 <caption style="font-size: 18px; margin-top: 40px;">에이전트</caption>
                 <thead>
                     <tr>
-                        <th><B>번호</B></th>
-                        <th><B>부서</B></th>
-                        <th><B>이름</B></th>
-                        <th><B>직급</B></th>
-                        <th><B>사원번호</B></th>
-                        <th><B>부서위치</B></th>
-                        <th><B>휴대폰번호</B></th>
-                        <th><B>유선번호</B></th>
-                        <th><B>이메일</B></th>
-                        <th><B>상태</B></th>
-                        <th><B>IP</B></th>
-                        <th><B>MAC</B></th>
-                        <th><B>비고</B></th>
+                        <th>번호</th>
+                        <th>부서</th>
+                        <th>이름</th>
+                        <th>직급</th>
+                        <th>부서위치</th>
+                        <th>휴대폰번호</th>
+                        <th>유선번호</th>
+                        <th>이메일</th>
+                        <th>상태</th>
+                        <th>IP</th>
+                        <th>MAC</th>
+                        <th>비고</th>
 
                     </tr>
                 </thead>
                 <tbody style="font-size: 14px;">
+                    {% for agent in agent_list %}
                     <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>OFF</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
+                        <td>{{ agent.agent_no }}</td>
+                        <td>{{ agent.identifies__emp_no__depmt_no__depmt_name }}</td>
+                        <td>{{ agent.identifies__emp_no__emp_name }}</td>
+                        {% if agent.identifies__emp_no__rank == 0 %}
+                            <td>사원</td>
+                        {% elif agent.identifies__emp_no__rank == 1 %}
+                            <td>대리</td>
+                        {% elif agent.identifies__emp_no__rank == 1 %}
+                            <td>과장</td>
+                        {% elif agent.identifies__emp_no__rank == 1 %}
+                            <td>차장</td>
+                        {% else %}
+                            <td>부장</td>
+                        {% endif %}
+                        <td>{{ agent.identifies__emp_no__depmt_no__location }}</td>
+                        <td>{{ agent.identifies__emp_no__phone_no }}</td>
+                        <td>{{ agent.identifies__emp_no__depmt_no__landline }}</td>
+                        <td>{{ agent.identifies__emp_no__email }}</td>
+                        {% if agent.status == 1 %}
+                            <td>ON</td>
+                        {% else %}
+                            <td>OFF</td>
+                        {% endif %}
+                        <td>{{ agent.identifies__ip }}</td>
+                        <td>{{ agent.identifies__mac }}</td>
                         <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
+                            <button class="btn btn-outline-primary">수정</button>
+                            <button class="btn btn-outline-danger">삭제</button>
                         </td>
                     </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>10</td>
-                        <td>기획</td>
-                        <td>최소윤</td>
-                        <td>인턴</td>
-                        <td>2305221</td>
-                        <td>4층 411호</td>
-                        <td>01055557896</td>
-                        <td>.</td>
-                        <td>passsion000000@gmail.com</td>
-                        <td>ON</td>
-                        <td>192.168.255.1</td>
-                        <td>AB:CG:18:2d:gE</td>
-                        <td>
-                        <button class="btn btn-outline-primary">수정</button>
-                        <button class="btn btn-outline-danger">삭제</button>
-                        </td>
-                    </tr>
-
-
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -267,30 +80,50 @@
     <div class="pagination">
         <nav aria-label="">
             <ul class="pagination">
-                <li class="page-item">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" tabindex="+1" aria-disabled="true">다음</a>
-                </li>
+                {% if question_list.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ question_list.previous_page_number }}" tabindex="-1" aria-disabled="true">이전</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                    </li>
+                {% endif %}
+                {% for page_number in question_list.paginator.page_range %}
+                {% if page_number == question_list.number %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                {% endif %}
+                {% endfor %}
+
+                {% if question_list.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="#" tabindex="+1" aria-disabled="true">다음</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
     </div>
 
+    <form action="{% url 'main:agent' %}" method='GET'>
     <div class="search-wrapper">
         <div class="input-group">
             <div class="form-outline">
-                <input type="search" id="search-input" class="form-control" onkeydown="searchTable(event)" />
+                <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
             </div>
             <button type="button" class="btn btn-outline-primary" onclick="searchTable(event)">
-                <i class="fas fa-search"></i>
+                <i class="fas fa-search">검색</i>
             </button>
         </div>
     </div>
+    </form>
 </div>
+
 
 <script>
     function searchTable(event) {
