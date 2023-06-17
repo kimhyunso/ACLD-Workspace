@@ -12,7 +12,31 @@ var myChart = new Chart(context, {
             fill: false,
             data: [0,0,0,0,0,0,0,0,5,10,13,3,4,10,16,20,30,47,10,8,7,5,200],
             backgroundColor: [
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
+                'rgba(59, 130, 246, 1)',
 
+                
             ],
             // borderColor: ['rgba(255, 99, 132, 1)'],
             borderWidth: 1
@@ -36,7 +60,9 @@ var myChart = new Chart(context, {
                 text: '금일탐지건수'
             }
         }
+        
     }
+    
 });
 
 
@@ -199,6 +225,18 @@ var myChart = new Chart(context, {
         }
     }
 });
+function openDialog() {
+    var dialog = document.getElementById('dialog');
+    dialog.showModal();
+}
+
+function closeDialog() {
+    var dialog = document.getElementById('dialog');
+    dialog.close();
+}
+
+
+
 
 });
 
@@ -247,25 +285,7 @@ var myChart = new Chart(context, {
                 
                 
                 
-                </div>
-            </div>
-        </div>
-            
-
-        </div>
-    </div>
-</div>
-
-        
-
-
-  
-        
-
-
-    </div>    
-
-    </div>
+   
 
     <div class="container col-12" >
                 <div class="col-6">
@@ -315,7 +335,12 @@ var myChart = new Chart(context, {
                 <td>송재원</td>
                 <td>디자인</td>
                 <td>미처리</td>
-                <td><button class="btn btn-primary">처리하기</button></td>
+                <td><button class="btn btn-primary" onclick="openDialog()">처리하기</button></td>
+
+                <dialog id="dialog">
+                    <p>다이얼로그 내용</p>
+                    <button class="btn btn-primary" onclick="closeDialog()">닫기</button>
+                </dialog>
             </tr>
         </table>
     </div>
@@ -346,4 +371,8 @@ var myChart = new Chart(context, {
         </table>
     </div>
 </div>
+
+
+
+  
 {% endblock content %}
