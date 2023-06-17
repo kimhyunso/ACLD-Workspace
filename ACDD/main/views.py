@@ -12,7 +12,7 @@ import os
 def home(request):
     dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
     report_list = Report.objects.all().filter(status=0).order_by('-report_no')
-    # detection_emp_no = Dection.objects.get(status=0).emp_no
+    test = Employee.objects.filter(dection__status=0)
 
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
@@ -23,6 +23,7 @@ def home(request):
         'dect_count' : dect_count['count'],
         'report_count' : report_count['count'],
         'report_done_count' : report_done_count['count'],
+        'test' : test,
     }
     return render(request, 'app/home.html', context)
 
