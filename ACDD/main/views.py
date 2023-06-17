@@ -11,6 +11,7 @@ import os
 from django.core.serializers import serialize
 from django.core.paginator import Paginator
 
+@require_http_methods(['GET'])
 def home(request):
     context = home_data('HOME')
     return render(request, 'app/home.html', context)
@@ -67,60 +68,37 @@ def home_data(isFlag):
     return context
 
 
-
-def detail(request):
-    return render(request, 'app/detail.html')
-
 @require_http_methods(['GET', 'POST'])
 def agent(request):
     if request.method == 'GET':
 
-
         page = request.GET.get('page', '1')
         search_key = request.GET.get('search_key')
+        if search_key == None:
+            search_key = ''
 
-        if search_key:
-            agent_list = (
-                Agent.objects
-                .filter(identifies__emp_no__emp_name__icontains=search_key)
-                .order_by('-agent_no')
-                .prefetch_related('identifies__emp_no__depmt_no')
-                .values(
-                    'agent_no',
-                    'status',
-                    'identifies__ip',
-                    'identifies__mac',
-                    'identifies__emp_no__emp_name',
-                    'identifies__emp_no__email',
-                    'identifies__emp_no__rank',
-                    'identifies__emp_no__depmt_no__depmt_name',
-                    'identifies__emp_no__depmt_no__location',
-                    'identifies__emp_no__depmt_no__landline',
-                    'identifies__emp_no__phone_no',
-                )
+        agent_list = (
+            Agent.objects
+            .filter(identifies__emp_no__emp_name__icontains=search_key)
+            .order_by('-agent_no')
+            .prefetch_related('identifies__emp_no__depmt_no')
+            .values(
+                'agent_no',
+                'status',
+                'identifies__ip',
+                'identifies__mac',
+                'identifies__emp_no__emp_name',
+                'identifies__emp_no__email',
+                'identifies__emp_no__rank',
+                'identifies__emp_no__depmt_no__depmt_name',
+                'identifies__emp_no__depmt_no__location',
+                'identifies__emp_no__depmt_no__landline',
+                'identifies__emp_no__phone_no',
             )
-        else:
-            agent_list = (
-                Agent.objects
-                .order_by('-agent_no')
-                .prefetch_related('identifies__emp_no__depmt_no')
-                .values(
-                    'agent_no',
-                    'status',
-                    'identifies__ip',
-                    'identifies__mac',
-                    'identifies__emp_no__emp_name',
-                    'identifies__emp_no__email',
-                    'identifies__emp_no__rank',
-                    'identifies__emp_no__depmt_no__depmt_name',
-                    'identifies__emp_no__depmt_no__location',
-                    'identifies__emp_no__depmt_no__landline',
-                    'identifies__emp_no__phone_no',
-                )
-            )
+        )
 
 
-        paginator = Paginator(agent_list, 10)  # 페이지당 10개씩 보여주기
+        paginator = Paginator(agent_list, 10)
         page_obj = paginator.get_page(page)
 
         context = {
@@ -130,6 +108,10 @@ def agent(request):
         return render(request, 'app/agent.html', context)
     else:
         pass
+
+
+def detail(request):
+    return render(request, 'app/detail.html')
 
 def chart(request):
     return render(request, 'app/chart.html')
