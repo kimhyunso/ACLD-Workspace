@@ -304,15 +304,7 @@ function closeDialog() {
                         </div>
                     </div>
     </div>
-                    스토리지 사용량 DB사용량 CPU사용량 네트워크트래픽
-        
      
-
-
-
-
-
-
 
     <div class="row">
         <table class="table table-light table-hover  caption-top mse-5">
@@ -330,9 +322,9 @@ function closeDialog() {
             <tr>
                 <td>{{dection.dect_no}}</td>
                 <td>{{dection.create_at}}</td>
-                <td>192.168.255.1</td>
-                <td>송재원</td>
-                <td>디자인</td>
+                <td>{{dection.ip}}</td>
+                <td>{{dection.emp_no__emp_name}}</td>
+                <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
                 <td>미처리</td>
                 <td><button class="btn btn-primary" onclick="openDialog()">처리하기</button></td>
 
@@ -353,23 +345,26 @@ function closeDialog() {
         <table class="table table-light table-hover  caption-top">
                 <caption style="font-size: 30px;">미처리 탐지건수({{report_count}})</caption>
             <tr>
-                <th><B>번호</B></th>
-                <th><B>날짜</B></th>
-                <th><B>IP</B></th>
-                <th><B>이름</B></th>
-                <th><B>부서</B></th>
-                <th><B>상태</B></th>
-                <th><B>비고</B></th>
+                <th>번호</th>
+                <th>날짜</th>
+                <th>IP</th>
+                <th>이름</th>
+                <th>부서</th>
+                <th>상태</th>
+                <th>비고</th>
             </tr>
+
+            {% for report in report_list %}
             <tr>
-                <td>1</td>
-                <td>2023-06-05</td>
-                <td>192.168.255.1</td>
-                <td>송재원</td>
-                <td>디자인</td>
+                <td>{{report.dect_no}}</td>
+                <td>{{report.create_at}}</td>
+                <td>{{report.ip}}</td>
+                <td>{{report.dect_no__emp_no__emp_name}}</td>
+                <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
                 <td>미처리</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+            {% endfor %}
         </table>
     </div>
 </div>

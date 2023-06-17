@@ -73,25 +73,23 @@ TEMPLATES = [
 ]
 
 
-WSGI_APPLICATION = 'ACDD.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ACDD',
-#         'USER': 'jeawon',
-#         'PASSWORD': '1735',
-#         'HOST': '192.168.50.131',
-#         'PORT': '3306',
-#         'OPTIONS': {
-#             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
-#         }
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'acdd',
+        'USER': 'root',
+        'PASSWORD': '1234',
+        'HOST': '127.0.0.1',
+        'PORT': '3307',
+        'OPTIONS': {
+            'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
+        }
+    }
+}
 
 
 # Password validation

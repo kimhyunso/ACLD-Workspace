@@ -10,9 +10,29 @@ from django.db.models import Count
 import os
 
 def home(request):
-    dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
-    report_list = Report.objects.all().filter(status=0).order_by('-report_no')
-    test = Employee.objects.filter(dection__status=0)
+    #dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
+    report_list = Report.objects.filter(status=0).order_by('-report_no').select_related('dect_no', 'dect_no__emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 'dect_no__emp_no__depmt_no__depmt_name'
+    )
+
+    for report in report_list:
+        employee = report['dect_no__emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            report['ip'] = identify.ip
+            report['mac'] = identify.mac
+
+    dection_list = Dection.objects.filter(status=0).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    )
+    
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
+
 
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
@@ -23,7 +43,6 @@ def home(request):
         'dect_count' : dect_count['count'],
         'report_count' : report_count['count'],
         'report_done_count' : report_done_count['count'],
-        'test' : test,
     }
     return render(request, 'app/home.html', context)
 
