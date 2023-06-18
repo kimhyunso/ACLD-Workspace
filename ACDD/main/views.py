@@ -14,7 +14,7 @@ from django.core.paginator import Paginator
 @require_http_methods(['GET'])
 def home(request):
     context = home_data('HOME')
-    return render(request, 'app/home.html', context)
+    return render(request, 'main/home.html', context)
 
 @require_http_methods(['POST'])
 def get_updated_data(request):
@@ -105,7 +105,7 @@ def agent(request):
             'agent_list' : page_obj,
         }
 
-        return render(request, 'app/agent.html', context)
+        return render(request, 'main/agent.html', context)
     else:
         pass
 
@@ -135,13 +135,13 @@ def detail(request):
         'dection_list' : page_obj,
     }
 
-    return render(request, 'app/detail.html', context)
+    return render(request, 'main/detail.html', context)
 
 def chart(request):
-    return render(request, 'app/chart.html')
+    return render(request, 'main/chart.html')
 
 def employee(request):
-    return render(request, 'app/employee.html')
+    return render(request, 'main/employee.html')
 
 @require_http_methods(['POST', 'GET'])
 def addEmp(request):
@@ -150,7 +150,7 @@ def addEmp(request):
         context = {
             'dempt_list' : dempt_list,
         }
-        return render(request, 'app/addEmp.html', context)
+        return render(request, 'main/addEmp.html', context)
     else:
 
         error_message = "파일형식이 잘못되었습니다"
@@ -227,7 +227,7 @@ def addEmp(request):
 @require_http_methods(['POST', 'GET'])
 def addDepart(request):
     if request.method == 'GET':
-        return render(request, 'app/addDepart.html')
+        return render(request, 'main/addDepart.html')
     else:
         reqData = json.loads(request.body)
         landline = reqData['landline']
