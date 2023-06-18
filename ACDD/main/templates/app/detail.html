@@ -105,42 +105,4 @@
 
 </div>
 
-<script>
-    function searchTable(event) {
-        if (event.keyCode === 13 || event.type === 'click') {
-            var input = document.getElementById('search-input').value.trim();
-            var table = document.getElementsByTagName('table')[0];
-            var rows = table.getElementsByTagName('tr');
-
-            if (input === '') {
-                // 검색어가 비어 있는 경우 모든 행을 표시
-                Array.from(rows).forEach(function (row) {
-                    row.style.display = '';
-                });
-                return;
-            }
-
-            for (var i = 0; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName('td');
-                var match = false;
-
-                var cell = cells[3]; // 컬럼 값 기준 검색
-                if (cell) {
-                    var text = cell.innerText || cell.textContent;
-                    if (text.trim() === input) {
-                        // 번호가 일치하는 경우
-                        match = true;
-                    }
-                }
-
-                if (match) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
-    }
-</script>
-
 {% endblock content %}

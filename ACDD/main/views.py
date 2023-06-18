@@ -152,12 +152,35 @@ def addEmp(request):
         }
         return render(request, 'app/addEmp.html', context)
     else:
+
+        error_message = "파일형식이 잘못되었습니다"
+        context = {
+            'message' : error_message,
+        }
+        STATUS = 400
+        fs = FileSystemStorage()
+
         if 'file_csv' in request.FILES:
             csv_file = request.FILES['file_csv']
+            allowed_extensions = ['csv', 'xlsx']
+            file_extension = csv_file.name.split('.')[-1].lower()
+
+            if file_extension not in allowed_extensions:
+                return JsonResponse(context, status=STATUS)
+    
             employee_csv_folder = 'employee_csv'
             employee_csv_path = os.path.join(employee_csv_folder, csv_file.name)
             csv_filename = fs.save(employee_csv_path, csv_file)
             return JsonResponse({'success': True})
+
+        
+
+        emp_img = request.FILES['empt_img']
+        allowed_extensions = ['png', 'jpg', 'jpeg', 'bmp']
+        file_extension = emp_img.name.split('.')[-1].lower()
+
+        if file_extension not in allowed_extensions:
+            return JsonResponse(context, status=STATUS)
 
         emp_name =request.POST.get('emp_name')
         rank = request.POST.get('rank')
@@ -168,9 +191,7 @@ def addEmp(request):
         email = request.POST.get('email')
         depmt_no = request.POST.get('depmt_no')
 
-        emp_img = request.FILES['empt_img']
-        fs = FileSystemStorage()
-
+        
         employee_folder = 'employee' 
         employee_path = os.path.join(employee_folder, f'{emp_no}_{emp_img.name}')
         filename = fs.save(employee_path, emp_img)
