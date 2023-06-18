@@ -322,31 +322,25 @@ function convertToLocalTime(utcDateString) {
 
 </script>
 
-<div class="container-fluid" style="margin-top: 50px; margin-left: 25px;">
+<div class="container-fluid mt-5 ms-3">
         <div class="col-6">
             <div class="row">
                 <div class="col-4" style="text-align: left; font-size: 14px;">
                     <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                         사유서 처리 대기
-                        <br>
-                        <br>
-                        <div id="report_count" style="text-align: right; font-size: 32px; color: #FCD34D;">{{report_count}}건</div>
+                        <div class="text-end fs-4 text-warning" id="report_count">{{report_count}}건</div>
                     </div>   
                 </div>
                 
                 <div class="col-4" style="text-align: left; font-size: 14px;">
                     <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                         처리 완료
-                        <br>
-                        <br>
                         <div id="report_done_count" style="text-align: right; font-size: 32px; color: #3B82F6;">{{report_done_count}}건</div>
                     </div>    
                 </div>
         
                 <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">미처리
-                        <br>
-                        <br>
+                    <div class="item col-2 shadow-sm p-3 mb-5 bg-body rounded w-100">미처리
                         <div id="dect_count" style="text-align: right; font-size: 32px; color: #DC2626;">{{dect_count}}건</div>
                     </div> 
                 </div>
