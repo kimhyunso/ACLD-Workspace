@@ -80,26 +80,26 @@
     <div class="pagination">
         <nav aria-label="">
             <ul class="pagination">
-                {% if question_list.has_previous %}
+                {% if agent_list.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ question_list.previous_page_number }}" tabindex="-1" aria-disabled="true">이전</a>
+                        <a class="page-link" href="?page={{ agent_list.previous_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="-1" aria-disabled="true">이전</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
                         <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
                     </li>
                 {% endif %}
-                {% for page_number in question_list.paginator.page_range %}
-                {% if page_number == question_list.number %}
-                    <li class="page-item active"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                {% for page_number in agent_list.paginator.page_range %}
+                {% if page_number == agent_list.number %}
+                    <li class="page-item active"><a class="page-link" href="?page={{ page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}">{{ page_number }}</a></li>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="?page={{ page_number }}">{{ page_number }}</a></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}">{{ page_number }}</a></li>
                 {% endif %}
                 {% endfor %}
 
-                {% if question_list.has_next %}
+                {% if agent_list.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="#" tabindex="+1" aria-disabled="true">다음</a>
+                        <a class="page-link" href="?page={{ dection_list.next_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="+1" aria-disabled="true">다음</a>
                     </li>
                 {% else %}
                     <li class="page-item disabled">
@@ -123,45 +123,6 @@
     </div>
     </form>
 </div>
-
-
-<script>
-    function searchTable(event) {
-        if (event.keyCode === 13 || event.type === 'click') {
-            var input = document.getElementById('search-input').value.trim();
-            var table = document.getElementsByTagName('table')[0];
-            var rows = table.getElementsByTagName('tr');
-
-            if (input === '') {
-                // 검색어가 비어 있는 경우 모든 행을 표시
-                Array.from(rows).forEach(function (row) {
-                    row.style.display = '';
-                });
-                return;
-            }
-
-            for (var i = 0; i < rows.length; i++) {
-                var cells = rows[i].getElementsByTagName('td');
-                var match = false;
-
-                var cell = cells[3]; // 컬럼 값 기준 검색
-                if (cell) {
-                    var text = cell.innerText || cell.textContent;
-                    if (text.trim() === input) {
-                        // 번호가 일치하는 경우
-                        match = true;
-                    }
-                }
-
-                if (match) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
-    }
-</script>
 
 {% endblock content %}
 

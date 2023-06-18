@@ -111,7 +111,31 @@ def agent(request):
 
 
 def detail(request):
-    return render(request, 'app/detail.html')
+    page = request.GET.get('page', '1')
+    search_key = request.GET.get('search_key')
+    if search_key == None:
+        search_key = ''
+
+    dection_list = Dection.objects.filter(emp_no__emp_name__icontains=search_key).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    )
+    
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
+
+
+    paginator = Paginator(dection_list, 10)
+    page_obj = paginator.get_page(page)
+
+    context = {
+        'dection_list' : page_obj,
+    }
+
+    return render(request, 'app/detail.html', context)
 
 def chart(request):
     return render(request, 'app/chart.html')
