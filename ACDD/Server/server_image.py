@@ -118,7 +118,6 @@ class Server:
             cv2.imwrite(save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
             return save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg'
         
-
     def get_client_ip(self):
         return self.__addr[0]
 

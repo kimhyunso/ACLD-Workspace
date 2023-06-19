@@ -1,15 +1,12 @@
 from django.shortcuts import render, get_list_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
-import json
 from .models import Agent, Dection, Report, Identify, Department, Employee
-from django.core import serializers
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count
-import os
 from django.core.paginator import Paginator
-import psutil
+import os, json, psutil
 
 @require_http_methods(['GET'])
 def home(request):

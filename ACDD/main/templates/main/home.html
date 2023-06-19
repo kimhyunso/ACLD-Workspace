@@ -254,43 +254,11 @@ function updateData() {
             const report_caption = $('#report-table-caption');
             report_caption.html('사유서 미처리 탐지건수(' + response.report_count + '건)');
 
-            const dect_tableBody = $('#dect-table-body');
-            dect_tableBody.empty();
-
-            const report_tableBody = $('#report-table-body');
-            report_tableBody.empty();
-
-            
-            console.log(response);
-
-            for (var i = 0; i < response.dection_list.length; i++) {
-                var dect = response.dection_list[i];
-                var row = $('<tr></tr>');
-                var localDate = convertToLocalTime(dect.create_at);
-                row.append('<td>' + dect.dect_no + '</td>');
-                row.append('<td>' + localDate + '</td>');
-                row.append('<td>' + dect.ip + '</td>');
-                row.append('<td>' + dect.emp_no__emp_name + '</td>');
-                row.append('<td>' + dect.emp_no__depmt_no__depmt_name + '</td>');
-                row.append('<td>미처리</td>');
-                row.append('<td><button class="btn btn-primary">처리하기</button></td>');
-                dect_tableBody.append(row);
-            }
-
-            for (var i = 0; i < response.report_list.length; i++) {
-                var report = response.report_list[i];
-                var row = $('<tr></tr>');
-                var localDate = convertToLocalTime(report.create_at);
-                row.append('<td>' + report.dect_no + '</td>');
-                row.append('<td>' + localDate + '</td>');
-                row.append('<td>' + report.ip + '</td>');
-                row.append('<td>' + report.dect_no__emp_no__emp_name + '</td>');
-                row.append('<td>' + report.dect_no__emp_no__depmt_no__depmt_name + '</td>');
-                row.append('<td>미처리</td>');
-                row.append('<td><button class="btn btn-primary">처리하기</button></td>');
-                report_tableBody.append(row);
-            }
-
+            const tableBody = document.getElementById("dect-table-body");
+            replaceTable(response.dection_list, tableBody);
+        
+            const tableBody = document.getElementById("report-table-body");
+            replaceTable(response.report_list, tableBody);
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -300,6 +268,46 @@ function updateData() {
 
 setInterval(updateData, 10000);
 
+function replaceTable(lists, tableBody){
+    tableBody.innerHTML = "";
+    lists.forEach((list) => {
+        const newRow = document.createElement("tr");
+
+        const dectNoCell = document.createElement("td");
+        dectNoCell.textContent = list.dect_no;
+        newRow.appendChild(dectNoCell);
+
+        const createAtCell = document.createElement("td");
+        createAtCell.textContent = convertToLocalTime(list.create_at);
+        newRow.appendChild(createAtCell);
+
+        const ipCell = document.createElement("td");
+        ipCell.textContent = list.ip;
+        newRow.appendChild(ipCell);
+
+        const empNameCell = document.createElement("td");
+        empNameCell.textContent = list.emp_no__emp_name;
+        newRow.appendChild(empNameCell);
+
+        const depmtNameCell = document.createElement("td");
+        depmtNameCell.textContent = list.emp_no__depmt_no__depmt_name;
+        newRow.appendChild(depmtNameCell);
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = "미처리";
+        newRow.appendChild(statusCell);
+
+        const remarkCell = document.createElement("td");
+        const processButton = document.createElement("button");
+        processButton.className = "btn btn-primary";
+        processButton.textContent = "처리하기";
+        processButton.addEventListener("click", openDialog);
+        remarkCell.appendChild(processButton);
+        newRow.appendChild(remarkCell);
+
+        tableBody.appendChild(newRow);
+    });
+}
 
 function convertToLocalTime(utcDateString) {
     var date = new Date(utcDateString);
@@ -381,7 +389,7 @@ function convertToLocalTime(utcDateString) {
      
 
     <div class="row">
-        <table class="table table-light table-hover  caption-top mse-5">
+        <table id="dect_table" class="table table-light table-hover  caption-top mse-5">
             <caption id="dect-table-caption" class="fs-4">미처리 탐지건수({{dect_count}}건)</caption>
             <thead>
                 <tr>

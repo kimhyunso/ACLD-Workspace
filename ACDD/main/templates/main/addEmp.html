@@ -3,13 +3,13 @@
 <script>
 $(document).ready(function() {
 	$("#addEmpBtn").click(function(){
-		const emp_email = validateEmail($("#email").val());
+		const email = validateEmail($("#email").val());
 		const phone_no = validatePhoneNumber($("phone_no").val());
 		const ip = validateIPAddress($("#IP").val());
 		const mac = validateMACAddress($("#MAC").val());
 
-
-		if (emp_email === undefined){
+		
+		if (email === undefined){
 			alert("이메일 형식이 유효하지 않습니다.");
 			return
 		}else if (phone_no === undefined){
@@ -23,14 +23,13 @@ $(document).ready(function() {
 			return
 		}
 
-
 		emp_datas.append("emp_name", $("#emp_name").val());
 		emp_datas.append("rank", $("#rank").val());
 		emp_datas.append("emp_no", $("#emp_no").val());
 		emp_datas.append("MAC", mac);
 		emp_datas.append("IP", ip);
 		emp_datas.append("phone_no", phone_no);
-		emp_datas.append("email", emp_eamil);
+		emp_datas.append("email", email);
 		emp_datas.append("depmt_no",  $("#depmt_no").val());
 		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
 		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
@@ -56,16 +55,16 @@ $(document).ready(function() {
 
 function validateEmail(email) {
 	const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+
 	if (!emailRegex.test(email)){
 		return
 	}
-
-	return emali;
+	return email;
 }
 
 
 function validatePhoneNumber(phoneNumber) {
-	const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+	const phoneRegex = /^01[0-9]{8,9}$/;
 	if (!phoneRegex.test(phoneNumber)){
 		return
 	}
@@ -168,7 +167,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="phone_no">휴대폰번호</label>
-					<input type="tel" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
+					<input type="number" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
 					<div class="invalid-feedback">
 					  휴대폰번호를 입력해주세요
 					</div>

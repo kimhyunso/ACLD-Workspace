@@ -58,7 +58,7 @@ class DataBase:
         try:
             cur = self.get_connection().cursor()
         except Exception as e:
-            print('get cursor Error')
+            print(f'get cursor Error : {e}')
         return cur
 
     def close(self):
