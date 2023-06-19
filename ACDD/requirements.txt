@@ -7,3 +7,4 @@ mysqlclient
 requests
 mariadb
 torch
+psutil

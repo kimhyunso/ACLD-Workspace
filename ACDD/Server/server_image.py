@@ -73,10 +73,10 @@ class Server:
                 
                 json_data = self.get_data()
                 self.result_data = json.loads(json_data)
-
+                
                 agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
-                self.connectDB.update_agent(self.result_data['IP'], self.result_data['MACAddress'], self.is_alive(), agent_no)
-                self.connectDB.insert_dection(agent_no, cam_path, screen_path)
+                self.connectDB.update_agent(self.is_alive(), agent_no)
+                self.connectDB.insert_dection(self.result_data['saborn'], cam_path, screen_path)
 
                 img_count += 1
                 time.sleep(0.95)
@@ -92,7 +92,7 @@ class Server:
     def agent_OFF(self, result_data):
         self.get_client_socket().close()
         self.set_alive(False)
-        agent_no = self.connectDB.select_identify(result_data['IP'], result_data['MACAddress'])
+        agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
         self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
 
     def recive_data(self, count : int) -> bytes:
@@ -118,8 +118,6 @@ class Server:
             cv2.imwrite(save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
             return save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg'
         
-
-
 
     def get_client_ip(self):
         return self.__addr[0]

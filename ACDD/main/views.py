@@ -8,8 +8,8 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count
 import os
-from django.core.serializers import serialize
 from django.core.paginator import Paginator
+import psutil
 
 @require_http_methods(['GET'])
 def home(request):
@@ -108,6 +108,11 @@ def agent(request):
         return render(request, 'main/agent.html', context)
     else:
         pass
+
+
+def get_cpu_usage():
+    cpu_percent = psutil.cpu_percent(interval=1)
+    return cpu_percent
 
 
 def detail(request):

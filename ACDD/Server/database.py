@@ -15,7 +15,22 @@ class DataBase:
             print(f'Connection Error : {e}')
             sys.exit(1)
 
-    def update_agent(self, IP, MAC, status, agent_no):
+    def select_identify(self, IP, MAC):
+        sql = "SELECT agent_no FROM identify WHERE IP = ? AND MAC = ?"
+        print(type(IP), type(MAC))
+        try:
+            cursor = self.get_cursor()
+            cursor.execute(sql,
+                (IP, MAC)
+            )
+            result = cursor.fetchone()
+            return result[0]
+                    
+        except Exception as e:
+            print(f"Select Error : {e}")
+            sys.exit(1)
+
+    def update_agent(self, status, agent_no):
         sql = "UPDATE agent SET status=? WHERE agent_no=?"
         try:
             cursor = self.get_cursor()
@@ -24,26 +39,15 @@ class DataBase:
             )
             self.get_connection().commit()
         except Exception as e:
-            print(f"Insert Error : {e}")
+            print(f"Update Error : {e}")
             sys.exit(1)
 
-    def select_identify(self, IP, MAC):
-        sql = "SELECT agent_no FROM identify WHERE IP = ? or MAC = ?"
-        try:
-            cursor = self.get_cursor()
-            cursor.execute(sql, (IP, MAC))
-            result = cursor.fetchall()
-            return result[0][0]
-        except Exception as e:
-            print(f"Insert Error : {e}")
-            sys.exit(1)
-
-    def insert_dection(self, agent_no, cam_path, screen_path):
-        sql = "INSERT INTO dection(agent_no, CAM_path, screen_path) VALUES(?, ?, ?)"
+    def insert_dection(self, emp_no, cam_path, screen_path):
+        sql = "INSERT INTO dection(emp_no, CAM_path, screen_path) VALUES(?, ?, ?)"
         try:
             cursor = self.get_cursor()
             cursor.execute(sql,
-                (agent_no, cam_path, screen_path)
+                (emp_no, cam_path, screen_path)
             )
             self.get_connection().commit()
         except Exception as e:
