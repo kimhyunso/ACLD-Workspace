@@ -28,8 +28,6 @@ def home(request):
 
 
 def detail(request):
-
-
     return render(request, 'app/detail.html')
 
 def agent(request):
