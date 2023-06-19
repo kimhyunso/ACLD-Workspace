@@ -8,36 +8,140 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count
 import os
+from django.core.serializers import serialize
+from django.core.paginator import Paginator
 
+@require_http_methods(['GET'])
 def home(request):
-    dection_list = Dection.objects.all().filter(status=0).order_by('-dect_no')
-    report_list = Report.objects.all().filter(status=0).order_by('-report_no')
-    # detection_emp_no = Dection.objects.get(status=0).emp_no
+    context = home_data('HOME')
+    return render(request, 'main/home.html', context)
+
+@require_http_methods(['POST'])
+def get_updated_data(request):
+    context = home_data('REALTIME')
+    return JsonResponse(context)
+
+def home_data(isFlag):
+    report_list = Report.objects.filter(status=0).order_by('-report_no').select_related('dect_no', 'dect_no__emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 'dect_no__emp_no__depmt_no__depmt_name'
+    )
+    
+    for report in report_list:
+        employee = report['dect_no__emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            report['ip'] = identify.ip
+            report['mac'] = identify.mac
+
+    dection_list = Dection.objects.filter(status=0).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    )
+    
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
+
 
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
-    context = {
-        'dection_list' : dection_list,
-        'report_list' : report_list,
-        'dect_count' : dect_count['count'],
-        'report_count' : report_count['count'],
-        'report_done_count' : report_done_count['count'],
-    }
-    return render(request, 'app/home.html', context)
+    if isFlag == 'HOME':
+        context = {
+            'dection_list' : dection_list,
+            'report_list' : report_list,
+            'dect_count' : dect_count['count'],
+            'report_count' : report_count['count'],
+            'report_done_count' : report_done_count['count'],
+        }
+    else:
+        context = {
+            'dection_list' : list(dection_list),
+            'report_list' : list(report_list),
+            'dect_count' : dect_count['count'],
+            'report_count' : report_count['count'],
+            'report_done_count' : report_done_count['count'],
+        }
+
+    return context
+
+
+@require_http_methods(['GET', 'POST'])
+def agent(request):
+    if request.method == 'GET':
+
+        page = request.GET.get('page', '1')
+        search_key = request.GET.get('search_key')
+        if search_key == None:
+            search_key = ''
+
+        agent_list = (
+            Agent.objects
+            .filter(identifies__emp_no__emp_name__icontains=search_key)
+            .order_by('-agent_no')
+            .prefetch_related('identifies__emp_no__depmt_no')
+            .values(
+                'agent_no',
+                'status',
+                'identifies__ip',
+                'identifies__mac',
+                'identifies__emp_no__emp_name',
+                'identifies__emp_no__email',
+                'identifies__emp_no__rank',
+                'identifies__emp_no__depmt_no__depmt_name',
+                'identifies__emp_no__depmt_no__location',
+                'identifies__emp_no__depmt_no__landline',
+                'identifies__emp_no__phone_no',
+            )
+        )
+
+
+        paginator = Paginator(agent_list, 10)
+        page_obj = paginator.get_page(page)
+
+        context = {
+            'agent_list' : page_obj,
+        }
+
+        return render(request, 'main/agent.html', context)
+    else:
+        pass
 
 
 def detail(request):
-    return render(request, 'app/detail.html')
+    page = request.GET.get('page', '1')
+    search_key = request.GET.get('search_key')
+    if search_key == None:
+        search_key = ''
 
-def agent(request):
-    return render(request, 'app/agent.html')
+    dection_list = Dection.objects.filter(emp_no__emp_name__icontains=search_key).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    )
+    
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
+
+
+    paginator = Paginator(dection_list, 10)
+    page_obj = paginator.get_page(page)
+
+    context = {
+        'dection_list' : page_obj,
+    }
+
+    return render(request, 'main/detail.html', context)
 
 def chart(request):
-    return render(request, 'app/chart.html')
+    return render(request, 'main/chart.html')
 
 def employee(request):
-    return render(request, 'app/employee.html')
+    return render(request, 'main/employee.html')
 
 @require_http_methods(['POST', 'GET'])
 def addEmp(request):
@@ -46,14 +150,37 @@ def addEmp(request):
         context = {
             'dempt_list' : dempt_list,
         }
-        return render(request, 'app/addEmp.html', context)
+        return render(request, 'main/addEmp.html', context)
     else:
+
+        error_message = "파일형식이 잘못되었습니다"
+        context = {
+            'message' : error_message,
+        }
+        STATUS = 400
+        fs = FileSystemStorage()
+
         if 'file_csv' in request.FILES:
             csv_file = request.FILES['file_csv']
+            allowed_extensions = ['csv', 'xlsx']
+            file_extension = csv_file.name.split('.')[-1].lower()
+
+            if file_extension not in allowed_extensions:
+                return JsonResponse(context, status=STATUS)
+    
             employee_csv_folder = 'employee_csv'
             employee_csv_path = os.path.join(employee_csv_folder, csv_file.name)
             csv_filename = fs.save(employee_csv_path, csv_file)
             return JsonResponse({'success': True})
+
+        
+
+        emp_img = request.FILES['empt_img']
+        allowed_extensions = ['png', 'jpg', 'jpeg', 'bmp']
+        file_extension = emp_img.name.split('.')[-1].lower()
+
+        if file_extension not in allowed_extensions:
+            return JsonResponse(context, status=STATUS)
 
         emp_name =request.POST.get('emp_name')
         rank = request.POST.get('rank')
@@ -64,9 +191,7 @@ def addEmp(request):
         email = request.POST.get('email')
         depmt_no = request.POST.get('depmt_no')
 
-        emp_img = request.FILES['empt_img']
-        fs = FileSystemStorage()
-
+        
         employee_folder = 'employee' 
         employee_path = os.path.join(employee_folder, f'{emp_no}_{emp_img.name}')
         filename = fs.save(employee_path, emp_img)
@@ -102,7 +227,7 @@ def addEmp(request):
 @require_http_methods(['POST', 'GET'])
 def addDepart(request):
     if request.method == 'GET':
-        return render(request, 'app/addDepart.html')
+        return render(request, 'main/addDepart.html')
     else:
         reqData = json.loads(request.body)
         landline = reqData['landline']
