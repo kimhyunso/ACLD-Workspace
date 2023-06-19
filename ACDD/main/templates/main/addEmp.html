@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+$(document).ready(function() {
+	$("#addEmpBtn").click(function(){
+		const emp_email = validateEmail($("#email").val());
+		const phone_no = validatePhoneNumber($("phone_no").val());
+		const ip = validateIPAddress($("#IP").val());
+		const mac = validateMACAddress($("#MAC").val());
+
+
+		if (emp_email === undefined){
+			alert("이메일 형식이 유효하지 않습니다.");
+			return
+		}else if (phone_no === undefined){
+			alert("핸드폰 번호 형식이 유효하지 않습니다.");
+			return
+		}else if (ip === undefined){
+			alert("IP 주소 형식이 유효하지 않습니다.");
+			return
+		}else{
+			alert("MAC 주소 형식이 유효하지 않습니다.");
+			return
+		}
+
+
+		emp_datas.append("emp_name", $("#emp_name").val());
+		emp_datas.append("rank", $("#rank").val());
+		emp_datas.append("emp_no", $("#emp_no").val());
+		emp_datas.append("MAC", mac);
+		emp_datas.append("IP", ip);
+		emp_datas.append("phone_no", phone_no);
+		emp_datas.append("email", emp_eamil);
+		emp_datas.append("depmt_no",  $("#depmt_no").val());
+		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
+		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
+	
+		$.ajax({
+			type :"POST",
+			url : "{% url 'main:addEmp' %}",
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			processData: false, 
+    		contentType: false,
+			data : emp_datas,
+			dataType : "JSON",
+			success : function(response){
+				window.location.replace("{% url 'main:addEmp' %}");
+			},
+			error : function(request, status, error){
+				errorMessage = request.responseJSON.message;
+				alert(errorMessage);
+			}
+		});
+	});
+
+
+function validateEmail(email) {
+	const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
+	if (!emailRegex.test(email)){
+		return
+	}
+
+	return emali;
+}
+
+
+function validatePhoneNumber(phoneNumber) {
+	const phoneRegex = /^\d{3}-\d{3,4}-\d{4}$/;
+	if (!phoneRegex.test(phoneNumber)){
+		return
+	}
+	return phoneNumber;
+}
+
+
+function validateIPAddress(ipAddress) {
+	const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+	if (!ipRegex.test(ipAddress)){
+		return
+	}
+	return ipAddress
+}
+
+
+
+function validateMACAddress(macAddress) {
+	const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
+	if (!macRegex.test(macAddress)){
+		return
+	}
+	return macAddress
+}
+
+});
+</script>
+
+<div class="container">
+    <div class="input-form-backgroud row">
+		<div class="input-form col-md-12 mx-auto">
+			<h3 class="mb-3"><strong>직원 등록</strong></h3>
+			<div class="row">
+				<div class="mb-12">
+					<label for="emp_name">이름</label>
+					<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." required>
+					<div class="invalid-feedback">
+					  이름을 입력해주세요.
+					</div>
+				  </div>
+			</div>
+
+			<div class="row">
+				<div class="mb-12">
+					<label for="emp_no">사원번호</label>
+					<input type="text" class="form-control" id="emp_no" placeholder="사원번호을 입력해주세요." required>
+					<div class="invalid-feedback">
+						사원번호을 입력해주세요.
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="rank">직급</label>
+					<select class="custom-select d-block w-100" id="rank">
+						<option>직급을 선택해주세요.</option>
+						<option value="4">부장</option>
+						<option value="3">차장</option>
+						<option value="2">과장</option>
+						<option value="1">대리</option>
+						<option value="0">사원</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12 mb-3">
+					<label for="depmt_no">부서</label>
+					<select class="custom-select d-block w-100" id="depmt_no">
+						<option>부서를 선택해주세요.</option>
+						{% for name_list  in  dempt_list %}
+							<option value="{{name_list.depmt_no}}">{{name_list.depmt_name}}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+
+			<div class="row">
+				<div class="mb-12">
+					<label for="MAC">MAC</label>
+					<input type="text" class="form-control" id="MAC" placeholder="MAC Address를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  MAC Address를 입력해주세요.
+					</div>
+				  </div>
+            </div>
+
+			<div class="row">
+				<div class="mb-12">
+					<label for="IP">IP</label>
+					<input type="text" class="form-control" id="IP" placeholder="IP정보를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  IP정보를 입력해주세요.
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="mb-12">
+					<label for="phone_no">휴대폰번호</label>
+					<input type="tel" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
+					<div class="invalid-feedback">
+					  휴대폰번호를 입력해주세요
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="mb-12">
+					<label for="email">이메일</label>
+					<input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요." required>
+					<div class="invalid-feedback">
+					  이메일을 입력해주세요
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="mb-12">
+					<span>직원 이미지 업로드</span>
+					<div class="input-group">
+						<input type="file" class="form-control" id="empt_img">
+						<label class="input-group-text" for="empt_img">업로드</label>
+					</div>
+				</div>
+			</div>
+
+			
+			<div class="row">
+				<div class="mb-12">
+					<span>csv파일 업로드</span>
+					<div class="input-group">
+						<input type="file" class="form-control" id="file_csv">
+						<label class="input-group-text" for="file_csv">업로드</label>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-3">
+				<div class="mb-12">
+  					<button id="addEmpBtn" class="btn btn-outline-primary" type="button">등록</button>
+  				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}

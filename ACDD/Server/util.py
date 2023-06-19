@@ -1,10 +1,9 @@
 import os
 from datetime import datetime
-import json
+from pathlib import Path
 
 class Util:
     def __init__(self):
-        self.__path = os.getcwd()
         self.YEAR = datetime.now().year
         self.MONTH = '%02d' % datetime.now().month
         self.DAY = '%02d' % datetime.now().day
@@ -18,12 +17,16 @@ class Util:
             print('Error : Creating directory')
 
     def get_save_path(self, ip):
-        return self.get_pwd_path() + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY + '\\' + str(ip)
+        media_root = os.path.abspath(os.path.join(self.get_project_root(), 'media'))
+        return os.path.join(media_root, self.YEAR, self.MONTH, self.DAY, str(ip))
     
+
     def get_path(self):
-        return self.get_pwd_path() + '\\' + self.YEAR + '\\' + self.MONTH + '\\' + self.DAY
+        media_root = os.path.abspath(os.path.join(self.get_project_root(), 'media'))
+        return os.path.join(media_root, self.YEAR, self.MONTH, self.DAY)
     
-    def get_pwd_path(self):
-        return self.__path
+    def get_project_root(self):
+        # 이 부분을 Django 프로젝트의 루트 경로로 수정해야 합니다.
+        return Path(__file__).resolve().parent.parent
     
     

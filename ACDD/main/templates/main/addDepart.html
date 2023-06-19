@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block content %}
+<script>
+$(document).ready(function() {
+	$("#addPartBtn").click(function(){
+		var demp_name = $("#demp_name").val();
+		var landline = $("#landline").val();
+		var location = $("#location").val();
+		
+		var emp_data = {
+			'demp_name' : demp_name,
+			'landline' : landline,
+			'location' : location
+		}
+
+		$.ajax({
+			type :"POST",
+			url : "{% url 'main:addDepart' %}",
+			headers: { "X-CSRFToken": '{{csrf_token}}' },
+			data : JSON.stringify(emp_data),
+			dataType : "JSON",
+			success : function(response){
+				window.location.replace("{% url 'main:addDepart' %}");
+			},
+			error : function(request, status, error){
+				alert("잘 못 입력하셨습니다.", error, status);
+			}
+		});
+	});
+});
+</script>
+
+<div class="container">
+    <div class="input-form-backgroud row">
+		<div class="input-form col-md-12 mx-auto">
+			<h3 class="mb-3"><strong>부서 등록</strong></h3>
+			<div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="demp_name">부서명</label>
+    	          	<input type="text" class="form-control" id="demp_name" placeholder="부서명을 입력해주세요." required>
+        	      	<div class="invalid-feedback">
+						부서명을 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+
+            <div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="location">부서위치</label>
+    	          	<input type="text" class="form-control" id="location" placeholder="부서위치를 입력해주세요." required>
+        	      	<div class="invalid-feedback">
+						부서위치를 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+            <div class="row">
+            	<div class="col-md-12 mb-3">
+	              	<label for="landline">유선번호</label>
+    	          	<input type="number" class="form-control" id="landline" placeholder="유선번호를 입력해주세요." required>
+        	      	<div class="invalid-feedback">
+						유선번호를 입력해주세요.
+              		</div>
+				</div>
+            </div>
+
+            <div class="row mt-3">
+				<div class="mb-12">
+  					<button id="addPartBtn" class="btn btn-outline-primary" type="button">등록</button>
+  				</div>
+			</div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

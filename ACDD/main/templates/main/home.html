@@ -226,11 +226,101 @@ var myChart = new Chart(context, {
         }
     }
 });
+function openDialog() {
+    var dialog = document.getElementById('dialog');
+    dialog.showModal();
+}
 
+function closeDialog() {
+    var dialog = document.getElementById('dialog');
+    dialog.close();
+}
+
+function updateData() {
+    $.ajax({
+        url: {% url 'main:get_updated_data' %},
+        type: 'POST',
+        headers: { "X-CSRFToken": '{{csrf_token}}' },
+        processData: false, 
+        contentType: false,
+        dataType: 'json',
+        success: function(response) {
+            $('#dect_count').html(response.dect_count + "건");
+            $('#report_count').html(response.report_count + "건");
+            $('#report_done_count').html(response.report_done_count + "건");
+
+            const dect_caption = $('#dect-table-caption');
+            dect_caption.html('미처리 탐지건수(' + response.dect_count + '건)');
+
+            const report_caption = $('#report-table-caption');
+            report_caption.html('사유서 미처리 탐지건수(' + response.report_count + '건)');
+
+            const dect_tableBody = $('#dect-table-body');
+            dect_tableBody.empty();
+
+            const report_tableBody = $('#report-table-body');
+            report_tableBody.empty();
+
+            
+            console.log(response);
+
+            for (var i = 0; i < response.dection_list.length; i++) {
+                var dect = response.dection_list[i];
+                var row = $('<tr></tr>');
+                var localDate = convertToLocalTime(dect.create_at);
+                row.append('<td>' + dect.dect_no + '</td>');
+                row.append('<td>' + localDate + '</td>');
+                row.append('<td>' + dect.ip + '</td>');
+                row.append('<td>' + dect.emp_no__emp_name + '</td>');
+                row.append('<td>' + dect.emp_no__depmt_no__depmt_name + '</td>');
+                row.append('<td>미처리</td>');
+                row.append('<td><button class="btn btn-primary">처리하기</button></td>');
+                dect_tableBody.append(row);
+            }
+
+            for (var i = 0; i < response.report_list.length; i++) {
+                var report = response.report_list[i];
+                var row = $('<tr></tr>');
+                var localDate = convertToLocalTime(report.create_at);
+                row.append('<td>' + report.dect_no + '</td>');
+                row.append('<td>' + localDate + '</td>');
+                row.append('<td>' + report.ip + '</td>');
+                row.append('<td>' + report.dect_no__emp_no__emp_name + '</td>');
+                row.append('<td>' + report.dect_no__emp_no__depmt_no__depmt_name + '</td>');
+                row.append('<td>미처리</td>');
+                row.append('<td><button class="btn btn-primary">처리하기</button></td>');
+                report_tableBody.append(row);
+            }
+
+        },
+        error: function(xhr, status, error) {
+            console.error(error);
+        }
+    });
+}
+
+setInterval(updateData, 10000);
+
+
+function convertToLocalTime(utcDateString) {
+    var date = new Date(utcDateString);
+
+    var year = date.getUTCFullYear();
+    var month = date.getUTCMonth() + 1;
+    var day = date.getUTCDate();
+    var hours = date.getUTCHours();
+    var minutes = date.getUTCMinutes();
+
+    var period = hours >= 12 ? '오후' : '오전';
+    hours = hours % 12;
+    hours = hours ? hours : 12;
+    
+    var formattedDateTime = year + '년 ' + month + '월 ' + day + '일 ' + hours + ':' + ('0' + minutes).slice(-2) + ' ' + period;
+    return formattedDateTime;
+}
 
 });
 
-    
 </script>
 
 
@@ -241,26 +331,20 @@ var myChart = new Chart(context, {
                 <div class="col-4" style="text-align: left; font-size: 14px;">
                     <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                         사유서 처리 대기
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #FCD34D;">70건</div>
+                        <div class="text-end fs-4 text-warning" id="report_count">{{report_count}}건</div>
                     </div>   
                 </div>
                 
                 <div class="col-4" style="text-align: left; font-size: 14px;">
                     <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                         처리 완료
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #3B82F6;">120건</div>
+                        <div id="report_done_count" style="text-align: right; font-size: 32px; color: #3B82F6;">{{report_done_count}}건</div>
                     </div>    
                 </div>
         
                 <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">미처리
-                        <br>
-                        <br>
-                        <div style="text-align: right; font-size: 32px; color: #DC2626;">37건</div>
+                    <div class="item col-2 shadow-sm p-3 mb-5 bg-body rounded w-100">미처리
+                        <div id="dect_count" style="text-align: right; font-size: 32px; color: #DC2626;">{{dect_count}}건</div>
                     </div> 
                 </div>
                 <div style="margin-top: 50px;">
@@ -295,66 +379,72 @@ var myChart = new Chart(context, {
                         </div>
                     </div>
     </div>
-                    스토리지 사용량 DB사용량 CPU사용량 네트워크트래픽
-        
      
 
-
-
-
-
-
-
-<div>
-    <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 250px; margin: 50px; margin-left: 10%;">
-        <table class="table table-light table-hover  caption-top">
-                <caption style="font-size: 30px;">미처리 탐지건수</caption>
+    <div class="row">
+        <table class="table table-light table-hover  caption-top mse-5">
+            <caption id="dect-table-caption" class="fs-4">미처리 탐지건수({{dect_count}}건)</caption>
+            <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>날짜</th>
+                    <th>IP</th>
+                    <th>이름</th>
+                    <th>부서</th>
+                    <th>상태</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody id="dect-table-body">
+            {% for dection in dection_list %}
             <tr>
-                <th><B>번호</B></th>
-                <th><B>날짜</B></th>
-                <th><B>IP</B></th>
-                <th><B>이름</B></th>
-                <th><B>부서</B></th>
-                <th><B>상태</B></th>
-                <th><B>비고</B></th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2023-06-05</td>
-                <td>192.168.255.1</td>
-                <td>송재원</td>
-                <td>디자인</td>
+                <td>{{dection.dect_no}}</td>
+                <td>{{dection.create_at}}</td>
+                <td>{{dection.ip}}</td>
+                <td>{{dection.emp_no__emp_name}}</td>
+                <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
                 <td>미처리</td>
                 <td><button class="btn btn-primary" onclick="openDialog()">처리하기</button></td>
 
 
             </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
+
 </div>
+
 
 <div>
     <div class="fixed-table-container text-center" style="overflow-y: scroll; height: 250px; margin: 50px; margin-left: 10%;">
         <table class="table table-light table-hover  caption-top">
-                <caption style="font-size: 30px;">미처리 탐지건수</caption>
+            <caption id="report-table-caption" style="font-size: 30px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
+            <thread>
             <tr>
-                <th><B>번호</B></th>
-                <th><B>날짜</B></th>
-                <th><B>IP</B></th>
-                <th><B>이름</B></th>
-                <th><B>부서</B></th>
-                <th><B>상태</B></th>
-                <th><B>비고</B></th>
+                <th>번호</th>
+                <th>날짜</th>
+                <th>IP</th>
+                <th>이름</th>
+                <th>부서</th>
+                <th>상태</th>
+                <th>비고</th>
             </tr>
+            </thread>
+
+            <tbody id="report-table-body">
+            {% for report in report_list %}
             <tr>
-                <td>1</td>
-                <td>2023-06-05</td>
-                <td>192.168.255.1</td>
-                <td>송재원</td>
-                <td>디자인</td>
+                <td>{{report.dect_no}}</td>
+                <td>{{report.create_at}}</td>
+                <td>{{report.ip}}</td>
+                <td>{{report.dect_no__emp_no__emp_name}}</td>
+                <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
                 <td>미처리</td>
                 <td><button class="btn btn-primary">처리하기</button></td>
             </tr>
+            {% endfor %}
+            </tbody>
         </table>
     </div>
 </div>

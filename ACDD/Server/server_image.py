@@ -4,9 +4,10 @@ import numpy as np
 from _thread import *
 import base64
 import threading
-from datetime import datetime
 import time
-from .util import Util
+import json
+from server.util import Util
+from server.database import DataBase
 
 class Server:
     def __init__(self, HOST : str, PORT : int):
@@ -16,11 +17,24 @@ class Server:
         self.__utility = Util()
         self.COUNT = 0
         self.__client_sockets = []
+        self.__is_alive = False
+
+        user_name = 'root'
+        user_pwd = '1735'
+        host = '192.168.50.131'
+        port = 3306
+        db_name = 'acdd'
+        self.connectDB = DataBase(user_name, user_pwd, host, port, db_name)
         self.server_open()
 
     def server_open(self) -> None:
         self.__server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.get_server_socket().setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 10)
+        self.get_server_socket().setsockopt(socket.SOL_SOCKET, socket.SO_KEEPALIVE, 1)
+        self.get_server_socket().setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPIDLE, 1)
+        self.get_server_socket().setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPINTVL,  3)
+        self.get_server_socket().setsockopt(socket.IPPROTO_TCP, socket.TCP_KEEPCNT, 1)
+
         self.get_server_socket().bind((self.get_host(), self.get_port()))
         self.get_server_socket().listen()
         print('>> Server start')
@@ -31,38 +45,55 @@ class Server:
             try:
                 print('>> Server Wait!!')
                 self.__client_socket, self.__addr = self.get_server_socket().accept()
+                self.set_alive(True)
                 self.get_util().create_folder(self.get_client_ip())
                 self.get_client_socket().settimeout(10000)
-                socket.SO_KEEPALIVE
                 thread = threading.Thread(target=self.receiveTarget)
                 thread.start()
                 self.COUNT += 1
             except Exception as e:
+                print(e)
                 self.get_client_socket().close()
                 self.get_server_socket().close()
-                self.__init__(self.get_host(), self.get_port())
+                self.server_open()
 
     def receiveTarget(self):
         print('>> Connected by :', self.get_client_ip(), ':', self.get_client_port())
         img_count = 0
+        save_path = self.get_util().get_save_path(self.get_client_ip())
+
+
         while True:
             try:
+                cam_data = self.get_data()
+                cam_path = self.save_data(cam_data, img_count, 1, save_path)
 
-                data1 = self.get_data()
-                self.save_data(data1, img_count, 1)
-
-                data2 = self.get_data()
-                self.save_data(data2, img_count, 0)
+                screen_data = self.get_data()
+                screen_path = self.save_data(screen_data, img_count, 0, save_path)
                 
-                data3 = self.get_data()
-                print(data3)
+                json_data = self.get_data()
+                self.result_data = json.loads(json_data)
+                
+                agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
+                self.connectDB.update_agent(self.is_alive(), agent_no)
+                self.connectDB.insert_dection(self.result_data['saborn'], cam_path, screen_path)
 
                 img_count += 1
                 time.sleep(0.95)
+            except socket.timeout:
+                print('>> set timeout agent status OFF')
+                self.agent_OFF(self.result_data)
+                
             except Exception as e:
-                print(e)
-                self.get_client_socket().close()
+                print('>> set timeout agent status OFF')
+                self.agent_OFF(self.result_data)
                 break
+
+    def agent_OFF(self, result_data):
+        self.get_client_socket().close()
+        self.set_alive(False)
+        agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
+        self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
 
     def recive_data(self, count : int) -> bytes:
         buf = b''
@@ -75,17 +106,19 @@ class Server:
 
     def get_data(self):
         length = self.recive_data(self.STREAM_BYTE).decode('utf-8')
-        print(length)
         return self.recive_data(int(length))
 
-    def save_data(self, data, count, flag):
+    def save_data(self, data, count, flag, save_path):
         decode_data = np.frombuffer(base64.b64decode(data), dtype='uint8')
         decimg = cv2.imdecode(decode_data, cv2.IMREAD_COLOR)
         if flag:
-            cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
+            cv2.imwrite(save_path + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
+            return save_path + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg'
         else:
-            cv2.imwrite(self.get_util().get_save_path(self.get_client_ip()) + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
-    
+            cv2.imwrite(save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
+            return save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg'
+        
+
     def get_client_ip(self):
         return self.__addr[0]
 
@@ -106,5 +139,11 @@ class Server:
     
     def get_util(self):
         return self.__utility
+
+    def is_alive(self):
+        return self.__is_alive
     
+    def set_alive(self, is_alive):
+        self.__is_alive = is_alive
+
 
