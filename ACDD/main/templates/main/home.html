@@ -244,21 +244,18 @@ function updateData() {
         contentType: false,
         dataType: 'json',
         success: function(response) {
-            $('#dect_count').html(response.dect_count + "건");
-            $('#report_count').html(response.report_count + "건");
-            $('#report_done_count').html(response.report_done_count + "건");
+            document.getElementById('dect_count').textContent = response.dect_count + "건";
+            document.getElementById('report_count').textContent = response.report_count + "건";
+            document.getElementById('report_done_count').textContent = response.report_done_count + "건";
 
-            const dect_caption = $('#dect-table-caption');
-            dect_caption.html('미처리 탐지건수(' + response.dect_count + '건)');
+            document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
+            document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
 
-            const report_caption = $('#report-table-caption');
-            report_caption.html('사유서 미처리 탐지건수(' + response.report_count + '건)');
-
-            const tableBody = document.getElementById("dect-table-body");
-            replaceTable(response.dection_list, tableBody);
+            const dect_tableBody = document.getElementById("dect-table-body");
+            replaceTable(response.dection_list, dect_tableBody);
         
-            const tableBody = document.getElementById("report-table-body");
-            replaceTable(response.report_list, tableBody);
+            const report_tableBody = document.getElementById("report-table-body");
+            replaceTable(response.report_list, report_tableBody);
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -301,10 +298,11 @@ function replaceTable(lists, tableBody){
         const processButton = document.createElement("button");
         processButton.className = "btn btn-primary";
         processButton.textContent = "처리하기";
+
         processButton.addEventListener("click", openDialog);
+
         remarkCell.appendChild(processButton);
         newRow.appendChild(remarkCell);
-
         tableBody.appendChild(newRow);
     });
 }
@@ -363,10 +361,6 @@ function convertToLocalTime(utcDateString) {
                         </div>
                     </div>
                 </div>
-                
-                
-                
-   
 
     <div class="container col-12" >
                 <div class="col-6">

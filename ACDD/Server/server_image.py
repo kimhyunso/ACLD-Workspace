@@ -90,10 +90,10 @@ class Server:
                 break
 
     def agent_OFF(self, result_data):
-        self.get_client_socket().close()
         self.set_alive(False)
         agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
         self.connectDB.update_agent(result_data['IP'], result_data['MACAddress'], self.is_alive(), agent_no)
+        self.get_client_socket().close()
 
     def recive_data(self, count : int) -> bytes:
         buf = b''
