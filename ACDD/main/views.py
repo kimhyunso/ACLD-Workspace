@@ -143,7 +143,7 @@ def detail(request):
     return render(request, 'main/detail.html', context)
 
 def chart(request):
-    return render(request, 'main/chart.html')
+    return render(request, 'main/detailview.html')
 
 def employee(request):
     return render(request, 'main/employee.html')
