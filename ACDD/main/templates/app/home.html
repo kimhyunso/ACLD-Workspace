@@ -2,6 +2,7 @@
 {% block content %}
 <script>
 $(document).ready(function() {
+
 var context = document.getElementById('today_dection').getContext('2d');
 var myChart = new Chart(context, {
     type: 'bar',
@@ -225,23 +226,14 @@ var myChart = new Chart(context, {
         }
     }
 });
-function openDialog() {
-    var dialog = document.getElementById('dialog');
-    dialog.showModal();
-}
-
-function closeDialog() {
-    var dialog = document.getElementById('dialog');
-    dialog.close();
-}
-
-
 
 
 });
 
     
 </script>
+
+
 
 <div class="container-fluid" style="margin-top: 50px; margin-left: 25px;">
         <div class="col-6">
@@ -282,9 +274,7 @@ function closeDialog() {
                         </div>
                     </div>
                 </div>
-                
-                
-                
+                              
    
 
     <div class="container col-12" >
@@ -337,10 +327,7 @@ function closeDialog() {
                 <td>미처리</td>
                 <td><button class="btn btn-primary" onclick="openDialog()">처리하기</button></td>
 
-                <dialog id="dialog">
-                    <p>다이얼로그 내용</p>
-                    <button class="btn btn-primary" onclick="closeDialog()">닫기</button>
-                </dialog>
+
             </tr>
         </table>
     </div>
