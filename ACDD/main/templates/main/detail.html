@@ -15,6 +15,23 @@
     }
 </style>
 
+
+<div class="container">
+    <div class="row justify-content-end">
+        <div class="col-2">
+            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="최신순">
+            <datalist id="datalistOptions">
+                <option value="최신순">
+                <option value="오래된 순">
+                <option value="처리완료">
+                <option value="대기중">
+                <option value="미처리">
+            </datalist>
+        </div>
+    </div>
+</div>
+ 
+
 <div class="container">
     <div class="fixed-table-container text-center">
         <div></div>
@@ -89,20 +106,21 @@
             </ul>
         </nav>
     </div>
-
-    <form action="{% url 'main:detail' %}" method='GET'>
-    <div class="search-wrapper">
-        <div class="input-group">
-            <div class="form-outline">
-                <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
+    <div class="row">
+        <div class="col-12">
+        <form action="{% url 'main:detail' %}" method='GET'>
+        <div class="search-wrapper">
+            <div class="input-group">
+                <div class="form-outline">
+                    <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
+                </div>
+                <button type="button" class="btn btn-primary" onclick="searchTable(event)">
+                    <i class="fas fa-search">검색</i>
+                </button>
+                
+        <form>
             </div>
-            <button type="button" class="btn btn-primary" onclick="searchTable(event)">
-                <i class="fas fa-search">검색</i>
-            </button>
         </div>
     </div>
-    <form>
-
 </div>
-
 {% endblock content %}
