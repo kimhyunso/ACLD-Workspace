@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-<td><button class= "btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;">사유서 보내기</button></td>
-<td><button class="btn btn-primary btn mt-5">이상없음</button></td>
+<script>
+
+</script>
+
+<td><button class= "btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="">사유서 보내기</button></td>
+<td><button class="btn btn-primary btn mt-5" onclick="">이상없음</button></td>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 캠사진 이미지
-                <img src="/static/app/assets/images/tree.jpg" class="img-thumbnail" alt="캠사진 이미지">
+                <img src="{{ dect_one.cam_path }}" class="img-thumbnail" alt="캠사진 이미지">
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 바탕화면 이미지
-                <img src="/static/app/assets/images/emp.jpg" class="img-thumbnail" alt="사원 이미지">
+                <img src="{{ dect_one.screen_path }}" class="img-thumbnail" alt="사원 이미지">
             </div>
         </div>
 </div>
@@ -54,32 +58,33 @@
             </div>
         </div>
     </div>
+
     <div class="col-md-6" style="margin-top: auto; height: max-content;">
         <table class="table">
           <tbody>
               <tr>
               <th scope="row">MAC</th>
-              <td>AB:CD:EF:15:BE</td>
+              <td>{{identify.mac}}</td>
               </tr>
               <tr>
               <th scope="row">날짜</th>
-              <td>2023-06-20-10:22</td>
+              <td>{{ dect_one.create_at }}</td>
               </tr>
               <tr>
               <th scope="row">부서위치</th>
-              <td colspan="2">4층 411호</td>
+              <td colspan="2">{{ dect_one.emp_no__depmt_no__location }}</td>
               </tr>
               <tr>
               <th scope="row">이메일</th>
-              <td colspan="2">aro_jr@naver.com</td>
+              <td colspan="2">{{ dect_one.emp_no__email }}</td>
               </tr>
               <tr>
               <th scope="row">전화번호</th>
-              <td colspan="2">01038928514</td>
+              <td colspan="2">{{ dect_one.emp_no__phone_no }}</td>
               </tr>
               <tr>
               <th scope="row">사내유선번호</th>
-              <td colspan="2">887</td>
+              <td colspan="2">{{ dect_one.emp_no__depmt_no__landline }}</td>
               </tr>
 
           </tbody>
