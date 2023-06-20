@@ -1,0 +1,336 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    .input-group {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="fixed-table-container text-center">
+        <div></div>
+        <div class="fixed-table-body">
+            <table class="table table-light table-hover caption-top">
+                <caption style="font-size: 18px; margin-top: 40px;">에이전트</caption>
+                <thead>
+                    <tr>
+                        <th><B>번호</B></th>
+                        <th><B>부서</B></th>
+                        <th><B>이름</B></th>
+                        <th><B>직급</B></th>
+                        <th><B>사원번호</B></th>
+                        <th><B>부서위치</B></th>
+                        <th><B>휴대폰번호</B></th>
+                        <th><B>유선번호</B></th>
+                        <th><B>이메일</B></th>
+                        <th><B>상태</B></th>
+                        <th><B>IP</B></th>
+                        <th><B>MAC</B></th>
+                        <th><B>비고</B></th>
+
+                    </tr>
+                </thead>
+                <tbody style="font-size: 14px;">
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>OFF</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>10</td>
+                        <td>기획</td>
+                        <td>최소윤</td>
+                        <td>인턴</td>
+                        <td>2305221</td>
+                        <td>4층 411호</td>
+                        <td>01055557896</td>
+                        <td>.</td>
+                        <td>passsion000000@gmail.com</td>
+                        <td>ON</td>
+                        <td>192.168.255.1</td>
+                        <td>AB:CG:18:2d:gE</td>
+                        <td>
+                        <button class="btn btn-outline-primary">수정</button>
+                        <button class="btn btn-outline-danger">삭제</button>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="pagination">
+        <nav aria-label="">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#" tabindex="+1" aria-disabled="true">다음</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <div class="search-wrapper">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <div class="input-group">
+            <div class="form-outline">
+                <input type="search" id="search-input" class="form-control" onkeydown="searchTable(event)" />
+            </div>
+            <button type="button" class="btn btn-outline-primary" onclick="searchTable(event)">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function searchTable(event) {
+        if (event.keyCode === 13 || event.type === 'click') {
+            var input = document.getElementById('search-input').value.trim();
+            var table = document.getElementsByTagName('table')[0];
+            var rows = table.getElementsByTagName('tr');
+
+            if (input === '') {
+                // 검색어가 비어 있는 경우 모든 행을 표시
+                Array.from(rows).forEach(function (row) {
+                    row.style.display = '';
+                });
+                return;
+            }
+
+            for (var i = 0; i < rows.length; i++) {
+                var cells = rows[i].getElementsByTagName('td');
+                var match = false;
+
+                var cell = cells[3]; // 컬럼 값 기준 검색
+                if (cell) {
+                    var text = cell.innerText || cell.textContent;
+                    if (text.trim() === input) {
+                        // 번호가 일치하는 경우
+                        match = true;
+                    }
+                }
+
+                if (match) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    }
+</script>
+
+{% endblock content %}
+
+
