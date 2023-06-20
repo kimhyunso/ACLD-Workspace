@@ -1,14 +1,15 @@
 from django.db import models
 
+
 class Agent(models.Model):
     agent_no = models.IntegerField(primary_key=True)
     status = models.IntegerField()
     create_at = models.DateTimeField()
     update_at = models.DateTimeField()
+
     class Meta:
         managed = False
         db_table = 'agent'
-
 
 
 class Dection(models.Model):
@@ -56,7 +57,7 @@ class Employee(models.Model):
 class Identify(models.Model):
     ident_no = models.AutoField(primary_key=True)
     emp_no = models.ForeignKey(Employee, models.DO_NOTHING, db_column='emp_no')
-    agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no', related_name='identifies')
+    agent_no = models.ForeignKey(Agent, models.DO_NOTHING, db_column='agent_no', related_name="identifies")
     ip = models.CharField(db_column='IP', max_length=100)  # Field name made lowercase.
     mac = models.CharField(db_column='MAC', max_length=100)  # Field name made lowercase.
 
@@ -68,7 +69,7 @@ class Identify(models.Model):
 class Report(models.Model):
     report_no = models.AutoField(primary_key=True)
     dect_no = models.ForeignKey(Dection, models.DO_NOTHING, db_column='dect_no')
-    content = models.TextField()
+    content = models.CharField(max_length=255)
     status = models.IntegerField()
     create_at = models.DateTimeField()
     update_at = models.DateTimeField()

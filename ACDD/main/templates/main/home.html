@@ -236,55 +236,18 @@ function updateData() {
         contentType: false,
         dataType: 'json',
         success: function(response) {
-            $('#dect_count').html(response.dect_count + "건");
-            $('#report_count').html(response.report_count + "건");
-            $('#report_done_count').html(response.report_done_count + "건");
+            document.getElementById('dect_count').textContent = response.dect_count + "건";
+            document.getElementById('report_count').textContent = response.report_count + "건";
+            document.getElementById('report_done_count').textContent = response.report_done_count + "건";
 
-            const dect_caption = $('#dect-table-caption');
-            dect_caption.html('미처리 탐지건수(' + response.dect_count + '건)');
+            document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
+            document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
 
-            const report_caption = $('#report-table-caption');
-            report_caption.html('사유서 미처리 탐지건수(' + response.report_count + '건)');
-
-            const dect_tableBody = $('#dect-table-body');
-            dect_tableBody.empty();
-
-            const report_tableBody = $('#report-table-body');
-            report_tableBody.empty();
-
-            
-            console.log(response);
-
-            for (var i = 0; i < response.dection_list.length; i++) {
-                var dect = response.dection_list[i];
-                var row = $('<tr></tr>');
-                var localDate = convertToLocalTime(dect.create_at);
-                row.append('<td>' + dect.dect_no + '</td>');
-                row.append('<td>' + localDate + '</td>');
-                row.append('<td>' + dect.ip + '</td>');
-                row.append('<td>' + dect.emp_no__emp_name + '</td>');
-                row.append('<td>' + dect.emp_no__depmt_no__depmt_name + '</td>');
-                row.append('<td>미처리</td>');
-                row.append('<td><button id="myModal" class="btn btn-primary">처리하기22</button></td>');
-                dect_tableBody.append(row);
-            }
-
-            for (var i = 0; i < response.report_list.length; i++) {
-                var report = response.report_list[i];
-                var row = $('<tr></tr>');
-                var localDate = convertToLocalTime(report.create_at);
-
-
-                row.append('<td>' + report.dect_no + '</td>');
-                row.append('<td>' + localDate + '</td>');
-                row.append('<td>' + report.ip + '</td>');
-                row.append('<td>' + report.dect_no__emp_no__emp_name + '</td>');
-                row.append('<td>' + report.dect_no__emp_no__depmt_no__depmt_name + '</td>');
-                row.append('<td>미처리</td>');
-                row.append('<td><button id="myModal" class="btn btn-primary">처리하기11</button></td>');
-                report_tableBody.append(row);
-            }
-
+            const dect_tableBody = document.getElementById("dect-table-body");
+            replaceTable(response.dection_list, dect_tableBody);
+        
+            const report_tableBody = document.getElementById("report-table-body");
+            replaceTable(response.report_list, report_tableBody);
         },
         error: function(xhr, status, error) {
             console.error(error);
@@ -293,6 +256,47 @@ function updateData() {
 }
 //setInterval(updateData, 10000);
 
+function replaceTable(lists, tableBody){
+    tableBody.innerHTML = "";
+    lists.forEach((list) => {
+        const newRow = document.createElement("tr");
+
+        const dectNoCell = document.createElement("td");
+        dectNoCell.textContent = list.dect_no;
+        newRow.appendChild(dectNoCell);
+
+        const createAtCell = document.createElement("td");
+        createAtCell.textContent = convertToLocalTime(list.create_at);
+        newRow.appendChild(createAtCell);
+
+        const ipCell = document.createElement("td");
+        ipCell.textContent = list.ip;
+        newRow.appendChild(ipCell);
+
+        const empNameCell = document.createElement("td");
+        empNameCell.textContent = list.emp_no__emp_name;
+        newRow.appendChild(empNameCell);
+
+        const depmtNameCell = document.createElement("td");
+        depmtNameCell.textContent = list.emp_no__depmt_no__depmt_name;
+        newRow.appendChild(depmtNameCell);
+
+        const statusCell = document.createElement("td");
+        statusCell.textContent = "미처리";
+        newRow.appendChild(statusCell);
+
+        const remarkCell = document.createElement("td");
+        const processButton = document.createElement("button");
+        processButton.className = "btn btn-primary";
+        processButton.textContent = "처리하기";
+
+        processButton.addEventListener("click", process);
+
+        remarkCell.appendChild(processButton);
+        newRow.appendChild(remarkCell);
+        tableBody.appendChild(newRow);
+    });
+}
 
 function convertToLocalTime(utcDateString) {
     var date = new Date(utcDateString);
@@ -311,17 +315,18 @@ function convertToLocalTime(utcDateString) {
     return formattedDateTime;
 }
 
-
 });
 
 function process(dect_no){
+<<<<<<< HEAD
     console.log(dect_no);
     window.location.href="{% url 'main:process' 1 %}"
+=======
+    const url = "/" + dect_no + "/process/";
+    window.location.href = url;
+>>>>>>> main
 }
-
 </script>
-
-
 
 <div class="container-fluid" style="margin-top: 50px; margin-left: 25px;">
         <div class="col-6">
@@ -433,7 +438,7 @@ function process(dect_no){
             <td>{{report.dect_no__emp_no__emp_name}}</td>
             <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
             <td>미처리</td>
-            <td><button class="btn btn-primary">처리하기</button></td>
+            <td><button class="btn btn-primary" onclick="process(dection.dect_no);">처리하기</button></td>
         </tr>
         {% endfor %}
         </tbody>
