@@ -142,8 +142,8 @@ def detail(request):
 
     return render(request, 'main/detail.html', context)
 
-def chart(request):
-    return render(request, 'main/detailview.html')
+def process(request, dect_no):
+    return render(request, 'main/process.html')
 
 def employee(request):
     return render(request, 'main/employee.html')
