@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_list_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from .models import Agent, Dection, Report, Identify, Department, Employee
 from django.core.files.storage import FileSystemStorage
@@ -7,6 +7,8 @@ from django.conf import settings
 from django.db.models import Count
 from django.core.paginator import Paginator
 import os, json, psutil, base64
+from django.core.files import File
+import tempfile
 
 @require_http_methods(['GET'])
 def home(request):
@@ -45,6 +47,7 @@ def home_data(isFlag):
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
+    
     if isFlag == 'HOME':
         context = {
             'dection_list' : dection_list,
@@ -139,16 +142,12 @@ def detail(request):
 
     return render(request, 'main/detail.html', context)
 
-
-
 def process(request, dect_no):
-
-
     dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
         'dect_no', 'create_at', 'cam_path', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
         'emp_no__depmt_no__depmt_name'
     ).get(dect_no=dect_no)
-
+    
     report_list = Report.objects.filter(dect_no=dect_no).values(
         'report_no', 'create_at', 'content', 'status'
     )
@@ -171,7 +170,6 @@ def addEmp(request):
         }
         return render(request, 'main/addEmp.html', context)
     else:
-
         error_message = "파일형식이 잘못되었습니다"
         context = {
             'message' : error_message,
@@ -192,8 +190,6 @@ def addEmp(request):
             csv_filename = fs.save(employee_csv_path, csv_file)
             return JsonResponse({'success': True})
 
-        
-
         emp_img = request.FILES['empt_img']
         allowed_extensions = ['png', 'jpg', 'jpeg', 'bmp']
         file_extension = emp_img.name.split('.')[-1].lower()
@@ -209,10 +205,9 @@ def addEmp(request):
         phone_no = request.POST.get('phone_no')
         email = request.POST.get('email')
         depmt_no = request.POST.get('depmt_no')
-
         
         employee_folder = 'employee' 
-        employee_path = os.path.join(employee_folder, f'{emp_no}_{emp_img.name}')
+        employee_path = employee_folder + '/' + f'{emp_no}_{emp_img.name}'
         filename = fs.save(employee_path, emp_img)
 
         employee = Employee()
@@ -224,7 +219,7 @@ def addEmp(request):
         employee.rank = rank
         employee.phone_no = phone_no
         employee.email = email
-        employee.emp_img_path = os.path.join(settings.MEDIA_ROOT, f'{emp_no}_{emp_img.name}')
+        employee.emp_img_path = os.path.join(settings.MEDIA_URL, employee_path)
         employee.save()
 
         agent = Agent()

@@ -8,8 +8,7 @@ $(document).ready(function() {
 		const ip = validateIPAddress($("#IP").val());
 		const mac = validateMACAddress($("#MAC").val());
 
-		
-		if (email === undefined){
+		/*if (email === undefined){
 			alert("이메일 형식이 유효하지 않습니다.");
 			return
 		}else if (phone_no === undefined){
@@ -21,8 +20,9 @@ $(document).ready(function() {
 		}else{
 			alert("MAC 주소 형식이 유효하지 않습니다.");
 			return
-		}
-
+		}*/
+		
+		const emp_datas = new FormData()
 		emp_datas.append("emp_name", $("#emp_name").val());
 		emp_datas.append("rank", $("#rank").val());
 		emp_datas.append("emp_no", $("#emp_no").val());
@@ -65,6 +65,7 @@ function validateEmail(email) {
 
 function validatePhoneNumber(phoneNumber) {
 	const phoneRegex = /^01[0-9]{8,9}$/;
+	console.log(phoneNumber);
 	/*if (!phoneRegex.test(phoneNumber)){
 		return
 	}*/
@@ -167,7 +168,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="phone_no">휴대폰번호</label>
-					<input type="number" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
+					<input type="text" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
 					<div class="invalid-feedback">
 					  휴대폰번호를 입력해주세요
 					</div>

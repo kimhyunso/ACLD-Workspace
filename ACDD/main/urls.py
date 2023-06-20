@@ -16,7 +16,7 @@ urlpatterns = [
     path('addDepart/', views.addDepart, name='addDepart'),
     path('get_updated_data/', views.get_updated_data, name='get_updated_data'),
     
-] + static(settings.MEDIA_URL, doucment_root=settings.MEDIA_ROOT)
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
