@@ -15,6 +15,14 @@
     }
 </style>
 
+<script>
+function process(dect_no){
+    const url = "/" + dect_no + "/process/";
+    window.location.href = url;
+}
+</script>
+
+
 <div class="container">
     <div class="fixed-table-container text-center">
         <div></div>
@@ -47,7 +55,7 @@
                     {% elif dection.status == 2 %}
                         <td>처리완료</td>
                     {% endif %}
-                    <td><button class="btn btn-primary">상세보기</button></td>
+                    <td><button class="btn btn-primary" onclick="process({{dection.dect_no}});">상세보기</button></td>
                 </tr>
                 {% endfor %}
                 </tbody>

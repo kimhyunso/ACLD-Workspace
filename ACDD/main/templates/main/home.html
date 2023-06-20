@@ -315,13 +315,12 @@ function convertToLocalTime(utcDateString) {
     return formattedDateTime;
 }
 
-
 });
 
-function process(){
-    window.location.href="{% url 'main:detailview' %}"
+function process(dect_no){
+    const url = "/" + dect_no + "/process/";
+    window.location.href = url;
 }
-
 </script>
 
 
@@ -403,7 +402,7 @@ function process(){
             <td>{{dection.ip}}</td>
             <td>{{dection.emp_no__emp_name}}</td>
             <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
-            <td><button class="btn btn-primary" onclick="process()"> 처리하기 </button></td>
+            <td><button class="btn btn-primary" onclick="process({{dection.dect_no}});"> 처리하기 </button></td>
         </tr>
         {% endfor %}
         </tbody>
@@ -433,7 +432,7 @@ function process(){
             <td>{{report.dect_no__emp_no__emp_name}}</td>
             <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
             <td>미처리</td>
-            <td><button class="btn btn-primary">처리하기</button></td>
+            <td><button class="btn btn-primary" onclick="process(dection.dect_no);">처리하기</button></td>
         </tr>
         {% endfor %}
         </tbody>

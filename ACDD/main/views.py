@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count
 from django.core.paginator import Paginator
-import os, json, psutil
+import os, json, psutil, base64
 
 @require_http_methods(['GET'])
 def home(request):
@@ -139,8 +139,25 @@ def detail(request):
 
     return render(request, 'main/detail.html', context)
 
-def chart(request):
-    return render(request, 'main/detailview.html')
+
+
+def process(request, dect_no):
+
+
+    dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'cam_path', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
+        'emp_no__depmt_no__depmt_name'
+    ).get(dect_no=dect_no)
+
+    report_list = Report.objects.filter(dect_no=dect_no).values(
+        'report_no', 'create_at', 'content', 'status'
+    )
+
+    context = {
+        'dect_one' : dect_one,
+        'report_list' : report_list,
+    }
+    return render(request, 'main/process.html', context)
 
 def employee(request):
     return render(request, 'main/employee.html')
