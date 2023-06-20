@@ -1,22 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-
+<td><button class= "btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;">사유서 보내기</button></td>
+<td><button class="btn btn-primary btn mt-5">이상없음</button></td>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 캠사진 이미지
-				<img src="{{ dect_one.cam_path }}" class="img-thumbnail" alt="캠사진 이미지">
+                <img src="/static/app/assets/images/tree.jpg" class="img-thumbnail" alt="캠사진 이미지">
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 바탕화면 이미지
-                <img src="{{ dect_one.screen_path }}" class="img-thumbnail" alt="바탕화면 이미지">
+                <img src="/static/app/assets/images/emp.jpg" class="img-thumbnail" alt="사원 이미지">
             </div>
         </div>
-    </div>
+</div>
     <div class="container">
     <div class="row">
         <div class="col-md-2">
@@ -53,18 +54,51 @@
             </div>
         </div>
     </div>
-    <div>
+    <div class="col-md-6" style="margin-top: auto; height: max-content;">
         <table class="table">
+          <tbody>
+              <tr>
+              <th scope="row">MAC</th>
+              <td>AB:CD:EF:15:BE</td>
+              </tr>
+              <tr>
+              <th scope="row">날짜</th>
+              <td>2023-06-20-10:22</td>
+              </tr>
+              <tr>
+              <th scope="row">부서위치</th>
+              <td colspan="2">4층 411호</td>
+              </tr>
+              <tr>
+              <th scope="row">이메일</th>
+              <td colspan="2">aro_jr@naver.com</td>
+              </tr>
+              <tr>
+              <th scope="row">전화번호</th>
+              <td colspan="2">01038928514</td>
+              </tr>
+              <tr>
+              <th scope="row">사내유선번호</th>
+              <td colspan="2">887</td>
+              </tr>
+
+          </tbody>
+          </table>
+      </div>
+    <div>
+        <table class="table text-center">
             <thead>
               <tr>
-                <th>제출날짜</th>
+                <th style="width: 5%">번호</th>
+                <th style="width: 13%">제출날짜</th>
                 <th>내용</th>
-                <th>상태</th>
+                <th style="width: 5%">상태</th>
               </tr>
             </thead>
             <tbody>
 			{% for report  in report_list %}
 				<tr>
+                    <td>{{report.report_no}}</td>
 					<td>{{report.create_at}}</td>
 					<td>{{report.content}}</td>
 					<td>{{report.status}}</td>
