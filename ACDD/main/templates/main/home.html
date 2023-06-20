@@ -11,7 +11,7 @@ var myChart = new Chart(context, {
         datasets: [{
             label: '탐지수',
             fill: false,
-            data: [0,0,0,0,0,0,0,0,5,10,13,3,4,10,16,20,30,47,10,8,7,5,200],
+            data: [0,0,0,0,0,0,0,0,5,10,13,3,4,10,16,20,30,47,10,8,7,5,100],
             backgroundColor: [
                 'rgba(59, 130, 246, 1)',
                 'rgba(59, 130, 246, 1)',
@@ -318,8 +318,13 @@ function convertToLocalTime(utcDateString) {
 });
 
 function process(dect_no){
+<<<<<<< HEAD
+    console.log(dect_no);
+    window.location.href="{% url 'main:process' 1 %}"
+=======
     const url = "/" + dect_no + "/process/";
     window.location.href = url;
+>>>>>>> main
 }
 </script>
 
@@ -341,7 +346,7 @@ function process(dect_no){
                 </div>
         
                 <div class="col-4" style="text-align: left; font-size: 14px;">
-                    <div class="item col-2 shadow-sm p-3 mb-5 bg-body rounded w-100">미처리
+                    <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">미처리
                         <div id="dect_count" style="text-align: right; font-size: 32px; color: #DC2626;">{{dect_count}}건</div>
                     </div> 
                 </div>
@@ -356,30 +361,33 @@ function process(dect_no){
                         </div>
                     </div>
                 </div>
+            </div>
+    </div>
+</div>
                               
    
 
-    <div class="container col-12" >
-                <div class="col-6">
-                    <div class="row mt-1">
-                            <div class="chart-container" style=" height: 150px; width: 150px; margin-top: 50px;">
-                                <canvas id="CPU_usage"></canvas>
-                            </div>
-                    </div>
+<div class="row" >
+    <div class="col-6">
+        <div class="row mt-1">
+                <div class="chart-container" style=" height: 150px; width: 150px; margin-top: 50px;">
+                    <canvas id="CPU_usage"></canvas>
                 </div>
-
-                    <div class="col-6">
-                        <div class="row mt-1">
-                            <!-- <div class="container" > -->
-                                <div class="chart-container" style=" height: 150px; width: 150px; margin-top: 50px;">
-                                    <canvas id="network_traffic"></canvas>
-                                </div>
-                        </div>
-                    </div>
+        </div>
     </div>
+
+    <div class="col-6">
+        <div class="row mt-1">
+            <!-- <div class="container" > -->
+                <div class="chart-container" style=" height: 150px; width: 150px; margin-top: 50px;">
+                    <canvas id="network_traffic"></canvas>
+                </div>
+        </div>
+    </div>
+</div>
      
 
-<div class="row-6" style="float: left; overflow-y: scroll;">
+<div class="row-6 mt-5 " style="float: left; overflow-y: scroll; width:45%; height:300px; overflow-y:auto; overflow-x:hidden">
     <table class="table table-light table-hover  caption-top mse-5" >
         <caption id="dect-table-caption" class="fs-4">미처리 탐지건수({{dect_count}}건)</caption>
         <thead>
@@ -392,7 +400,7 @@ function process(dect_no){
                 <th>비고</th>
             </tr>
         </thead>
-        <tbody id="dect-table-body">
+        <tbody id="dect-table-body">     
         {% for dection in dection_list %}
         <tr>
             <td>{{dection.dect_no}}</td>
@@ -406,7 +414,7 @@ function process(dect_no){
         </tbody>
     </table>
 </div>
-<div class="row" style="float: right; overflow-y: scroll;">
+<div class="row-12" style="float: right; overflow-y: scroll;">
     <table class="table table-light table-hover  caption-top">
         <caption id="report-table-caption" style="font-size: 30px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
         <thread>

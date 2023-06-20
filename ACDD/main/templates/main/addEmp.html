@@ -7,6 +7,7 @@ $(document).ready(function() {
 		const phone_no = validatePhoneNumber($("phone_no").val());
 		const ip = validateIPAddress($("#IP").val());
 		const mac = validateMACAddress($("#MAC").val());
+		console.log(phone_no)
 
 		/*if (email === undefined){
 			alert("이메일 형식이 유효하지 않습니다.");
@@ -34,7 +35,7 @@ $(document).ready(function() {
 		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
 		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
 	
-		$.ajax({
+		/*$.ajax({
 			type :"POST",
 			url : "{% url 'main:addEmp' %}",
 			headers: { "X-CSRFToken": '{{csrf_token}}' },
@@ -49,7 +50,7 @@ $(document).ready(function() {
 				errorMessage = request.responseJSON.message;
 				alert(errorMessage);
 			}
-		});
+		});*/
 	});
 
 
