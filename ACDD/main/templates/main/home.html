@@ -387,10 +387,10 @@ function process(dect_no){
 </div>
      
 
-<div class="row-6 mt-5 " style="float: left; overflow-y: scroll; width:45%; height:300px; overflow-y:auto; overflow-x:hidden">
-    <table class="table table-light table-hover  caption-top mse-5" >
-        <caption id="dect-table-caption" class="fs-4">미처리 탐지건수({{dect_count}}건)</caption>
-        <thead>
+<div class="row-6 mt-5 " style="float: left; overflow-y: scroll; width: 48%; height:300px; overflow-y:auto; overflow-x:hidden">
+    <table class="table table-hover  caption-top mse-5 text-center" >
+        <caption id="dect-table-caption" style="font-size: 18px;" >미처리 탐지건수({{dect_count}}건)</caption>
+        <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
             <tr>
                 <th>번호</th>
                 <th>날짜</th>
@@ -408,16 +408,16 @@ function process(dect_no){
             <td>{{dection.ip}}</td>
             <td>{{dection.emp_no__emp_name}}</td>
             <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
-            <td><button class="btn btn-primary" onclick="process({{dection.dect_no}});"> 처리하기 </button></td>
+            <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});"> 처리하기 </button></td>
         </tr>
         {% endfor %}
         </tbody>
     </table>
 </div>
-<div class="row-12" style="float: right; overflow-y: scroll;">
-    <table class="table table-light table-hover  caption-top">
-        <caption id="report-table-caption" style="font-size: 30px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
-        <thread>
+<div class="row-12 mt-5 " style="float: right; overflow-y: scroll; width: 48%; height:300px; overflow-y:auto; overflow-x:hidden" >
+    <table class="table table-hover  caption-top text-center">
+        <caption id="report-table-caption" style="font-size: 18px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
+        <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
         <tr>
             <th>번호</th>
             <th>날짜</th>
@@ -438,7 +438,7 @@ function process(dect_no){
             <td>{{report.dect_no__emp_no__emp_name}}</td>
             <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
             <td>미처리</td>
-            <td><button class="btn btn-primary" onclick="process(dection.dect_no);">처리하기</button></td>
+            <td><button class="btn btn-outline-primary" onclick="process(dection.dect_no);">처리하기</button></td>
         </tr>
         {% endfor %}
         </tbody>
