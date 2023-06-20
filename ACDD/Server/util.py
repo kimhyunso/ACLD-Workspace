@@ -16,17 +16,18 @@ class Util:
         except OSError:
             print('Error : Creating directory')
 
-    def get_save_path(self, ip):
+    def get_media_path(self, ip):
         media_root = os.path.abspath(os.path.join(self.get_project_root(), 'media'))
         return os.path.join(media_root, self.YEAR, self.MONTH, self.DAY, str(ip))
     
+    def get_relative_path(self, ip):
+        return '/media/' + self.YEAR + '/' + self.MONTH + '/' + self.DAY + '/' + str(ip)
 
     def get_path(self):
         media_root = os.path.abspath(os.path.join(self.get_project_root(), 'media'))
         return os.path.join(media_root, self.YEAR, self.MONTH, self.DAY)
     
     def get_project_root(self):
-        # 이 부분을 Django 프로젝트의 루트 경로로 수정해야 합니다.
         return Path(__file__).resolve().parent.parent
     
     
