@@ -14,11 +14,20 @@
         margin-top: 10px;
     }
 </style>
+<<<<<<< HEAD
 
 <script>
     function goToFirstPage() {
         window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
     }
+=======
+<script>
+function process(dect_no){
+    const url = "/" + dect_no + "/process/";
+    window.location.href = url;
+}
+</script>
+>>>>>>> main
 
     function goToLastPage() {
         const lastPageNumber = {{ dection_list.paginator.num_pages }};
@@ -117,6 +126,7 @@
     </nav>
 </div>
 
+<<<<<<< HEAD
 <div>
     <form action="{% url 'main:detail' %}" method='GET'>
         <div class="search-wrapper">
@@ -132,6 +142,35 @@
                 <div class="mb-3">
                     <div class="form-outline">
                         <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
+=======
+<div class="row justify-content-start">
+    <div class="col-2">
+        
+
+        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="최신순">
+        <datalist id="datalistOptions">
+            <option value="최신순">
+            <option value="오래된 순">
+            <option value="처리완료">
+            <option value="대기중">
+            <option value="미처리">
+        </datalist>
+    </div>
+
+
+
+        <div class="col-4 justify-content-end">
+            <form action="{% url 'main:detail' %}" method='GET'>
+                <div class="search-wrapper">
+                    <div class="input-group">
+                        <div class="form-outline">
+                            <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
+                        </div>
+                        
+                        <button type="button" class="btn btn-primary" onclick="searchTable(event)">
+                            <i class="fas fa-search">검색</i>
+                        </button>
+>>>>>>> main
                     </div>
                 </div>
                 <div>

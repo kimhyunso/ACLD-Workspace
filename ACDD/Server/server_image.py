@@ -60,16 +60,16 @@ class Server:
     def receiveTarget(self):
         print('>> Connected by :', self.get_client_ip(), ':', self.get_client_port())
         img_count = 0
-        save_path = self.get_util().get_save_path(self.get_client_ip())
-
+        save_path = self.get_util().get_relative_path(self.get_client_ip())
+        media_path = self.get_util().get_media_path(self.get_client_ip()) 
 
         while True:
             try:
                 cam_data = self.get_data()
-                cam_path = self.save_data(cam_data, img_count, 1, save_path)
+                cam_path = self.save_data(cam_data, img_count, 1, save_path, media_path)
 
                 screen_data = self.get_data()
-                screen_path = self.save_data(screen_data, img_count, 0, save_path)
+                screen_path = self.save_data(screen_data, img_count, 0, save_path, media_path)
                 
                 json_data = self.get_data()
                 self.result_data = json.loads(json_data)
@@ -108,15 +108,15 @@ class Server:
         length = self.recive_data(self.STREAM_BYTE).decode('utf-8')
         return self.recive_data(int(length))
 
-    def save_data(self, data, count, flag, save_path):
+    def save_data(self, data, count, flag, save_path, media_path):
         decode_data = np.frombuffer(base64.b64decode(data), dtype='uint8')
         decimg = cv2.imdecode(decode_data, cv2.IMREAD_COLOR)
         if flag:
-            cv2.imwrite(save_path + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
-            return save_path + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg'
+            cv2.imwrite(media_path + '\\' + f'CAM_{self.get_client_ip()}_{count}.jpg', decimg)
+            return save_path + '/' + f'CAM_{self.get_client_ip()}_{count}.jpg'
         else:
-            cv2.imwrite(save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
-            return save_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg'
+            cv2.imwrite(media_path + '\\' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg', decimg)
+            return save_path + '/' + f'ScreenShot_{self.get_client_ip()}_{count}.jpg'
         
     def get_client_ip(self):
         return self.__addr[0]
