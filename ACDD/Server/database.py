@@ -17,7 +17,6 @@ class DataBase:
 
     def select_identify(self, IP, MAC):
         sql = "SELECT agent_no FROM identify WHERE IP = ? AND MAC = ?"
-        print(type(IP), type(MAC))
         try:
             cursor = self.get_cursor()
             cursor.execute(sql,

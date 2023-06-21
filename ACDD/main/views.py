@@ -144,10 +144,10 @@ def detail(request):
 
 def process(request, dect_no):
     dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'cam_path', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
-        'emp_no__depmt_no__depmt_name'
+        'dect_no', 'create_at', 'cam_path', 'emp_no', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
+        'emp_no__depmt_no__depmt_name', 'emp_no__email', 'emp_no__phone_no', 'emp_no__depmt_no__location', 'emp_no__depmt_no__landline',
     ).get(dect_no=dect_no)
-    
+    identify = Identify.objects.get(emp_no=dect_one['emp_no'])
     report_list = Report.objects.filter(dect_no=dect_no).values(
         'report_no', 'create_at', 'content', 'status'
     )
@@ -155,6 +155,7 @@ def process(request, dect_no):
     context = {
         'dect_one' : dect_one,
         'report_list' : report_list,
+        'identify' : identify,
     }
     return render(request, 'main/process.html', context)
 

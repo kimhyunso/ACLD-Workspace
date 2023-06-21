@@ -38,77 +38,86 @@
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 캠사진 이미지
-                <img src="/static/app/assets/images/tree.jpg" class="img-thumbnail" alt="캠사진 이미지">
-
+                <img src="{{ dect_one.cam_path }}" class="img-thumbnail" alt="캠사진 이미지">
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="position-relative text-center" style="margin-top: 15%;">
                 바탕화면 이미지
-                <img src="/static/app/assets/images/emp.jpg" class="img-thumbnail" alt="사원 이미지">
+                <img src="{{ dect_one.screen_path }}" class="img-thumbnail" alt="사원 이미지">
             </div>
-        </div>
-</div>
-
-
-<div class="row">
-    <div class="col-md-2">
-        <div class="position-relative text-center" style="margin-top: 25%;">
-            직원정보
-            <img src="/static/app/assets/images/emp.jpg" class="img-thumbnail" alt="사원 이미지">
-            <table class="table">
-                <tbody>
-                    <tr>
-                    <th scope="row">이름</th>
-                    <td>허우영</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">직급</th>
-                    <td>인턴</td>
-                    </tr>
-                    <tr>
-                    <th scope="row">부서</th>
-                    <td colspan="2">AI</td>
-                    </tr>
-                </tbody>
-                </table>
         </div>
     </div>
 
-      <div class="col-md-6 " style="margin-top: auto; height: 80%; width: 80%;">
-          <table class="table text-center">
-            <tbody>
-                <tr>
-                <th scope="row" >MAC</th>
-                <td>AB:CD:EF:15:BE</td>
-                </tr>
-                <tr>
-                <th scope="row">날짜</th>
-                <td>2023-06-20-10:22</td>
-                </tr>
-                <tr>
-                <th scope="row">부서위치</th>
-                <td colspan="2">4층 411호</td>
-                </tr>
-                <tr>
-                <th scope="row">이메일</th>
-                <td colspan="2">aro_jr@naver.com</td>
-                </tr>
-                <tr>
-                <th scope="row">전화번호</th>
-                <td colspan="2">01038928514</td>
-                </tr>
-                <tr>
-                <th scope="row">사내유선번호</th>
-                <td colspan="2">887</td>
-                </tr>
-            </tbody>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="position-relative text-center" style="margin-top: 15%;">
+                직원정보
+                <img src="{{ dect_one.emp_no__emp_img_path }}" class="img-thumbnail" alt="사원 이미지">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                        <th scope="row">이름</th>
+                        	<td>{{ dect_one.emp_no__emp_name}}</td>
+                        </tr>
+                        <tr>
+
+                        <th scope="row">직급</th>
+                        {% if dect_one.emp_no__rank == 0  %}
+							<td>사원</td>
+                        {% elif dect_one.emp_no__rank == 1 %}
+                          	<td>대리</td>
+                        {% elif dect_one.emp_no__rank == 2 %}
+							<td>과장</td>
+                        {% elif dect_one.emp_no__rank == 3 %}
+							<td>차장</td>
+						{% elif dect_one.emp_no__rank == 4 %}
+							<td>부장</td>		
+                        {% endif %}
+                        </tr>
+                        <tr>
+							<th scope="row">부서</th>
+							<td colspan="2">{{ dect_one.emp_no__depmt_no__depmt_name }}</td>
+                        </tr>
+                    </tbody>
+				</table>
+            </div>
+        </div>
+
+        <div class="col-md-6" style="margin-top: auto; height: max-content;">
+            <table class="table">
+                <tbody>
+                    <tr>
+                    <th scope="row">MAC</th>
+                    <td>{{identify.mac}}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">날짜</th>
+                    <td>{{ dect_one.create_at }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">부서위치</th>
+                    <td colspan="2">{{ dect_one.emp_no__depmt_no__location }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">이메일</th>
+                    <td colspan="2">{{ dect_one.emp_no__email }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">전화번호</th>
+                    <td colspan="2">{{ dect_one.emp_no__phone_no }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">사내유선번호</th>
+                    <td colspan="2">{{ dect_one.emp_no__depmt_no__landline }}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-<div>
-    
-    <div>
+    </div>
+
+    <div class="row">
         <table class="table text-center">
             <thead style="background-color: #3B82F6; color: aliceblue;">
               <tr>
@@ -130,6 +139,7 @@
             </tbody>
         </table>
     </div>
+
 </div>
 
 {% endblock content %}

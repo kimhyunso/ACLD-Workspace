@@ -16,14 +16,18 @@
 </style>
 
 <script>
-    function goToFirstPage() {
-        window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
-    }
+function goToFirstPage() {
+    window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
+}
+function process(dect_no){
+    const url = "/" + dect_no + "/process/";
+    window.location.href = url;
+}
 
-    function goToLastPage() {
-        const lastPageNumber = {{ dection_list.paginator.num_pages }};
-        window.location.href = "?page=" + lastPageNumber + "{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
-    }
+function goToLastPage() {
+    const lastPageNumber = {{ dection_list.paginator.num_pages }};
+    window.location.href = "?page=" + lastPageNumber + "{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
+}
 </script>
 
 
@@ -135,7 +139,7 @@
                     </div>
                 </div>
                 <div>
-                    <button type="button" class="btn btn-outline-primary" onclick="searchTable(event)">
+                    <button type="submit" class="btn btn-outline-primary">
                         <i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
                     </button>
                 </div>
