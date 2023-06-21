@@ -1,31 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
-    function sendConfirmation() {
-        if (confirm("사유서를 보내시겠습니까?")) {
-            // 사용자가 확인을 눌렀을 때의 동작
-            // 여기에 사유서를 보내는 로직
-            alert("사유서를 보냈습니다."); // 보내기 완료 메시지
-        } else {
-            // 사용자가 취소를 눌렀을 때의 동작
-
+function sendConfirmation() {
+    if (confirm("사유서를 보내시겠습니까?")) {
+        data = {
+            'result' : 2,
         }
+        fetch("{% url 'main:process' dect_one.dect_no %}",
+        {
+            method: 'POST',
+            body : JSON.stringify(data),
+            datatype : 'JSON',
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+        })
+        .then(function (response) {
+            alert("사유서를 보냈습니다.");
+            window.location.replace("{% url 'main:home' %}");
+        })
+        .catch(function (err) {
+            alert('처리가 실패했습니다.');
+        });
     }
+}
 
-    function confirmStatus() {
-        if (confirm("이상이 없습니까?")) {
-            // 사용자가 확인을 눌렀을 때의 동작
- 
-            alert("처리가 완료되었습니다."); // 처리 완료 메시지
-        } else {
-            // 사용자가 취소를 눌렀을 때의 동작
-  
+function confirmStatus() {
+    if (confirm("이상이 없습니까?")) {
+        data = {
+            'result' : 1,
         }
+        fetch("{% url 'main:process' dect_one.dect_no %}",
+        {
+            method: 'POST',
+            body : JSON.stringify(data),
+            datatype : 'JSON',
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+        })
+        .then(function (response) {
+            alert("처리가 완료되었습니다.");
+            window.location.replace("{% url 'main:home' %}");
+        })
+        .catch(function (err) {
+            alert('처리가 실패했습니다.');
+        });
     }
-    
+}
+
 </script>
-<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation()">사유서 보내기</button>
-<button class="btn btn-primary btn mt-5" onclick="confirmStatus()">이상없음</button>
+
+{% if dect_one.status != 2 %}
+<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation();">사유서 보내기</button>
+<button class="btn btn-primary btn mt-5" onclick="confirmStatus();">이상없음</button>
+{% endif %}
+
 
 <div class="container">
     <div class="row">

@@ -15,15 +15,6 @@
     }
 </style>
 <script>
-$(document).ready(function() {
-    $("#dialog").click(function(){
-        $("#myModal").modal("show");
-    });
-
-    $("#modelClose").click(function(){
-        $("#myModal").modal("hide");
-    });
-});
 function goToFirstPage() {
     window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
 }
@@ -34,17 +25,16 @@ function goToLastPage() {
 }
 </script>
 
-<!-- Modal -->
-<select class="custom-select d-block" style="margin-left: 87%; margin-top: 2%;" id="filter">
-    <option value="1"> ON</option>
-    <option value="">OFF</option>
-</select>
-
-
+<form action="{% url 'main:agent' %}" method='GET'>
+    <select class="custom-select d-block" style="margin-left: 87%; margin-top: 2%;" name="filter" id="filter">
+        <option value="agent_no">최신순</option>
+        <option value="0">ON</option>
+        <option value="1">OFF</option>
+    </select>
+</form>
 
 <div class="container">
     <div class="fixed-table-container text-center">
-        <div></div>
         <div class="fixed-table-body">
             <table class="table table-light table-hover caption-top">
                 <caption style="font-size: 18px; margin-top: 40px;">에이전트</caption>
@@ -107,7 +97,7 @@ function goToLastPage() {
         <nav aria-label="">
             <ul class="pagination">
                 <li class="page-item {% if agent_list.number == 1 %}disabled{% endif %}" style="margin-right: 10px;">
-                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#" onclick="goToFirstPage()">〈〈</a>
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}">〈〈</a>
                 </li> 
                 {% if agent_list.has_previous %}
                     <li class="page-item">
@@ -138,11 +128,12 @@ function goToLastPage() {
                 {% endif %}
     
                 <li class="page-item {% if agent_list.number == agent_list.paginator.num_pages %}disabled{% endif %}" style="margin-left: 10px;">
-                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#" onclick="goToLastPage()">〉〉</a>
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="?page=" + lastPageNumber + "{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}">〉〉</a>
                 </li>
             </ul>
         </nav>
     </div>
+    
     <form action="{% url 'main:agent' %}" method='GET'>
     <div class="search-wrapper">
         <div class="input-group">
@@ -154,12 +145,11 @@ function goToLastPage() {
                 </select>
             </div>
             <div class="form-outline">
-                <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
+                <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}"/>
             </div>
-            <button type="button" class="btn btn-outline-primary" onclick="searchTable(event)">
+            <button type="submit" class="btn btn-outline-primary">
                 <i class="fas fa-search"></i>
             </button>
-            
     </div>
     </form>
 </div>

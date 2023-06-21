@@ -4,11 +4,9 @@ from django.views.decorators.http import require_http_methods
 from .models import Agent, Dection, Report, Identify, Department, Employee
 from django.core.files.storage import FileSystemStorage
 from django.conf import settings
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.core.paginator import Paginator
-import os, json, psutil, base64
-from django.core.files import File
-import tempfile
+import os, json, psutil
 
 @require_http_methods(['GET'])
 def home(request):
@@ -84,6 +82,7 @@ def agent(request):
             .prefetch_related('identifies__emp_no__depmt_no')
             .values(
                 'agent_no',
+                'create_at',
                 'status',
                 'identifies__ip',
                 'identifies__mac',
@@ -114,24 +113,18 @@ def get_cpu_usage():
     cpu_percent = psutil.cpu_percent(interval=1)
     return cpu_percent
 
-
 def detail(request):
     page = request.GET.get('page', '1')
     search_key = request.GET.get('search_key')
+    search_mode = request.GET.get('search_mode')
+
     if search_key == None:
         search_key = ''
 
-    dection_list = Dection.objects.filter(emp_no__emp_name__icontains=search_key).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-    )
-    
-    for dection in dection_list:
-        employee = dection['emp_no__emp_no']
-        identify = Identify.objects.filter(emp_no=employee).first()
-        if identify:
-            dection['ip'] = identify.ip
-            dection['mac'] = identify.mac
+    if search_mode == None:
+        search_mode = '0'
 
+    dection_list = mode(stauts=search_mode, search_key=search_key)
 
     paginator = Paginator(dection_list, 10)
     page_obj = paginator.get_page(page)
@@ -142,22 +135,75 @@ def detail(request):
 
     return render(request, 'main/detail.html', context)
 
-def process(request, dect_no):
-    dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'cam_path', 'emp_no', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
-        'emp_no__depmt_no__depmt_name', 'emp_no__email', 'emp_no__phone_no', 'emp_no__depmt_no__location', 'emp_no__depmt_no__landline',
-    ).get(dect_no=dect_no)
-    identify = Identify.objects.get(emp_no=dect_one['emp_no'])
-    report_list = Report.objects.filter(dect_no=dect_no).values(
-        'report_no', 'create_at', 'content', 'status'
-    )
+def mode(stauts, search_key):
+    if stauts == '0':
+        dection_list = Dection.objects.filter(dect_no__icontains=search_key).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        )
+    elif stauts == '1':
+        dection_list = Dection.objects.filter(
+            emp_no__emp_name__icontains=search_key
+        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        )
+    elif stauts == '2':
+        dection_list = Dection.objects.order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        )
+        
+    elif stauts == '3':
+        dection_list = Dection.objects.filter(
+            emp_no__depmt_no__depmt_name__icontains=search_key
+        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        )
 
-    context = {
-        'dect_one' : dect_one,
-        'report_list' : report_list,
-        'identify' : identify,
-    }
-    return render(request, 'main/process.html', context)
+    elif stauts == '4':
+        if search_key == '미처리':
+            search_key = 0
+        elif search_key == '대기중':
+            search_key = 1
+        elif search_key == '처리완료':
+            search_key = 2
+
+        dection_list = Dection.objects.filter(
+            status__icontains=search_key
+        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        )
+
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
+
+    return dection_list
+
+@require_http_methods(['GET', 'POST'])
+def process(request, dect_no):
+    if request.method == 'GET':
+        dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
+            'dect_no', 'create_at', 'cam_path', 'emp_no', 'status', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
+            'emp_no__depmt_no__depmt_name', 'emp_no__email', 'emp_no__phone_no', 'emp_no__depmt_no__location', 'emp_no__depmt_no__landline',
+        ).get(dect_no=dect_no)
+        identify = Identify.objects.get(emp_no=dect_one['emp_no'])
+
+        report_list = Report.objects.filter(dect_no=dect_no).values(
+            'report_no', 'create_at', 'content', 'status'
+        )
+
+        context = {
+            'dect_one' : dect_one,
+            'report_list' : report_list,
+            'identify' : identify,
+        }
+        return render(request, 'main/process.html', context)
+    else:
+        data = json.loads(request.body)
+        dection = Dection.objects.filter(dect_no=dect_no).update(status=int(data['result']))
+        return JsonResponse({'sucess' : 200})
 
 def employee(request):
     return render(request, 'main/employee.html')
