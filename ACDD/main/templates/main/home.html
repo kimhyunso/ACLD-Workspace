@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
+
     $(document).ready(function () {
 
         var context = document.getElementById('today_dection').getContext('2d');
@@ -233,93 +234,8 @@
             }
         });
 
-        function updateData() {
-            $.ajax({
-                url: "{% url 'main:get_updated_data' %}",
-                type: 'POST',
-                headers: { "X-CSRFToken": '{{csrf_token}}' },
-                processData: false,
-                contentType: false,
-                dataType: 'json',
-                success: function (response) {
-                    document.getElementById('dect_count').textContent = response.dect_count + "건";
-                    document.getElementById('report_count').textContent = response.report_count + "건";
-                    document.getElementById('report_done_count').textContent = response.report_done_count + "건";
+        
 
-                    document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
-                    document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
-
-                    const dect_tableBody = document.getElementById("dect-table-body");
-                    replaceTable(response.dection_list, dect_tableBody);
-
-                    const report_tableBody = document.getElementById("report-table-body");
-                    replaceTable(response.report_list, report_tableBody);
-                },
-                error: function (xhr, status, error) {
-                    console.error(error);
-                }
-            });
-        }
-        //setInterval(updateData, 10000);
-
-        function replaceTable(lists, tableBody) {
-            tableBody.innerHTML = "";
-            lists.forEach((list) => {
-                const newRow = document.createElement("tr");
-
-                const dectNoCell = document.createElement("td");
-                dectNoCell.textContent = list.dect_no;
-                newRow.appendChild(dectNoCell);
-
-                const createAtCell = document.createElement("td");
-                createAtCell.textContent = convertToLocalTime(list.create_at);
-                newRow.appendChild(createAtCell);
-
-                const ipCell = document.createElement("td");
-                ipCell.textContent = list.ip;
-                newRow.appendChild(ipCell);
-
-                const empNameCell = document.createElement("td");
-                empNameCell.textContent = list.emp_no__emp_name;
-                newRow.appendChild(empNameCell);
-
-                const depmtNameCell = document.createElement("td");
-                depmtNameCell.textContent = list.emp_no__depmt_no__depmt_name;
-                newRow.appendChild(depmtNameCell);
-
-                const statusCell = document.createElement("td");
-                statusCell.textContent = "미처리";
-                newRow.appendChild(statusCell);
-
-                const remarkCell = document.createElement("td");
-                const processButton = document.createElement("button");
-                processButton.className = "btn btn-primary";
-                processButton.textContent = "처리하기";
-
-                processButton.addEventListener("click", process);
-
-                remarkCell.appendChild(processButton);
-                newRow.appendChild(remarkCell);
-                tableBody.appendChild(newRow);
-            });
-        }
-
-        function convertToLocalTime(utcDateString) {
-            var date = new Date(utcDateString);
-
-            var year = date.getUTCFullYear();
-            var month = date.getUTCMonth() + 1;
-            var day = date.getUTCDate();
-            var hours = date.getUTCHours();
-            var minutes = date.getUTCMinutes();
-
-            var period = hours >= 12 ? '오후' : '오전';
-            hours = hours % 12;
-            hours = hours ? hours : 12;
-
-            var formattedDateTime = year + '년 ' + month + '월 ' + day + '일 ' + hours + ':' + ('0' + minutes).slice(-2) + ' ' + period;
-            return formattedDateTime;
-        }
 
 var context = document.getElementById('CPU_usage').getContext('2d');
 var myChart = new Chart(context, {
@@ -418,10 +334,12 @@ function updateData() {
             document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
 
             const dect_tableBody = document.getElementById("dect-table-body");
-            replaceTable(response.dection_list, dect_tableBody);
+            let target = "dection";
+            replaceTable(response.dection_list, dect_tableBody, target);
         
             const report_tableBody = document.getElementById("report-table-body");
-            replaceTable(response.report_list, report_tableBody);
+            target = "report";
+            replaceTable(response.report_list, report_tableBody, target);
         },
         error : function(error) {
             console.error(error);
@@ -430,7 +348,7 @@ function updateData() {
 }
 setInterval(updateData, 10000);
 
-function replaceTable(lists, tableBody){
+function replaceTable(lists, tableBody, target){
     tableBody.innerHTML = "";
     lists.forEach((list) => {
         const newRow = document.createElement("tr");
@@ -454,17 +372,19 @@ function replaceTable(lists, tableBody){
         const depmtNameCell = document.createElement("td");
         depmtNameCell.textContent = list.emp_no__depmt_no__depmt_name;
         newRow.appendChild(depmtNameCell);
-
-        const statusCell = document.createElement("td");
-        statusCell.textContent = "미처리";
-        newRow.appendChild(statusCell);
+        if (target === "report"){
+            const statusCell = document.createElement("td");
+            statusCell.textContent = "미처리";
+            newRow.appendChild(statusCell);
+        }
+        
 
         const remarkCell = document.createElement("td");
         const processButton = document.createElement("button");
         processButton.className = "btn btn-outline-primary";
         processButton.textContent = "처리하기";
 
-        processButton.addEventListener("click", process);
+        processButton.addEventListener("click", () => process(list.dect_no));
 
         remarkCell.appendChild(processButton);
         newRow.appendChild(remarkCell);
@@ -490,14 +410,14 @@ function convertToLocalTime(utcDateString) {
 }
 
 });
-
 function process(dect_no){
     const url = "/" + dect_no + "/process/";
     window.location.href = url;
 }
+
 </script>
 
-<div class="container-fluid" style="margin-top: 50px; margin-left: 25px;">
+{% comment %} <div class="container-fluid" style="margin-top: 50px; margin-left: 25px;">
         <div class="col-6">
             <div class="row">
                 <div class="col-4" style="text-align: left; font-size: 14px;">
@@ -526,10 +446,9 @@ function process(dect_no){
                     <div class="col-6">
                         <div style="height: 150px; width: 150px; margin-top: 50px;">
                             <canvas id="storage"></canvas>
-                            <canvas id="DB_storage"></canvas>
+                            <canvas id="DB_storage"></canvas> {% endcomment %}
 
 <div class="container2" style="display: flex; margin-left: 48px; margin-right: 48px;">
-
     <div class="row" >
         <div class="row-4" style="font-weight: bold;">
             <div style="font-size: 20px; margin-top: 20px;margin-bottom: 20px ;">실시간 처리 현황</div>
@@ -555,7 +474,7 @@ function process(dect_no){
   border-radius: 8px;
 ">
                             사유서 처리 대기
-                            <div id="report_done_count" style="text-align: right; font-size: 32px; color: #FCD34D;">
+                            <div id="report_count" style="text-align: right; font-size: 32px; color: #FCD34D;">
                                 {{report_count}}건</div>
                         </div>
                     </div>
@@ -657,8 +576,7 @@ function process(dect_no){
                         <td>{{dection.ip}}</td>
                         <td>{{dection.emp_no__emp_name}}</td>
                         <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
-                        <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});"> 처리하기
-                            </button></td>
+                        <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});"> 처리하기</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -692,7 +610,7 @@ function process(dect_no){
                         <td>{{report.dect_no__emp_no__emp_name}}</td>
                         <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
                         <td>미처리</td>
-                        <td><button class="btn btn-outline-primary" onclick="process(dection.dect_no);">처리하기</button>
+                        <td><button class="btn btn-outline-primary" onclick="process({{report.dect_no}});">처리하기</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -705,16 +623,4 @@ function process(dect_no){
 
 
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
 {% endblock content %}

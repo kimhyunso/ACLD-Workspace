@@ -14,24 +14,14 @@
         margin-top: 10px;
     }
 </style>
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 <script>
 function goToFirstPage() {
-    window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
+    window.location.href = "?page=1{% if request.GET.search_key %}&search_mode={{ request.GET.search_mode }}&search_key={{ request.GET.search_key }}{% endif %}";
 }
 function process(dect_no){
     const url = "/" + dect_no + "/process/";
     window.location.href = url;
 }
-<<<<<<< HEAD
-function goToFirstPage() {
-    window.location.href = "?page=1{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
-}
-=======
->>>>>>> main
 
 function goToLastPage() {
     const lastPageNumber = {{ dection_list.paginator.num_pages }};
@@ -146,11 +136,7 @@ function goToLastPage() {
                 </div>
                 <div class="mb-3">
                     <div class="form-outline">
-<<<<<<< HEAD
                         <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" />
-=======
-                        <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
->>>>>>> main
                     </div>
                 </div>
                 <div>

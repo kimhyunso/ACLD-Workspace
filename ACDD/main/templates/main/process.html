@@ -45,8 +45,10 @@ function confirmStatus() {
     }
 }
 </script>
-
-{% if dect_one.status != 2 %}
+{% if dect_one.status == 1 %}
+<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation();">재요청하기</button>
+<button class="btn btn-primary btn mt-5" onclick="confirmStatus();">이상없음</button>
+{% elif dect_one.status != 2 %}
 <button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation();">사유서 보내기</button>
 <button class="btn btn-primary btn mt-5" onclick="confirmStatus();">이상없음</button>
 {% endif %}

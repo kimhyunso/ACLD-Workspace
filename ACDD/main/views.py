@@ -6,7 +6,7 @@ from django.core.files.storage import FileSystemStorage
 from django.conf import settings
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
-import os, json, psutil
+import os, json, psutil, random
 
 @require_http_methods(['GET'])
 def home(request):
@@ -202,7 +202,23 @@ def process(request, dect_no):
         return render(request, 'main/process.html', context)
     else:
         data = json.loads(request.body)
-        dection = Dection.objects.filter(dect_no=dect_no).update(status=int(data['result']))
+        status = int(data['result'])
+        
+        dection = Dection.objects.filter(dect_no=dect_no).update(status=status)
+
+        if status == 2:
+            contents = []
+            report = Report()
+            report.dect_no = dect_no
+            with open(settings.MEDIA_ROOT + '/context.txt', 'r', encoding='utf-8') as file:
+                for line in file:
+                    if line == '\n':
+                        continue
+                    contents.append(line)
+            rnd_content = random.choice(contents)
+            report.content = rnd_content
+            report.save()
+
         return JsonResponse({'sucess' : 200})
 
 def employee(request):
