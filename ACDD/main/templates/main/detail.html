@@ -21,28 +21,22 @@ function process(dect_no){
 }
 </script>
 
-<div class="container">
-    <div class="row justify-content-end">
-        <div class="col-2">
-            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="최신순">
-            <datalist id="datalistOptions">
-                <option value="최신순">
-                <option value="오래된 순">
-                <option value="처리완료">
-                <option value="대기중">
-                <option value="미처리">
-            </datalist>
-        </div>
-    </div>
-</div>
+
+<select class="custom-select d-block" style="margin-left: 87%; margin-top: 2%;" id="filter">
+    <option>최신순</option>
+    <option value="4">오래된순</option>
+    <option value="3">처리완료</option>
+    <option value="2">대기중</option>
+    <option value="1">미처리</option>
+</select>
  
 
 <div class="container">
     <div class="fixed-table-container text-center">
         <div class="fixed-table-body">
-            <table class="table table-light table-hover caption-top">
+            <table class="table table-hover caption-top">
                 <caption style="font-size: 30px;">상세보기</caption>
-                <thead>
+                <thead style="background-color: #3B82F6; color: #ffffff;">
                     <tr>
                         <th>번호</th>
                         <th>날짜</th>
@@ -68,7 +62,7 @@ function process(dect_no){
                     {% elif dection.status == 2 %}
                         <td>처리완료</td>
                     {% endif %}
-                    <td><button class="btn btn-primary" onclick="process({{dection.dect_no}});">상세보기</button></td>
+                    <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});">상세보기</button></td>
                 </tr>
                 {% endfor %}
                 </tbody>
@@ -80,15 +74,19 @@ function process(dect_no){
 <div class="pagination">
     <nav aria-label="">
         <ul class="pagination">
+            <li class="page-item {% if dection_list.number == 1 %}disabled{% endif %}" style="margin-right: 10px;">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#" onclick="goToFirstPage()">〈〈</a>
+            </li> 
             {% if dection_list.has_previous %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ dection_list.previous_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="-1" aria-disabled="true">이전</a>
+                    <a class="page-link" href="?page={{ dection_list.previous_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="-1" aria-disabled="true">〈</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">이전</a>
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">〈</a>
                 </li>
             {% endif %}
+
             {% for page_number in dection_list.paginator.page_range %}
             {% if page_number == dection_list.number %}
                 <li class="page-item active"><a class="page-link" href="?page={{ page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}">{{ page_number }}</a></li>
@@ -97,66 +95,48 @@ function process(dect_no){
             {% endif %}
             {% endfor %}
 
-
-            
             {% if dection_list.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{ dection_list.next_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="+1" aria-disabled="true">다음</a>
+                    <a class="page-link" href="?page={{ dection_list.next_page_number }}{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}" tabindex="+1" aria-disabled="true">〉</a>
                 </li>
             {% else %}
                 <li class="page-item disabled">
-                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+                    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">〉</a>
                 </li>
             {% endif %}
+
+            <li class="page-item {% if dection_list.number == dection_list.paginator.num_pages %}disabled{% endif %}" style="margin-left: 10px;">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="#" onclick="goToLastPage()">〉〉</a>
+            </li>
         </ul>
     </nav>
 </div>
 
-<div class="row justify-content-start">
-    <div class="col-2">
-        
-
-        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="최신순">
-        <datalist id="datalistOptions">
-            <option value="최신순">
-            <option value="오래된 순">
-            <option value="처리완료">
-            <option value="대기중">
-            <option value="미처리">
-        </datalist>
-    </div>
-
-
-
-        <div class="col-4 justify-content-end">
-            <form action="{% url 'main:detail' %}" method='GET'>
-                <div class="search-wrapper">
-                    <div class="input-group">
-                        <div class="form-outline">
-                            <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
-                        </div>
-                        
-                        <button type="button" class="btn btn-primary" onclick="searchTable(event)">
-                            <i class="fas fa-search">검색</i>
-                        </button>
+<div>
+    <form action="{% url 'main:detail' %}" method='GET'>
+        <div class="search-wrapper">
+            <div class="input-group">
+                <div class="col-md-1 ">
+                    <select class="custom-select d-block" id="filter">
+                        <option>내용</option>
+                        <option value="4">이름+번호</option>
+                        <option value="3">이름+날짜</option>
+                        <option value="2">부서+이름</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <div class="form-outline">
+                        <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" onkeydown="searchTable(event)" />
                     </div>
                 </div>
-            </form>
+                <div>
+                    <button type="button" class="btn btn-outline-primary" onclick="searchTable(event)">
+                        <i class="fas fa-search"></i> <!-- 돋보기 아이콘 -->
+                    </button>
+                </div>
+            </div>
         </div>
+    </form>
 </div>
-{% endblock content %}
 
-<div class="container">
-    <div class="row justify-content-end">
-        <div class="col-2">
-            <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="최신순">
-            <datalist id="datalistOptions">
-                <option value="최신순">
-                <option value="오래된 순">
-                <option value="처리완료">
-                <option value="대기중">
-                <option value="미처리">
-            </datalist>
-        </div>
-    </div>
-</div>
+{% endblock content %}

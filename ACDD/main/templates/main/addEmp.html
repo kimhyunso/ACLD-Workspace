@@ -50,7 +50,7 @@ $(document).ready(function() {
 				errorMessage = request.responseJSON.message;
 				alert(errorMessage);
 			}
-		});*/
+		});
 	});
 
 
@@ -112,9 +112,9 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="emp_no">사원번호</label>
-					<input type="text" class="form-control" id="emp_no" placeholder="사원번호을 입력해주세요." required>
+					<input type="number" class="form-control" id="emp_no" placeholder="사원번호를 입력해주세요." required>
 					<div class="invalid-feedback">
-						사원번호을 입력해주세요.
+						사원번호를 입력해주세요.
 					</div>
 				</div>
 			</div>
@@ -149,7 +149,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="MAC">MAC</label>
-					<input type="text" class="form-control" id="MAC" placeholder="MAC Address를 입력해주세요." required>
+					<input type="text" class="form-control" id="MAC" placeholder="12-34-56-78-ab-cd" required>
 					<div class="invalid-feedback">
 					  MAC Address를 입력해주세요.
 					</div>
@@ -159,7 +159,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="IP">IP</label>
-					<input type="text" class="form-control" id="IP" placeholder="IP정보를 입력해주세요." required>
+					<input type="text" class="form-control" id="IP" placeholder="192.168.0.1" required>
 					<div class="invalid-feedback">
 					  IP정보를 입력해주세요.
 					</div>
@@ -169,7 +169,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="phone_no">휴대폰번호</label>
-					<input type="text" class="form-control" id="phone_no" placeholder="휴대폰번호를 입력해주세요." required>
+					<input type="text" class="form-control" id="phone_no" placeholder="01012341234" required>
 					<div class="invalid-feedback">
 					  휴대폰번호를 입력해주세요
 					</div>
@@ -179,7 +179,7 @@ function validateMACAddress(macAddress) {
 			<div class="row">
 				<div class="mb-12">
 					<label for="email">이메일</label>
-					<input type="email" class="form-control" id="email" placeholder="이메일을 입력해주세요." required>
+					<input type="email" class="form-control" id="email" placeholder="test@gmail.com" required>
 					<div class="invalid-feedback">
 					  이메일을 입력해주세요
 					</div>

@@ -1,11 +1,32 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
+    function sendConfirmation() {
+        if (confirm("사유서를 보내시겠습니까?")) {
+            // 사용자가 확인을 눌렀을 때의 동작
+            // 여기에 사유서를 보내는 로직
+            alert("사유서를 보냈습니다."); // 보내기 완료 메시지
+        } else {
+            // 사용자가 취소를 눌렀을 때의 동작
 
+        }
+    }
+
+    function confirmStatus() {
+        if (confirm("이상이 없습니까?")) {
+            // 사용자가 확인을 눌렀을 때의 동작
+ 
+            alert("처리가 완료되었습니다."); // 처리 완료 메시지
+        } else {
+            // 사용자가 취소를 눌렀을 때의 동작
+  
+        }
+    }
+    
 </script>
+<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation()">사유서 보내기</button>
+<button class="btn btn-primary btn mt-5" onclick="confirmStatus()">이상없음</button>
 
-<td><button class= "btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="">사유서 보내기</button></td>
-<td><button class="btn btn-primary btn mt-5" onclick="">이상없음</button></td>
 <div class="container">
     <div class="row">
         <div class="col-md-6">
@@ -21,78 +42,67 @@
                 <img src="{{ dect_one.screen_path }}" class="img-thumbnail" alt="사원 이미지">
             </div>
         </div>
-</div>
-    <div class="container">
+    </div>
+
     <div class="row">
         <div class="col-md-2">
-            <div class="position-relative text-center" style="margin-top: 15%;">
+            <div class="position-relative text-center" style="margin-top: 25%;">
                 직원정보
                 <img src="{{ dect_one.emp_no__emp_img_path }}" class="img-thumbnail" alt="사원 이미지">
                 <table class="table">
                     <tbody>
                         <tr>
                         <th scope="row">이름</th>
-                        	<td>{{ dect_one.emp_no__emp_name}}</td>
+                        <td>허우영</td>
                         </tr>
                         <tr>
-
                         <th scope="row">직급</th>
-                        {% if dect_one.emp_no__rank == 0  %}
-							<td>사원</td>
-                        {% elif dect_one.emp_no__rank == 1 %}
-                          	<td>대리</td>
-                        {% elif dect_one.emp_no__rank == 2 %}
-							<td>과장</td>
-                        {% elif dect_one.emp_no__rank == 3 %}
-							<td>차장</td>
-						{% elif dect_one.emp_no__rank == 4 %}
-							<td>부장</td>		
-                        {% endif %}
+                        <td>인턴</td>
                         </tr>
                         <tr>
-							<th scope="row">부서</th>
-							<td colspan="2">{{ dect_one.emp_no__depmt_no__depmt_name }}</td>
+                        <th scope="row">부서</th>
+                        <td colspan="2">AI</td>
                         </tr>
                     </tbody>
-				</table>
+                </table>
             </div>
         </div>
+
+        <div class="col-md-6 " style="margin-top: auto; height: 80%; width: 80%;">
+            <table class="table text-center">
+                <tbody>
+                    <tr>
+                    <th scope="row" >MAC</th>
+                    <td>{{identify.mac}}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">날짜</th>
+                    <td>{{ dect_one.create_at }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">부서위치</th>
+                    <td colspan="2">{{ dect_one.emp_no__depmt_no__location }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">이메일</th>
+                    <td colspan="2">{{ dect_one.emp_no__email }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">전화번호</th>
+                    <td colspan="2">{{ dect_one.emp_no__phone_no }}</td>
+                    </tr>
+                    <tr>
+                    <th scope="row">사내유선번호</th>
+                    <td colspan="2">{{ dect_one.emp_no__depmt_no__landline }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <div class="col-md-6" style="margin-top: auto; height: max-content;">
-        <table class="table">
-          <tbody>
-              <tr>
-              <th scope="row">MAC</th>
-              <td>{{identify.mac}}</td>
-              </tr>
-              <tr>
-              <th scope="row">날짜</th>
-              <td>{{ dect_one.create_at }}</td>
-              </tr>
-              <tr>
-              <th scope="row">부서위치</th>
-              <td colspan="2">{{ dect_one.emp_no__depmt_no__location }}</td>
-              </tr>
-              <tr>
-              <th scope="row">이메일</th>
-              <td colspan="2">{{ dect_one.emp_no__email }}</td>
-              </tr>
-              <tr>
-              <th scope="row">전화번호</th>
-              <td colspan="2">{{ dect_one.emp_no__phone_no }}</td>
-              </tr>
-              <tr>
-              <th scope="row">사내유선번호</th>
-              <td colspan="2">{{ dect_one.emp_no__depmt_no__landline }}</td>
-              </tr>
-
-          </tbody>
-          </table>
-      </div>
-    <div>
+    
+    <div class="row">
         <table class="table text-center">
-            <thead>
+            <thead style="background-color: #3B82F6; color: aliceblue;">
               <tr>
                 <th style="width: 5%">번호</th>
                 <th style="width: 13%">제출날짜</th>
