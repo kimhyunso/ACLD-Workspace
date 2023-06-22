@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <style>
     .input-group {
@@ -29,15 +28,13 @@ function goToLastPage() {
 }
 </script>
 
-<form action="{% url 'main:detail' %}" method='GET'>
-    <select id="options" class="custom-select d-block" style="margin-left: 87%; margin-top: 2%;" id="filter">
-        <option value="-dect_no">최신순</option>
-        <option value="1">오래된순</option>
-        <option value="2">처리완료</option>
-        <option value="3">대기중</option>
-        <option value="4">미처리</option>
-    </select>
-</form>
+<select id="options" class="custom-select d-block" style="margin-left: 87%; margin-top: 2%;" id="filter">
+    <option value="-dect_no">최신순</option>
+    <option value="1">오래된순</option>
+    <option value="2">처리완료</option>
+    <option value="3">대기중</option>
+    <option value="4">미처리</option>
+</select>
 
 
 <div class="container">
@@ -57,7 +54,7 @@ function goToLastPage() {
                     </tr>
                 </thead>
                 <tbody>
-                {% for dection in dection_list %}
+                {% for dection in dection_list %}   
                 <tr>
                     <td>{{dection.dect_no}}</td>
                     <td>{{dection.create_at}}</td>
@@ -119,19 +116,11 @@ function goToLastPage() {
             </li>
         </ul>
     </nav>
+</div>
 <div>
     <form action="{% url 'main:detail' %}" method='GET'>
         <div class="search-wrapper">
             <div class="input-group">
-                <div class="col-md-1 ">
-                    <select class="custom-select d-block" name="search_mode" id="filter">
-                        <option value="0" {% if request.GET.search_mode == '0'  %} selected {% endif %}>번호</option>
-                        <option value="1" {% if request.GET.search_mode == '1'  %} selected {% endif %}>이름</option>
-                        <option value="2" {% if request.GET.search_mode == '2'  %} selected {% endif %}>IP</option>
-                        <option value="3" {% if request.GET.search_mode == '3'  %} selected {% endif %}>부서</option>
-                        <option value="4" {% if request.GET.search_mode == '4'  %} selected {% endif %}>상태</option>
-                    </select>
-                </div>
                 <div class="mb-3">
                     <div class="form-outline">
                         <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}" />

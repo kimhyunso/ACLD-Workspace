@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
-$(document).ready(function () {
+
+function todayDection(){
     const data = {{ data | safe }};
     const labels = {{ data_labels | safe }};
 
@@ -75,285 +76,174 @@ $(document).ready(function () {
                     align: 'left',
                 }
             }
-
-        }
-
-    });
-    const storage = document.getElementById('storage').getContext('2d');
-    const storageChart = new Chart(storage, {
-        type: 'doughnut',
-        data: {
-            labels: ['100'],
-            datasets: [{
-                label: '스토리지 가용량',
-                fill: false,
-                data: [100-50],
-                backgroundColor: [
-                'rgba(59, 130, 246, 1)',
-                'rgba(59, 5, 246, 1)',
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            rotation: 1 * Math.PI,
-            circumference: 1 * Math.PI,
-
-
-            title: {
-                display: true,
-                text: '스토리지 가용량',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: '금일탐지건수'
-                }
-            }
-        }
-    });
-    //////////////////////////////////////////////////////////////////
-    var DBStorage = document.getElementById('DB_storage').getContext('2d');
-    var DBStorageChart = new Chart(DBStorage, {
-        type: 'doughnut',
-        data: {
-            labels: ['100'],
-            datasets: [{
-                label: '스토리지 가용량',
-                fill: false,
-                data: [50],
-                backgroundColor: [
-
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-
-            rotation: 1 * Math.PI,
-            circumference: 1 * Math.PI,
-
-            title: {
-                display: true,
-                text: 'DB스토리지 가용량',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'DB스토리지 가용량'
-                }
-            }
-        }
-    });
-    //////////////////////////////////////////////////////////////////
-
-    var CPUUsage = document.getElementById('CPU_usage').getContext('2d');
-    var CPUUsageChart = new Chart(CPUUsage, {
-        type: 'doughnut',
-        data: {
-            labels: ['100'],
-            datasets: [{
-                label: 'CPU 사용량',
-                fill: false,
-                data: [50],
-                backgroundColor: [
-
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-
-            rotation: 1 * Math.PI,
-            circumference: 1 * Math.PI,
-
-            title: {
-                display: true,
-                text: 'CPU 사용량',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'CPU 사용량'
-                }
-            }
-        }
-    });
-    ///////////////////////////////////////////////////``
-    var networkTraffic = document.getElementById('network_traffic').getContext('2d');
-    var networkTrafficChart = new Chart(networkTraffic, {
-        type: 'doughnut',
-        data: {
-            labels: [''],
-            datasets: [{
-                label: 'network_traffic',
-                fill: false,
-                data: [70],
-                backgroundColor: [
-
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-
-            rotation: 1 * Math.PI,
-            circumference: 1 * Math.PI,
-            title: {
-                display: true,
-                text: 'network_traffic',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'network_traffic'
-                }
-            }
-        }
-    });
-
-    var context = document.getElementById('CPU_usage').getContext('2d');
-    var myChart = new Chart(context, {
-        type: 'doughnut',
-        data: {
-            labels: ['100'],
-            datasets: [{
-                label: 'CPU 사용량',
-                fill: false,
-                data: [50],
-                backgroundColor: [
-
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            
-            rotation: -90,
-            circumference: 180,
-            title: { 
-                display: true,
-                text: 'CPU 사용량',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'CPU 사용량'
-                }
-            }
-        }
-    });
-
-    var context = document.getElementById('network_traffic').getContext('2d');
-    var myChart = new Chart(context, {
-        type: 'doughnut',
-        data: {
-            labels: ['100'],
-            datasets: [{
-                label: 'network_traffic',
-                fill: false,
-                data: [50],
-                backgroundColor: [
-
-                ],
-                // borderColor: ['rgba(255, 99, 132, 1)'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            
-            rotation: -90,
-            circumference: 180,
-            title: { 
-                display: true,
-                text: 'network_traffic',
-                fontSize: 18,
-                align: 'left',
-            },
-            elements: {
-                point: {
-                    radius: 0,
-                }
-            },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'network_traffic'
-                }
-            }
-        }
-    });
-
-function updateData() {
-    $.ajax({
-        url: "{% url 'main:get_updated_data' %}",
-        type: 'POST',
-        headers: { "X-CSRFToken": '{{csrf_token}}' },
-        processData: false, 
-        contentType: false,
-        dataType: 'json',
-        success: function(response) {
-            document.getElementById('dect_count').textContent = response.dect_count + "건";
-            document.getElementById('report_count').textContent = response.report_count + "건";
-            document.getElementById('report_done_count').textContent = response.report_done_count + "건";
-
-            document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
-            document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
-
-            const dect_tableBody = document.getElementById("dect-table-body");
-            let target = "dection";
-            replaceTable(response.dection_list, dect_tableBody, target);
-        
-            const report_tableBody = document.getElementById("report-table-body");
-            target = "report";
-            replaceTable(response.report_list, report_tableBody, target);
-        },
-        error : function(error) {
-            console.error(error);
         }
     });
 }
-setInterval(updateData, 10000);
+
+function storageUse(){
+    const storage = document.getElementById("storage");
+    const storageChart = new Chart(storage, {
+        type: 'doughnut',
+        data: {
+            labels: ["Orange", "Red"],
+            datasets: [{
+                label: '# of Votes',
+                data: [100, 45],
+                backgroundColor: [
+                    'rgba(255, 164, 46, 1)',
+                    'rgba(231, 76, 60, 1)'
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)'
+                ],
+                borderWidth: 8 // Increase the border width
+            }]
+        },
+        options: {
+            title: { 
+                        display: true,
+                        text: '스토리지 사용량',
+                        fontSize: 16,
+    
+                        
+                    },
+            rotation: 1 * Math.PI,
+            circumference: 1 * Math.PI,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            cutoutPercentage: 80, // Increase the cutout percentage
+            plugins: {
+            }
+        }
+    });
+}
+
+function DBStorage(){
+    const DBStorage = document.getElementById("DB_storage");
+    const DBStorageChart = new Chart(DBStorage, {
+        type: 'doughnut',
+        data: {
+            labels: ["Red", "Orange",],
+            datasets: [{
+                label: '# of Votes',
+                data: [30,100],
+                backgroundColor: [
+                    'rgba(231, 76, 60, 1)',
+                    'rgba(255, 164, 46, 1)',
+    
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                ],
+                borderWidth: 8 // Increase the border width
+            }]
+        },
+        options: {
+            title: { 
+                display: true,
+                text: 'DB 사용량',
+                fontSize: 16,
+            },
+            rotation: 1 * Math.PI,
+            circumference: 1 * Math.PI,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            cutoutPercentage: 80 // Increase the cutout percentage
+        }
+    });
+}
+
+function CPUUse(){
+    const CPUUsage = document.getElementById("CPU_usage");
+    const useCPU = {{useCPU}}
+    const CPUUsageChart = new Chart(CPUUsage, {
+        type: 'doughnut',
+        data: {
+            labels: ["blue", "green",],
+            datasets: [{
+            label: '# of Votes',
+                data: [useCPU, 100],
+                backgroundColor: [
+                    'rgba(231, 76, 60, 1)',
+                    'rgba(255, 164, 46, 1)',
+    
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                ],
+                borderWidth: 8 // Increase the border width
+            }]
+        },
+        options: {
+            title: { 
+                display: true,
+                text: 'CPU 사용량',
+                fontSize: 16,
+            },
+            rotation: 1 * Math.PI,
+            circumference: 1 * Math.PI,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            cutoutPercentage: 80 // Increase the cutout percentage
+        }
+    });
+
+}
+
+function networkTraffic(){
+    const networkTraffic = document.getElementById("network_traffic");
+    const networkTrafficChart = new Chart(networkTraffic, {
+        type: 'doughnut',
+        data: {
+            labels: ["a", "b",],
+            datasets: [{
+                label: '# of Votes',
+                data: [40,100],
+                backgroundColor: [
+                    'rgba(231, 76, 60, 1)',
+                    'rgba(255, 164, 46, 1)',
+    
+                ],
+                borderColor: [
+                    'rgba(255, 255, 255, 1)',
+                    'rgba(255, 255, 255, 1)',
+                ],
+                borderWidth: 8 // Increase the border width
+            }]
+        },
+        options: {
+            title: { 
+                display: true,
+                text: '네트워크 트래픽',
+                fontSize: 16,
+            },
+            rotation: 1 * Math.PI,
+            circumference: 1 * Math.PI,
+            legend: {
+                display: false
+            },
+            tooltip: {
+                enabled: false
+            },
+            cutoutPercentage: 80 // Increase the cutout percentage
+        }
+    });
+}
 
 function replaceTable(lists, tableBody, target){
     tableBody.innerHTML = "";
@@ -388,12 +278,6 @@ function replaceTable(lists, tableBody, target){
             depmtNameCell.textContent = list.emp_no__depmt_no__depmt_name;
             newRow.appendChild(depmtNameCell);
         }
-        if (target === "report"){
-            const statusCell = document.createElement("td");
-            statusCell.textContent = "미처리";
-            newRow.appendChild(statusCell);
-        }
-        
 
         const remarkCell = document.createElement("td");
         const processButton = document.createElement("button");
@@ -408,7 +292,7 @@ function replaceTable(lists, tableBody, target){
     });
 }
 
-});
+
 
 function process(dect_no){
     const url = "/" + dect_no + "/process/";
@@ -431,6 +315,47 @@ function convertToLocalTime(utcDateString) {
     var formattedDateTime = year + '년 ' + month + '월 ' + day + '일 ' + hours + ':' + ('0' + minutes).slice(-2) + ' ' + period;
     return formattedDateTime;
 }
+
+$(document).ready(function () {
+    todayDection();
+    storageUse();
+    DBStorage();
+    CPUUse();
+    networkTraffic();
+
+    function updateData() {
+        $.ajax({
+            url: "{% url 'main:get_updated_data' %}",
+            type: 'POST',
+            headers: { "X-CSRFToken": '{{csrf_token}}' },
+            processData: false, 
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                document.getElementById('dect_count').textContent = response.dect_count + "건";
+                document.getElementById('report_count').textContent = response.report_count + "건";
+                document.getElementById('report_done_count').textContent = response.report_done_count + "건";
+
+                document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
+                document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
+
+                const dect_tableBody = document.getElementById("dect-table-body");
+                let target = "dection";
+                replaceTable(response.dection_list, dect_tableBody, target);
+            
+                const report_tableBody = document.getElementById("report-table-body");
+                target = "report";
+                replaceTable(response.report_list, report_tableBody, target);
+            },
+            error : function(error) {
+                console.error(error);
+            }
+        });
+    }
+    setInterval(updateData, 10000);
+});
+
+
 
 </script>
 
@@ -524,11 +449,13 @@ function convertToLocalTime(utcDateString) {
                 <canvas id="today_dection"></canvas>
             </div>
             
-            <div class="container3" style="display: block;">
-            <canvas id="storage"></canvas>
-            <canvas id="DB_storage"></canvas>
-            <canvas id="CPU_usage"></canvas>
-            <canvas id="network_traffic"></canvas>
+            <div class="container2">
+                <div style="display: flex; flex-direction: row; justify-content: flex-start; width: 150px;">
+                    <canvas class="row-4" id="storage" ></canvas>
+                    <canvas class="row-4" id="DB_storage"></canvas>
+                    <canvas class="row-4" id="CPU_usage"></canvas>
+                    <canvas class="row-4" id="network_traffic"> </canvas>
+                </div>
             </div>
 
         </div>
@@ -571,7 +498,8 @@ function convertToLocalTime(utcDateString) {
                         <td>{{dection.emp_no__emp_name}}</td>
                         <td>{{dection.emp_no__depmt_no__depmt_name}}</td>
                         <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});"> 처리하기
-                            </button></td>
+                            </button>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -583,7 +511,7 @@ function convertToLocalTime(utcDateString) {
         <div class="row-4"
             style="display: flex; overflow-y: scroll; width: 750px; height:350px; overflow-y:auto; overflow-x:hidden">
             <table class="table table-hover  caption-top mse-5 text-center">
-                <caption id="report-table-caption" style="font-size: 18px;">미처리 사유서({{report_count}}건)</caption>
+                <caption id="report-table-caption" style="font-size: 18px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
                 <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
                     <tr>
                         <th>번호</th>

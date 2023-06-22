@@ -137,12 +137,6 @@ function goToLastPage() {
     <form action="{% url 'main:agent' %}" method='GET'>
     <div class="search-wrapper">
         <div class="input-group">
-            <div class="col-md-1 ">
-                <select class="custom-select d-block" id="filter">
-                    <option>사번</option>
-                    <option>이름</option>
-                </select>
-            </div>
             <div class="form-outline">
                 <input type="search" id="search-input" class="form-control" name="search_key" value="{{ search_key }}"/>
             </div>

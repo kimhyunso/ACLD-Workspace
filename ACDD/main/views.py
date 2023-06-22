@@ -57,7 +57,6 @@ def home_data(isFlag):
             dection['ip'] = identify.ip
             dection['mac'] = identify.mac
 
-
     today = datetime.now().date()
     start_time = datetime(today.year, today.month, today.day, 0, 0, 0)
     end_time = start_time + timedelta(days=1)
@@ -85,7 +84,7 @@ def home_data(isFlag):
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
     
-    
+
     if isFlag == 'HOME':
         context = {
             'dection_list' : dection_list,
@@ -95,6 +94,7 @@ def home_data(isFlag):
             'report_done_count' : report_done_count['count'],
             'data' : data,
             'data_labels' : data_labels,
+            'useCPU' : get_cpu_usage(),
         }
     else:
         context = {
@@ -105,6 +105,7 @@ def home_data(isFlag):
             'report_done_count' : report_done_count['count'],
             'data' : data,
             'data_labels' : data_labels,
+            'useCPU' : get_cpu_usage(),
         }
 
     return context
@@ -120,7 +121,18 @@ def agent(request):
 
         agent_list = (
             Agent.objects
-            .filter(identifies__emp_no__emp_name__icontains=search_key)
+            .filter(Q(identifies__emp_no__emp_name__icontains=search_key)|
+                    Q(agent_no__icontains=search_key)|
+                    Q(identifies__ip__icontains=search_key)|
+                    Q(identifies__mac__icontains=search_key)|
+                    Q(identifies__emp_no__emp_name__icontains=search_key)|
+                    Q(identifies__emp_no__email__icontains=search_key)|
+                    Q(identifies__emp_no__rank__icontains=search_key)|
+                    Q(identifies__emp_no__depmt_no__depmt_name__icontains=search_key)|
+                    Q(identifies__emp_no__depmt_no__location__icontains=search_key)|
+                    Q(identifies__emp_no__depmt_no__landline__icontains=search_key)|
+                    Q(identifies__emp_no__phone_no__icontains=search_key)
+                    )
             .order_by('-agent_no')
             .prefetch_related('identifies__emp_no__depmt_no')
             .values(
@@ -153,7 +165,7 @@ def agent(request):
 
 
 def get_cpu_usage():
-    cpu_percent = psutil.cpu_percent(interval=1)
+    cpu_percent = psutil.cpu_percent()
     return cpu_percent
 
 def detail(request):
@@ -162,14 +174,32 @@ def detail(request):
 
     if search_key == None:
         search_key = ''
+    
+    if search_key == '미처리':
+        search_key = 0
+    elif search_key == '처리완료':
+        search_key = 1
+    elif search_key == '대기중':
+        search_key = 2
 
-
-    dection_list = Dection.objects.filter(
-            emp_no__depmt_no__depmt_name__icontains=search_key
-    ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'status', 
+    dection_list = Dection.objects.order_by('-dect_no').filter(
+        Q(emp_no__emp_no__icontains=search_key)|
+        Q(emp_no__emp_name__icontains=search_key)|
+        Q(emp_no__depmt_no__depmt_name__icontains=search_key)|
+        Q(dect_no__icontains=search_key)|
+        Q(status__icontains=search_key)|
+        Q(create_at__icontains=search_key)
+    ).select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'status',
         'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-    )    
+    )
+
+    for dection in dection_list:
+        employee = dection['emp_no__emp_no']
+        identify = Identify.objects.filter(emp_no=employee).first()
+        if identify:
+            dection['ip'] = identify.ip
+            dection['mac'] = identify.mac
 
     paginator = Paginator(dection_list, 10)
     page_obj = paginator.get_page(page)
@@ -179,53 +209,6 @@ def detail(request):
     }
 
     return render(request, 'main/detail.html', context)
-
-def mode(stauts, search_key):
-    if stauts == '0':
-        dection_list = Dection.objects.filter(dect_no__icontains=search_key).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-        )
-    elif stauts == '1':
-        dection_list = Dection.objects.filter(
-            emp_no__emp_name__icontains=search_key
-        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-        )
-    elif stauts == '2':
-        dection_list = Dection.objects.order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-        )
-        
-    elif stauts == '3':
-        dection_list = Dection.objects.filter(
-            emp_no__depmt_no__depmt_name__icontains=search_key
-        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-        )
-
-    elif stauts == '4':
-        if search_key == '미처리':
-            search_key = 0
-        elif search_key == '대기중':
-            search_key = 1
-        elif search_key == '처리완료':
-            search_key = 2
-
-        dection_list = Dection.objects.filter(
-            status__icontains=search_key
-        ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'status', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
-        )
-
-    for dection in dection_list:
-        employee = dection['emp_no__emp_no']
-        identify = Identify.objects.filter(emp_no=employee).first()
-        if identify:
-            dection['ip'] = identify.ip
-            dection['mac'] = identify.mac
-
-    return dection_list
-
 
 
 @require_http_methods(['GET', 'POST'])
@@ -250,7 +233,6 @@ def process(request, dect_no):
     else:
         data = json.loads(request.body)
         status = int(data['result'])
-        print(dect_no)
         dect = Dection.objects.get(dect_no=dect_no)
         dection = Dection.objects.filter(dect_no=dect_no).update(status=status)
 

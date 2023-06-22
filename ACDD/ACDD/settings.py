@@ -80,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'acdd',
-        'USER': 'jeawon',
+        'USER': 'root',
         'PASSWORD': '1735',
         'HOST': '192.168.50.131',
         'PORT': '3306',
@@ -89,7 +89,6 @@ DATABASES = {
         }
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
