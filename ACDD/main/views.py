@@ -7,6 +7,9 @@ from django.conf import settings
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 import os, json, psutil, random
+from django.db.models.functions import TruncMonth, TruncHour
+from datetime import datetime, timedelta
+
 
 @require_http_methods(['GET'])
 def home(request):
@@ -19,10 +22,16 @@ def get_updated_data(request):
     return JsonResponse(context)
 
 def home_data(isFlag):
-    report_list = Report.objects.filter(status=0).order_by('-report_no').select_related('dect_no', 'dect_no__emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 'dect_no__emp_no__depmt_no__depmt_name'
+    report_list = Report.objects.filter(status=0).order_by('-report_no').select_related(
+        'dect_no', 
+        'dect_no__emp_no', 
+    ).values(
+        'dect_no', 'status', 'create_at',
+        'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 
+        'dect_no__emp_no__depmt_no__depmt_name',
     )
-    
+
+
     for report in report_list:
         employee = report['dect_no__emp_no__emp_no']
         identify = Identify.objects.filter(emp_no=employee).first()
@@ -30,8 +39,15 @@ def home_data(isFlag):
             report['ip'] = identify.ip
             report['mac'] = identify.mac
 
-    dection_list = Dection.objects.filter(status=0).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    dection_list = Dection.objects.filter(status=0).order_by('-dect_no').select_related(
+        'emp_no', 
+        'emp_no__depmt_no',
+    ).values(
+        'dect_no', 
+        'create_at', 
+        'emp_no__emp_no', 
+        'emp_no__emp_name', 
+        'emp_no__depmt_no__depmt_name',
     )
     
     for dection in dection_list:
@@ -42,9 +58,33 @@ def home_data(isFlag):
             dection['mac'] = identify.mac
 
 
+    today = datetime.now().date()
+    start_time = datetime(today.year, today.month, today.day, 0, 0, 0)
+    end_time = start_time + timedelta(days=1)
+    hour_range = [start_time + timedelta(hours=i) for i in range(int((end_time - start_time).total_seconds() // 3600))]
+    date_list = [{'hour': hour, 'count': 0} for hour in hour_range] 
+
+    data = Dection.objects.filter(create_at__range=(start_time, end_time)).annotate(hour=TruncHour('create_at')).values('hour').annotate(count=Count('dect_no')).values('hour', 'count')
+
+    for item in data:
+        for date_item in date_list:
+            if item['hour'].strftime('%H') == date_item['hour'].strftime('%H'):
+                date_item['count'] = item['count']
+                break
+
+    data_labels = []
+    for item in date_list:
+        data_labels.append(item['hour'].strftime('%H'))
+    
+
+    data = []
+    for item in date_list:
+        data.append(item['count'])
+
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
+    
     
     if isFlag == 'HOME':
         context = {
@@ -53,6 +93,8 @@ def home_data(isFlag):
             'dect_count' : dect_count['count'],
             'report_count' : report_count['count'],
             'report_done_count' : report_done_count['count'],
+            'data' : data,
+            'data_labels' : data_labels,
         }
     else:
         context = {
@@ -61,10 +103,11 @@ def home_data(isFlag):
             'dect_count' : dect_count['count'],
             'report_count' : report_count['count'],
             'report_done_count' : report_done_count['count'],
+            'data' : data,
+            'data_labels' : data_labels,
         }
 
     return context
-
 
 @require_http_methods(['GET', 'POST'])
 def agent(request):
@@ -116,15 +159,17 @@ def get_cpu_usage():
 def detail(request):
     page = request.GET.get('page', '1')
     search_key = request.GET.get('search_key')
-    search_mode = request.GET.get('search_mode')
 
     if search_key == None:
         search_key = ''
 
-    if search_mode == None:
-        search_mode = '0'
 
-    dection_list = mode(stauts=search_mode, search_key=search_key)
+    dection_list = Dection.objects.filter(
+            emp_no__depmt_no__depmt_name__icontains=search_key
+    ).order_by('-dect_no').select_related('emp_no', 'emp_no__depmt_no').values(
+        'dect_no', 'create_at', 'status', 
+        'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+    )    
 
     paginator = Paginator(dection_list, 10)
     page_obj = paginator.get_page(page)
@@ -181,6 +226,8 @@ def mode(stauts, search_key):
 
     return dection_list
 
+
+
 @require_http_methods(['GET', 'POST'])
 def process(request, dect_no):
     if request.method == 'GET':
@@ -203,13 +250,17 @@ def process(request, dect_no):
     else:
         data = json.loads(request.body)
         status = int(data['result'])
-        
+        print(dect_no)
+        dect = Dection.objects.get(dect_no=dect_no)
         dection = Dection.objects.filter(dect_no=dect_no).update(status=status)
 
         if status == 2:
             contents = []
             report = Report()
-            report.dect_no = dect_no
+            report.dect_no = dect
+
+            
+
             with open(settings.MEDIA_ROOT + '/context.txt', 'r', encoding='utf-8') as file:
                 for line in file:
                     if line == '\n':
@@ -217,6 +268,7 @@ def process(request, dect_no):
                     contents.append(line)
             rnd_content = random.choice(contents)
             report.content = rnd_content
+            report.status = 0
             report.save()
 
         return JsonResponse({'sucess' : 200})

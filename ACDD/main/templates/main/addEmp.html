@@ -35,7 +35,7 @@ $(document).ready(function() {
 		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
 		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
 	
-		/*$.ajax({
+		$.ajax({
 			type :"POST",
 			url : "{% url 'main:addEmp' %}",
 			headers: { "X-CSRFToken": '{{csrf_token}}' },

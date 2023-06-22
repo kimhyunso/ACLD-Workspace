@@ -30,6 +30,7 @@ class DataBase:
             sys.exit(1)
 
     def update_agent(self, status, agent_no):
+        
         sql = "UPDATE agent SET status=? WHERE agent_no=?"
         try:
             cursor = self.get_cursor()
