@@ -5,8 +5,6 @@ function addEmpRegist(){
 	let empName = document.getElementById("empName").value;
 	let empNo = document.getElementById("empNo").value;
 	let depmtNo = document.getElementById("depmtNo").value;
-	let mac = document.getElementById("MAC").value;
-	let ip = document.getElementById("IP").value;
 	let rank = document.getElementById("rank").value;
 	let phoneNumber = document.getElementById("phoneNumber").value;
 	let email = document.getElementById("email").value;
@@ -14,8 +12,6 @@ function addEmpRegist(){
 	let fileCSV = document.getElementById("fileCSV").files[0];
 	email = validateEmail(email);
 	phoneNumber = validatePhoneNumber(phoneNumber);
-	ip = validateIPAddress(ip);
-	mac = validateMACAddress(mac);
 
 	if (email === undefined){
 		alert("이메일 형식이 유효하지 않습니다.");
@@ -23,20 +19,12 @@ function addEmpRegist(){
 	}else if (phoneNumber === undefined){
 		alert("핸드폰 번호 형식이 유효하지 않습니다.");
 		return
-	}else if (ip === undefined){
-		alert("IP 주소 형식이 유효하지 않습니다.");
-		return
-	}else if (mac === undefined){
-		alert("MAC 주소 형식이 유효하지 않습니다.");
-		return
 	}
 
 	const empDatas = new FormData()
 	empDatas.append("empName", empName);
 	empDatas.append("rank", rank);
 	empDatas.append("empNo", empNo);
-	empDatas.append("MAC", mac);
-	empDatas.append("IP", ip);
 	empDatas.append("phoneNumber", phoneNumber);
 	empDatas.append("email", email);
 	empDatas.append("depmtNo",  depmtNo);
@@ -72,25 +60,6 @@ function validatePhoneNumber(phoneNumber) {
 		return
 	}
 	return phoneNumber;
-}
-
-
-function validateIPAddress(ipAddress) {
-	const ipRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
-	if (!ipRegex.test(ipAddress)){
-		return
-	}
-	return ipAddress
-}
-
-
-
-function validateMACAddress(macAddress) {
-	const macRegex = /^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$/;
-	if (!macRegex.test(macAddress)){
-		return
-	}
-	return macAddress
 }
 </script>
 
@@ -141,27 +110,6 @@ function validateMACAddress(macAddress) {
 							<option value="{{name_list.depmt_no}}">{{name_list.depmt_name}}</option>
 						{% endfor %}
 					</select>
-				</div>
-			</div>
-
-
-			<div class="row">
-				<div class="mb-12">
-					<label for="MAC">MAC</label>
-					<input type="text" class="form-control" id="MAC" placeholder="12-34-56-78-ab-cd" required>
-					<div class="invalid-feedback">
-					  MAC Address를 입력해주세요.
-					</div>
-				  </div>
-            </div>
-
-			<div class="row">
-				<div class="mb-12">
-					<label for="IP">IP</label>
-					<input type="text" class="form-control" id="IP" placeholder="192.168.0.1" required>
-					<div class="invalid-feedback">
-					  IP정보를 입력해주세요.
-					</div>
 				</div>
 			</div>
 

@@ -131,7 +131,7 @@ def agent(request):
                     Q(identifies__emp_no__depmt_no__location__icontains=search_key)|
                     Q(identifies__emp_no__depmt_no__landline__icontains=search_key)|
                     Q(identifies__emp_no__phone_no__icontains=search_key)
-                    )
+            )
             .order_by('-agent_no')
             .prefetch_related('identifies__emp_no__depmt_no')
             .values(
@@ -287,8 +287,6 @@ def addEmp(request):
         STATUS = 400
         fs = FileSystemStorage()
 
-
-
         if 'file_csv' in request.FILES:
             csv_file = request.FILES['fileCSV']
             allowed_extensions = ['csv', 'xlsx']
@@ -312,8 +310,6 @@ def addEmp(request):
         emp_name =request.POST.get('empName')
         rank = request.POST.get('rank')
         emp_no = request.POST.get('empNo')
-        MAC = request.POST.get('MAC')
-        IP = request.POST.get('IP')
         phone_no = request.POST.get('phoneNumber')
         email = request.POST.get('email')
         depmt_no = request.POST.get('depmtNo')
@@ -335,21 +331,6 @@ def addEmp(request):
         employee.emp_img_path = os.path.join(settings.MEDIA_URL, employee_path)
         employee.save()
 
-        agent = Agent()
-        agent.status = 0
-        agent.save()
-
-        agent_no = Agent.objects.last().agent_no
-
-        identify = Identify()
-        employee = Employee.objects.get(emp_no=emp_no)
-        agent = Agent.objects.get(agent_no=agent_no)
-
-        identify.emp_no = employee
-        identify.agent_no = agent
-        identify.ip = IP
-        identify.mac = MAC
-        identify.save()
         return JsonResponse({'success': True})
 
 @require_http_methods(['POST', 'GET'])
