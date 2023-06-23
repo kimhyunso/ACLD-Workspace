@@ -309,10 +309,8 @@ def addEmp(request):
 
         if file_extension not in allowed_extensions:
             return JsonResponse(context, status=STATUS)
-        
-       
 
-        emp_name =request.POST.get('dempName')
+        emp_name =request.POST.get('empName')
         rank = request.POST.get('rank')
         emp_no = request.POST.get('empNo')
         MAC = request.POST.get('MAC')
