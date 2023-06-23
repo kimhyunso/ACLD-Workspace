@@ -7,9 +7,8 @@ from django.conf import settings
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 import os, json, psutil, random
-from django.db.models.functions import TruncMonth, TruncHour
+from django.db.models.functions import TruncHour
 from datetime import datetime, timedelta
-
 
 @require_http_methods(['GET'])
 def home(request):
