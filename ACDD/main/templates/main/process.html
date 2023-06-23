@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
-function sendConfirmation() {
+function sendConfirmation(isFlag) {
     if (confirm("사유서를 보내시겠습니까?")) {
         data = {
-            'result' : 2,
+            'result' : isFlag,
         }
         fetch("{% url 'main:process' dect_one.dect_no %}",
         {
@@ -45,14 +45,14 @@ function confirmStatus() {
     }
 }
 </script>
-{% if dect_one.status == 1 %}
-<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation();">재요청하기</button>
+
+{% if dect_one.status == 2%}
+<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation('3');">재요청하기</button>
 <button class="btn btn-primary btn mt-5" onclick="confirmStatus();">이상없음</button>
-{% elif dect_one.status != 2 %}
-<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation();">사유서 보내기</button>
+{% elif dect_one.status == 0 %}
+<button class="btn mt-5" style="background-color: #BFDBFE; color: #3B82F6; margin-left: 8%;" onclick="sendConfirmation('2');">사유서 보내기</button>
 <button class="btn btn-primary btn mt-5" onclick="confirmStatus();">이상없음</button>
 {% endif %}
-
 
 <div class="container">
     <div class="row">
@@ -79,16 +79,16 @@ function confirmStatus() {
                 <table class="table">
                     <tbody>
                         <tr>
-                        <th scope="row">이름</th>
-                        <td>허우영</td>
+                            <th scope="row">이름</th>
+                            <td>허우영</td>
                         </tr>
                         <tr>
-                        <th scope="row">직급</th>
-                        <td>인턴</td>
+                            <th scope="row">직급</th>
+                            <td>인턴</td>
                         </tr>
                         <tr>
-                        <th scope="row">부서</th>
-                        <td colspan="2">AI</td>
+                            <th scope="row">부서</th>
+                            <td colspan="2">AI</td>
                         </tr>
                     </tbody>
                 </table>
@@ -100,7 +100,7 @@ function confirmStatus() {
                 <tbody>
                     <tr>
                     <th scope="row" >MAC</th>
-                    <td>{{identify.mac}}</td>
+                    <td>{{ identify.mac }}</td>
                     </tr>
                     <tr>
                     <th scope="row">날짜</th>
@@ -143,7 +143,11 @@ function confirmStatus() {
                     <td>{{report.report_no}}</td>
 					<td>{{report.create_at}}</td>
 					<td>{{report.content}}</td>
-					<td>{{report.status}}</td>
+                    {% if report.status == 0 %}
+                        <td>미처리</td>
+                    {% else %}
+                        <td>처리완료</td>
+                    {% endif %}
 				</tr>
 			{% endfor %}
             </tbody>

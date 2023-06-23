@@ -234,26 +234,40 @@ def process(request, dect_no):
         data = json.loads(request.body)
         status = int(data['result'])
         dect = Dection.objects.get(dect_no=dect_no)
-        dection = Dection.objects.filter(dect_no=dect_no).update(status=status)
 
-        if status == 2:
-            contents = []
-            report = Report()
-            report.dect_no = dect
+        if status != 3:
+            dection = Dection.objects.filter(dect_no=dect_no).update(status=status)
 
-            
-
-            with open(settings.MEDIA_ROOT + '/context.txt', 'r', encoding='utf-8') as file:
-                for line in file:
-                    if line == '\n':
-                        continue
-                    contents.append(line)
-            rnd_content = random.choice(contents)
-            report.content = rnd_content
-            report.status = 0
+        if status == 1:
+            Report.objects.filter(dect_no=dect_no).update(status=status)
+        elif status == 2:
+            create_report(dect)
+        elif status == 3:
+            report = Report.objects.get(dect_no=dect_no)
+            report.status = 1
             report.save()
+            create_report(dect)
 
         return JsonResponse({'sucess' : 200})
+    
+
+
+def create_report(dect):
+    contents = []
+    report = Report()
+    report.dect_no = dect
+
+    with open(settings.MEDIA_ROOT + '/context.txt', 'r', encoding='utf-8') as file:
+        for line in file:
+            if line == '\n':
+                continue
+            contents.append(line)
+    
+    rnd_content = random.choice(contents)
+    report.content = rnd_content
+    report.status = 0
+    report.save()
+
 
 def employee(request):
     return render(request, 'main/employee.html')
@@ -274,8 +288,10 @@ def addEmp(request):
         STATUS = 400
         fs = FileSystemStorage()
 
+
+
         if 'file_csv' in request.FILES:
-            csv_file = request.FILES['file_csv']
+            csv_file = request.FILES['fileCSV']
             allowed_extensions = ['csv', 'xlsx']
             file_extension = csv_file.name.split('.')[-1].lower()
 
@@ -287,22 +303,25 @@ def addEmp(request):
             csv_filename = fs.save(employee_csv_path, csv_file)
             return JsonResponse({'success': True})
 
-        emp_img = request.FILES['empt_img']
+        emp_img = request.FILES['emptImage']
         allowed_extensions = ['png', 'jpg', 'jpeg', 'bmp']
         file_extension = emp_img.name.split('.')[-1].lower()
 
         if file_extension not in allowed_extensions:
             return JsonResponse(context, status=STATUS)
+        
+       
 
-        emp_name =request.POST.get('emp_name')
+        emp_name =request.POST.get('dempName')
         rank = request.POST.get('rank')
-        emp_no = request.POST.get('emp_no')
+        emp_no = request.POST.get('empNo')
         MAC = request.POST.get('MAC')
         IP = request.POST.get('IP')
-        phone_no = request.POST.get('phone_no')
+        phone_no = request.POST.get('phoneNumber')
         email = request.POST.get('email')
-        depmt_no = request.POST.get('depmt_no')
-        
+        depmt_no = request.POST.get('depmtNo')
+
+
         employee_folder = 'employee' 
         employee_path = employee_folder + '/' + f'{emp_no}_{emp_img.name}'
         filename = fs.save(employee_path, emp_img)
@@ -320,13 +339,14 @@ def addEmp(request):
         employee.save()
 
         agent = Agent()
-        agent.agent_no = emp_no
         agent.status = 0
         agent.save()
 
+        agent_no = Agent.objects.last().agent_no
+
         identify = Identify()
         employee = Employee.objects.get(emp_no=emp_no)
-        agent = Agent.objects.get(agent_no=emp_no)
+        agent = Agent.objects.get(agent_no=agent_no)
 
         identify.emp_no = employee
         identify.agent_no = agent
@@ -341,9 +361,9 @@ def addDepart(request):
         return render(request, 'main/addDepart.html')
     else:
         reqData = json.loads(request.body)
-        landline = reqData['landline']
+        landline = reqData['landLine']
         location = reqData['location']
-        demp_name = reqData['demp_name']
+        demp_name = reqData['dempName']
 
         department = Department()
         department.landline = landline
@@ -351,8 +371,6 @@ def addDepart(request):
         department.depmt_name = demp_name
         department.save()
 
-        # dempt_list = Department.objects.all()
-        # depmt_name_list = serializers.serialize('json', department)
         return JsonResponse(reqData)
 
 

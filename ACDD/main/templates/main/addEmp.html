@@ -1,81 +1,82 @@
 {% extends 'base.html' %}
 {% block content %}
 <script>
-$(document).ready(function() {
-	$("#addEmpBtn").click(function(){
-		const email = validateEmail($("#email").val());
-		const phone_no = validatePhoneNumber($("phone_no").val());
-		const ip = validateIPAddress($("#IP").val());
-		const mac = validateMACAddress($("#MAC").val());
-		console.log(phone_no)
+function addEmpRegist(){
+	let empName = document.getElementById("empName").value;
+	let empNo = document.getElementById("empNo").value;
+	let depmtNo = document.getElementById("depmtNo").value;
+	let mac = document.getElementById("MAC").value;
+	let ip = document.getElementById("IP").value;
+	let rank = document.getElementById("rank").value;
+	let phoneNumber = document.getElementById("phoneNumber").value;
+	let email = document.getElementById("email").value;
+	let emptImage = document.getElementById("emptImage").files[0];
+	let fileCSV = document.getElementById("fileCSV").files[0];
+	email = validateEmail(email);
+	phoneNumber = validatePhoneNumber(phoneNumber);
+	ip = validateIPAddress(ip);
+	mac = validateMACAddress(mac);
 
-		/*if (email === undefined){
-			alert("이메일 형식이 유효하지 않습니다.");
-			return
-		}else if (phone_no === undefined){
-			alert("핸드폰 번호 형식이 유효하지 않습니다.");
-			return
-		}else if (ip === undefined){
-			alert("IP 주소 형식이 유효하지 않습니다.");
-			return
-		}else{
-			alert("MAC 주소 형식이 유효하지 않습니다.");
-			return
-		}*/
-		
-		const emp_datas = new FormData()
-		emp_datas.append("emp_name", $("#emp_name").val());
-		emp_datas.append("rank", $("#rank").val());
-		emp_datas.append("emp_no", $("#emp_no").val());
-		emp_datas.append("MAC", mac);
-		emp_datas.append("IP", ip);
-		emp_datas.append("phone_no", phone_no);
-		emp_datas.append("email", email);
-		emp_datas.append("depmt_no",  $("#depmt_no").val());
-		emp_datas.append("empt_img", $("#empt_img")[0].files[0]);
-		emp_datas.append("file_csv", $("#file_csv")[0].files[0]);
-	
-		$.ajax({
-			type :"POST",
-			url : "{% url 'main:addEmp' %}",
-			headers: { "X-CSRFToken": '{{csrf_token}}' },
-			processData: false, 
-    		contentType: false,
-			data : emp_datas,
-			dataType : "JSON",
-			success : function(response){
-				window.location.replace("{% url 'main:addEmp' %}");
-			},
-			error : function(request, status, error){
-				errorMessage = request.responseJSON.message;
-				alert(errorMessage);
-			}
-		});
+	if (email === undefined){
+		alert("이메일 형식이 유효하지 않습니다.");
+		return
+	}else if (phoneNumber === undefined){
+		alert("핸드폰 번호 형식이 유효하지 않습니다.");
+		return
+	}else if (ip === undefined){
+		alert("IP 주소 형식이 유효하지 않습니다.");
+		return
+	}else if (mac === undefined){
+		alert("MAC 주소 형식이 유효하지 않습니다.");
+		return
+	}
+
+	const empDatas = new FormData()
+	empDatas.append("empName", empName);
+	empDatas.append("rank", rank);
+	empDatas.append("empNo", empNo);
+	empDatas.append("MAC", mac);
+	empDatas.append("IP", ip);
+	empDatas.append("phoneNumber", phoneNumber);
+	empDatas.append("email", email);
+	empDatas.append("depmtNo",  depmtNo);
+	empDatas.append("emptImage", emptImage);
+	empDatas.append("fileCSV", fileCSV);
+
+
+	fetch("{% url 'main:addEmp' %}",
+	{
+		method: 'POST',
+		headers: { "X-CSRFToken": '{{csrf_token}}' },
+		body : empDatas,
+	})
+	.then(function (response) {
+		window.location.replace({% url 'main:addEmp' %});
+	})
+	.catch(function (err) {
+		alert('다시 입력해주세요!');
 	});
-
+}
 
 function validateEmail(email) {
 	const emailRegex = /^[\w.-]+@[\w.-]+\.\w+$/;
-
 	if (!emailRegex.test(email)){
 		return
 	}
 	return email;
 }
 
-
 function validatePhoneNumber(phoneNumber) {
 	const phoneRegex = /^01[0-9]{8,9}$/;
-	console.log(phoneNumber);
-	/*if (!phoneRegex.test(phoneNumber)){
+	if (!phoneRegex.test(phoneNumber)){
 		return
-	}*/
+	}
 	return phoneNumber;
 }
 
 
 function validateIPAddress(ipAddress) {
-	const ipRegex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+	const ipRegex = /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/;
 	if (!ipRegex.test(ipAddress)){
 		return
 	}
@@ -91,8 +92,6 @@ function validateMACAddress(macAddress) {
 	}
 	return macAddress
 }
-
-});
 </script>
 
 <div class="container">
@@ -101,8 +100,8 @@ function validateMACAddress(macAddress) {
 			<h3 class="mb-3"><strong>직원 등록</strong></h3>
 			<div class="row">
 				<div class="mb-12">
-					<label for="emp_name">이름</label>
-					<input type="text" class="form-control" id="emp_name" placeholder="이름을 입력해주세요." required>
+					<label for="empName">이름</label>
+					<input type="text" class="form-control" id="empName" placeholder="이름을 입력해주세요." required>
 					<div class="invalid-feedback">
 					  이름을 입력해주세요.
 					</div>
@@ -111,8 +110,8 @@ function validateMACAddress(macAddress) {
 
 			<div class="row">
 				<div class="mb-12">
-					<label for="emp_no">사원번호</label>
-					<input type="number" class="form-control" id="emp_no" placeholder="사원번호를 입력해주세요." required>
+					<label for="empNo">사원번호</label>
+					<input type="number" class="form-control" id="empNo" placeholder="사원번호를 입력해주세요." required>
 					<div class="invalid-feedback">
 						사원번호를 입력해주세요.
 					</div>
@@ -135,8 +134,8 @@ function validateMACAddress(macAddress) {
 
 			<div class="row">
 				<div class="col-md-12 mb-3">
-					<label for="depmt_no">부서</label>
-					<select class="custom-select d-block w-100" id="depmt_no">
+					<label for="depmtNo">부서</label>
+					<select class="custom-select d-block w-100" id="depmtNo">
 						<option>부서를 선택해주세요.</option>
 						{% for name_list  in  dempt_list %}
 							<option value="{{name_list.depmt_no}}">{{name_list.depmt_name}}</option>
@@ -168,8 +167,8 @@ function validateMACAddress(macAddress) {
 
 			<div class="row">
 				<div class="mb-12">
-					<label for="phone_no">휴대폰번호</label>
-					<input type="text" class="form-control" id="phone_no" placeholder="01012341234" required>
+					<label for="phoneNumber">휴대폰번호</label>
+					<input type="text" class="form-control" id="phoneNumber" placeholder="01012341234" required>
 					<div class="invalid-feedback">
 					  휴대폰번호를 입력해주세요
 					</div>
@@ -190,8 +189,8 @@ function validateMACAddress(macAddress) {
 				<div class="mb-12">
 					<span>직원 이미지 업로드</span>
 					<div class="input-group">
-						<input type="file" class="form-control" id="empt_img">
-						<label class="input-group-text" for="empt_img">업로드</label>
+						<input type="file" class="form-control" id="emptImage">
+						<label class="input-group-text" for="emptImage">업로드</label>
 					</div>
 				</div>
 			</div>
@@ -201,15 +200,15 @@ function validateMACAddress(macAddress) {
 				<div class="mb-12">
 					<span>csv파일 업로드</span>
 					<div class="input-group">
-						<input type="file" class="form-control" id="file_csv">
-						<label class="input-group-text" for="file_csv">업로드</label>
+						<input type="file" class="form-control" id="fileCSV">
+						<label class="input-group-text" for="fileCSV">업로드</label>
 					</div>
 				</div>
 			</div>
 
 			<div class="row mt-3">
 				<div class="mb-12">
-  					<button id="addEmpBtn" class="btn btn-outline-primary" type="button">등록</button>
+  					<button id="addEmpBtn" class="btn btn-outline-primary" type="button" onclick="addEmpRegist();">등록</button>
   				</div>
 			</div>
 		</div>

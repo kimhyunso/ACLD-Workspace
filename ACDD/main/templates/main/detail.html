@@ -64,9 +64,9 @@ function goToLastPage() {
                     {% if dection.status == 0 %}
                         <td>미처리</td>
                     {% elif dection.status == 1 %}
-                        <td>대기중</td>
-                    {% elif dection.status == 2 %}
                         <td>처리완료</td>
+                    {% elif dection.status == 2 %}
+                        <td>대기중</td>
                     {% endif %}
                     <td><button class="btn btn-outline-primary" onclick="process({{dection.dect_no}});">상세보기</button></td>
                 </tr>

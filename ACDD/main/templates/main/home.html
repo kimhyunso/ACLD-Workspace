@@ -39,8 +39,6 @@ function todayDection(){
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
-
-
                 ],
                 // borderColor: ['rgba(255, 99, 132, 1)'],
                 borderWidth: 1
@@ -60,7 +58,7 @@ function todayDection(){
             },
             title: {
                 display: true,
-                text: '금일탐지건수',
+                text: '금일 시간별 탐지건수',
                 fontSize: 18,
                 align: 'left',
             },
@@ -102,12 +100,10 @@ function storageUse(){
         },
         options: {
             title: { 
-                        display: true,
-                        text: '스토리지 사용량',
-                        fontSize: 16,
-    
-                        
-                    },
+                display: true,
+                text: '스토리지 사용량',
+                fontSize: 16,
+            },
             rotation: 1 * Math.PI,
             circumference: 1 * Math.PI,
             legend: {
@@ -217,7 +213,6 @@ function networkTraffic(){
                 backgroundColor: [
                     'rgba(231, 76, 60, 1)',
                     'rgba(255, 164, 46, 1)',
-    
                 ],
                 borderColor: [
                     'rgba(255, 255, 255, 1)',
@@ -292,8 +287,6 @@ function replaceTable(lists, tableBody, target){
     });
 }
 
-
-
 function process(dect_no){
     const url = "/" + dect_no + "/process/";
     window.location.href = url;
@@ -301,14 +294,13 @@ function process(dect_no){
 
 function convertToLocalTime(utcDateString) {
     var date = new Date(utcDateString);
-
     var year = date.getUTCFullYear();
     var month = date.getUTCMonth() + 1;
     var day = date.getUTCDate();
     var hours = date.getUTCHours();
     var minutes = date.getUTCMinutes();
-
     var period = hours >= 12 ? '오후' : '오전';
+
     hours = hours % 12;
     hours = hours ? hours : 12;
     
@@ -320,9 +312,8 @@ $(document).ready(function () {
     todayDection();
     storageUse();
     DBStorage();
-    CPUUsageChart = CPUUse();
+    CPUUse();
     networkTraffic();
-    console.log(CPUUsageChart.config.data);
 
     function updateData() {
         $.ajax({
@@ -347,7 +338,6 @@ $(document).ready(function () {
                 const report_tableBody = document.getElementById("report-table-body");
                 target = "report";
                 replaceTable(response.report_list, report_tableBody, target);
-                CPUUsageChart.update();
             },
             error : function(error) {
                 console.error(error);
@@ -356,15 +346,10 @@ $(document).ready(function () {
     }
     setInterval(updateData, 10000);
 });
-
-
-
 </script>
 
-
 <div class="container2" style="display: flex; margin-left: 48px; margin-right: 48px;">
-
-    <div class="row" style="display: flex;" >
+    <div class="row" style="display: flex;">
         <div class="row-4" style="font-weight: bold;">
             <div style="font-size: 20px; margin-top: 20px;margin-bottom: 20px ;">실시간 처리 현황</div>
             <div class="row-4">
@@ -471,10 +456,7 @@ $(document).ready(function () {
                     <canvas class="row-4" id="network_traffic"> </canvas>
                 </div>
         </div>
-
-
     </div>
-
 
     <div class="container-table" style="-ms-overflow-style: none; -webkit-scrollbardisplay: none; margin-left: 5%; margin-top: 1%;" >
         <div class="row-6"
@@ -507,7 +489,6 @@ $(document).ready(function () {
                 </tbody>
             </table>
         </div>
-
   
     <div class="container-table">
         <div class="row-4"
@@ -533,7 +514,7 @@ $(document).ready(function () {
                         <td>{{report.ip}}</td>
                         <td>{{report.dect_no__emp_no__emp_name}}</td>
                         <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
-                        <td><button class="btn btn-outline-primary" onclick="process(dection.dect_no);">처리하기</button>
+                        <td><button class="btn btn-outline-primary" onclick="process({{report.dect_no}});">처리하기</button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -542,8 +523,6 @@ $(document).ready(function () {
         </div>
     </div>
 </div>
-
-
 
 </div>
 {% endblock content %}
