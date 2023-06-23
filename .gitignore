@@ -111,6 +111,7 @@ coverage.xml
 cover/
 *.xlsx
 *.csv
+*.txt
 
 # Translations
 *.mo

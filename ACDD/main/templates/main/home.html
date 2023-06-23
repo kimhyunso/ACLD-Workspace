@@ -202,7 +202,7 @@ function CPUUse(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
-
+    return CPUUsageChart
 }
 
 function networkTraffic(){
@@ -320,8 +320,9 @@ $(document).ready(function () {
     todayDection();
     storageUse();
     DBStorage();
-    CPUUse();
+    CPUUsageChart = CPUUse();
     networkTraffic();
+    console.log(CPUUsageChart.config.data);
 
     function updateData() {
         $.ajax({
@@ -346,6 +347,7 @@ $(document).ready(function () {
                 const report_tableBody = document.getElementById("report-table-body");
                 target = "report";
                 replaceTable(response.report_list, report_tableBody, target);
+                CPUUsageChart.update();
             },
             error : function(error) {
                 console.error(error);
