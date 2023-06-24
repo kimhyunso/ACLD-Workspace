@@ -15,22 +15,33 @@ class DataBase:
             print(f'Connection Error : {e}')
             sys.exit(1)
 
-    def select_identify(self, IP, MAC):
-        sql = "SELECT agent_no FROM identify WHERE IP = ? AND MAC = ?"
+    def update_identify(self, IP, MAC, emp_no):
+        sql = "UPDATE identify SET IP=?, MAC=? WHERE emp_no = ?"
         try:
             cursor = self.get_cursor()
             cursor.execute(sql,
-                (IP, MAC)
+                (IP, MAC, emp_no)
+            )
+        except Exception as e:
+            print(f"Select Error : {e}")
+            sys.exit(1)
+
+
+    def select_identify(self, emp_no):
+        sql = "SELECT agent_no FROM identify WHERE emp_no = ?"
+        try:
+            cursor = self.get_cursor()
+            cursor.execute(sql,
+                (emp_no, )
             )
             result = cursor.fetchone()
             return result[0]
-                    
+
         except Exception as e:
             print(f"Select Error : {e}")
             sys.exit(1)
 
     def update_agent(self, status, agent_no):
-        
         sql = "UPDATE agent SET status=? WHERE agent_no=?"
         try:
             cursor = self.get_cursor()
@@ -64,6 +75,7 @@ class DataBase:
     def close(self):
         self.get_cursor().close()
         self.get_connection().close()
+
 
     def get_connection(self):
         return self.__conn

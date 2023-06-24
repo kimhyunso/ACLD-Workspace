@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'acdd',
         'USER': 'root',
         'PASSWORD': '1735',
-        'HOST': '192.168.50.131',
+        'HOST': '192.168.0.13',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'
@@ -137,9 +137,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# host_name = socket.gethostname()
-# HOST = socket.gethostbyname(host_name)
-# PORT = 9999
+host_name = socket.gethostname()
+HOST = socket.gethostbyname(host_name)
+PORT = 9999
 
-# thread = threading.Thread(target=Server, args=(HOST, PORT))
-# thread.start()
+thread = threading.Thread(target=Server, args=(HOST, PORT))
+thread.start()

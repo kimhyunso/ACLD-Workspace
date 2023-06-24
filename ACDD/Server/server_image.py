@@ -21,7 +21,7 @@ class Server:
 
         user_name = 'root'
         user_pwd = '1735'
-        host = '192.168.50.131'
+        host = '127.0.0.1'
         port = 3306
         db_name = 'acdd'
         self.connectDB = DataBase(user_name, user_pwd, host, port, db_name)
@@ -73,25 +73,29 @@ class Server:
                 
                 json_data = self.get_data()
                 self.result_data = json.loads(json_data)
-                
-                agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
-                self.connectDB.update_agent(self.is_alive(), agent_no)
-                self.connectDB.insert_dection(self.result_data['saborn'], cam_path, screen_path)
+                ip = self.result_data['IP']
+                mac = self.result_data['MACAddress']
+                saborn = self.result_data['saborn']
 
+                self.connectDB.update_identify(ip, mac, saborn)
+                agent_no = self.connectDB.select_identify(saborn)
+                self.connectDB.update_agent(self.is_alive(), agent_no)
+                self.connectDB.insert_dection(saborn, cam_path, screen_path)
                 img_count += 1
                 time.sleep(0.95)
             except socket.timeout:
                 print('>> set timeout agent status OFF')
-                self.agent_OFF(self.result_data)
+                self.agent_OFF()
                 
             except Exception as e:
                 print('>> set timeout agent status OFF')
-                self.agent_OFF(self.result_data)
+                self.agent_OFF()
                 break
 
-    def agent_OFF(self, result_data):
+    def agent_OFF(self):
+        saborn = self.result_data['saborn']
         self.set_alive(0)
-        agent_no = self.connectDB.select_identify(self.result_data['IP'], self.result_data['MACAddress'])
+        agent_no = self.connectDB.select_identify(saborn)
         self.connectDB.update_agent(self.is_alive(), agent_no)
         self.get_client_socket().close()
 

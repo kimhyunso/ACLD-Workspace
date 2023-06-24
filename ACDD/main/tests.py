@@ -1,3 +1,13 @@
 from django.test import TestCase
+from .models import Identify, Report, Agent, Dection, Department, Employee
+from django.core.files.storage import FileSystemStorage
+class YourTestCase(TestCase):
+    def setUp(self):
+        pass
 
-# Create your tests here.
+    def test_something(self):
+        pass
+
+    def tearDown(self):
+        pass
+

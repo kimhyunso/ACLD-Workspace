@@ -25,11 +25,13 @@ def home_data(isFlag):
         'dect_no', 
         'dect_no__emp_no', 
     ).values(
-        'dect_no', 'status', 'create_at',
-        'dect_no__emp_no__emp_no', 'dect_no__emp_no__emp_name', 
+        'dect_no', 
+        'status', 
+        'create_at',
+        'dect_no__emp_no__emp_no', 
+        'dect_no__emp_no__emp_name', 
         'dect_no__emp_no__depmt_no__depmt_name',
     )
-
 
     for report in report_list:
         employee = report['dect_no__emp_no__emp_no']
@@ -84,28 +86,20 @@ def home_data(isFlag):
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
     
 
-    if isFlag == 'HOME':
-        context = {
-            'dection_list' : dection_list,
-            'report_list' : report_list,
-            'dect_count' : dect_count['count'],
-            'report_count' : report_count['count'],
-            'report_done_count' : report_done_count['count'],
-            'data' : data,
-            'data_labels' : data_labels,
-            'useCPU' : get_cpu_usage(),
-        }
-    else:
-        context = {
-            'dection_list' : list(dection_list),
-            'report_list' : list(report_list),
-            'dect_count' : dect_count['count'],
-            'report_count' : report_count['count'],
-            'report_done_count' : report_done_count['count'],
-            'data' : data,
-            'data_labels' : data_labels,
-            'useCPU' : get_cpu_usage(),
-        }
+    if isFlag == 'REALTIME':
+        dection_list = list(dection_list)
+        report_list = list(report_list)
+
+    context = {
+        'dection_list' : list(dection_list),
+        'report_list' : list(report_list),
+        'dect_count' : dect_count['count'],
+        'report_count' : report_count['count'],
+        'report_done_count' : report_done_count['count'],
+        'data' : data,
+        'data_labels' : data_labels,
+        'useCPU' : get_cpu_usage(),
+    }
 
     return context
 
@@ -120,17 +114,18 @@ def agent(request):
 
         agent_list = (
             Agent.objects
-            .filter(Q(identifies__emp_no__emp_name__icontains=search_key)|
-                    Q(agent_no__icontains=search_key)|
-                    Q(identifies__ip__icontains=search_key)|
-                    Q(identifies__mac__icontains=search_key)|
-                    Q(identifies__emp_no__emp_name__icontains=search_key)|
-                    Q(identifies__emp_no__email__icontains=search_key)|
-                    Q(identifies__emp_no__rank__icontains=search_key)|
-                    Q(identifies__emp_no__depmt_no__depmt_name__icontains=search_key)|
-                    Q(identifies__emp_no__depmt_no__location__icontains=search_key)|
-                    Q(identifies__emp_no__depmt_no__landline__icontains=search_key)|
-                    Q(identifies__emp_no__phone_no__icontains=search_key)
+            .filter(
+                Q(identifies__emp_no__emp_name__icontains=search_key)|
+                Q(agent_no__icontains=search_key)|
+                Q(identifies__ip__icontains=search_key)|
+                Q(identifies__mac__icontains=search_key)|
+                Q(identifies__emp_no__emp_name__icontains=search_key)|
+                Q(identifies__emp_no__email__icontains=search_key)|
+                Q(identifies__emp_no__rank__icontains=search_key)|
+                Q(identifies__emp_no__depmt_no__depmt_name__icontains=search_key)|
+                Q(identifies__emp_no__depmt_no__location__icontains=search_key)|
+                Q(identifies__emp_no__depmt_no__landline__icontains=search_key)|
+                Q(identifies__emp_no__phone_no__icontains=search_key)
             )
             .order_by('-agent_no')
             .prefetch_related('identifies__emp_no__depmt_no')
@@ -189,8 +184,12 @@ def detail(request):
         Q(status__icontains=search_key)|
         Q(create_at__icontains=search_key)
     ).select_related('emp_no', 'emp_no__depmt_no').values(
-        'dect_no', 'create_at', 'status',
-        'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__depmt_no__depmt_name'
+        'dect_no', 
+        'create_at', 
+        'status',
+        'emp_no__emp_no', 
+        'emp_no__emp_name', 
+        'emp_no__depmt_no__depmt_name'
     )
 
     for dection in dection_list:
@@ -214,8 +213,21 @@ def detail(request):
 def process(request, dect_no):
     if request.method == 'GET':
         dect_one = Dection.objects.select_related('emp_no', 'emp_no__depmt_no').values(
-            'dect_no', 'create_at', 'cam_path', 'emp_no', 'status', 'screen_path', 'emp_no__emp_img_path', 'emp_no__emp_no', 'emp_no__emp_name', 'emp_no__rank', 
-            'emp_no__depmt_no__depmt_name', 'emp_no__email', 'emp_no__phone_no', 'emp_no__depmt_no__location', 'emp_no__depmt_no__landline',
+            'dect_no', 
+            'create_at', 
+            'cam_path', 
+            'emp_no', 
+            'status', 
+            'screen_path', 
+            'emp_no__emp_img_path', 
+            'emp_no__emp_no', 
+            'emp_no__emp_name', 
+            'emp_no__rank', 
+            'emp_no__depmt_no__depmt_name', 
+            'emp_no__email',
+            'emp_no__phone_no', 
+            'emp_no__depmt_no__location', 
+            'emp_no__depmt_no__landline',
         ).get(dect_no=dect_no)
         identify = Identify.objects.get(emp_no=dect_one['emp_no'])
 
@@ -314,22 +326,20 @@ def addEmp(request):
         email = request.POST.get('email')
         depmt_no = request.POST.get('depmtNo')
 
-
         employee_folder = 'employee' 
         employee_path = employee_folder + '/' + f'{emp_no}_{emp_img.name}'
         filename = fs.save(employee_path, emp_img)
 
-        employee = Employee()
+        
         department = Department.objects.get(depmt_no=depmt_no)
+        emp_img_path = os.path.join(settings.MEDIA_URL, employee_path)
+        emp_no = Employee.objects.create(emp_name=emp_name, emp_no=emp_no, depmt_no=department, rank=rank, phone_no=phone_no, email=email, emp_img_path=emp_img_path)
+        agent_no = Agent.objects.create(status=0)
 
-        employee.emp_name = emp_name
-        employee.emp_no = emp_no
-        employee.depmt_no = department
-        employee.rank = rank
-        employee.phone_no = phone_no
-        employee.email = email
-        employee.emp_img_path = os.path.join(settings.MEDIA_URL, employee_path)
-        employee.save()
+        identify = Identify()
+        identify.emp_no = Employee.objects.last()
+        identify.agent_no = Agent.objects.last()
+        identify.save()
 
         return JsonResponse({'success': True})
 
