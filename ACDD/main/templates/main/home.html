@@ -6,8 +6,8 @@ function todayDection(){
     const data = {{ data | safe }};
     const labels = {{ data_labels | safe }};
 
-    const today_dection = document.getElementById('today_dection').getContext('2d');
-    const todayDectChart = new Chart(today_dection, {
+    const todayDection = document.getElementById('today_dection').getContext('2d');
+    const todayDectChart = new Chart(todayDection, {
         type: 'bar',
         data: {
             labels: labels,
@@ -76,24 +76,21 @@ function todayDection(){
             }
         }
     });
+    return todayDectChart
 }
 
 function storageUse(){
     const storage = document.getElementById("storage");
+    const useStorage = {{ useDrive | safe }}
     const storageChart = new Chart(storage, {
         type: 'doughnut',
         data: {
-            labels: ["Orange", "Red"],
+            labels: ["Storage amount used", 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [100, 45],
+                data: [useStorage, 100],
                 backgroundColor: [
-                    'rgba(255, 164, 46, 1)',
-                    'rgba(231, 76, 60, 1)'
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)'
+                    'rgba(59, 130, 246, 1)',
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -121,21 +118,18 @@ function storageUse(){
 
 function DBStorage(){
     const DBStorage = document.getElementById("DB_storage");
+    const useDB = {{useDB | safe}}
+    const percentuseDB = useDB / 100;
+
     const DBStorageChart = new Chart(DBStorage, {
         type: 'doughnut',
         data: {
-            labels: ["Red", "Orange",],
+            labels: ["DB amount used", "Remaining"],
             datasets: [{
                 label: '# of Votes',
-                data: [30,100],
+                data: [percentuseDB, 100 - percentuseDB],
                 backgroundColor: [
                     'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
-    
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -157,26 +151,21 @@ function DBStorage(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
+    return DBStorageChart;
 }
 
 function CPUUse(){
     const CPUUsage = document.getElementById("CPU_usage");
-    const useCPU = {{useCPU}}
+    const useCPU = {{useCPU | safe}}
     const CPUUsageChart = new Chart(CPUUsage, {
         type: 'doughnut',
         data: {
-            labels: ["blue", "green",],
+            labels: ["CPU amount used", "Remaining"],
             datasets: [{
             label: '# of Votes',
                 data: [useCPU, 100],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
-    
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -198,27 +187,27 @@ function CPUUse(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
-    return CPUUsageChart
+
+    return CPUUsageChart;
 }
 
 function networkTraffic(){
+
+    const bytesReceived = {{ bytesReceived | safe }};  
+    const percentReceived = bytesReceived / 100;
+
     const networkTraffic = document.getElementById("network_traffic");
     const networkTrafficChart = new Chart(networkTraffic, {
         type: 'doughnut',
         data: {
-            labels: ["a", "b",],
+            labels: ['Received', 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [40,100],
+                data: [percentReceived, 100 - percentReceived],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
-                ],
-                borderWidth: 8 // Increase the border width
+                borderWidth: 8
             }]
         },
         options: {
@@ -309,10 +298,10 @@ function convertToLocalTime(utcDateString) {
 }
 
 $(document).ready(function () {
-    todayDection();
-    storageUse();
-    DBStorage();
-    CPUUse();
+    todayDectChart = todayDection();
+    storageChart = storageUse();
+    DBStorageChart = DBStorage();
+    CPUUsageChart = CPUUse();
     networkTraffic();
 
     function updateData() {
@@ -338,13 +327,29 @@ $(document).ready(function () {
                 const report_tableBody = document.getElementById("report-table-body");
                 target = "report";
                 replaceTable(response.report_list, report_tableBody, target);
+
+                todayDectChart.data.labels = response.data_labels;
+                todayDectChart.data.datasets[0].data = response.data;            
+                todayDectChart.update();
+
+                useCPU = [response.useCPU, 100];
+                CPUUsageChart.data.datasets[0].data = useCPU;
+                CPUUsageChart.update();
+
+                useDB = [response.useDB, 100];
+                DBStorageChart.data.datasets[0].data = useDB;
+                DBStorageChart.update();
+
+                useDriver = [response.useDrive, 100];
+                storageChart.data.datasets[0].data = useDriver;
+                storageChart.update();
             },
             error : function(error) {
                 console.error(error);
             }
         });
     }
-    setInterval(updateData, 10000);
+    setInterval(updateData, 5000);
 });
 </script>
 

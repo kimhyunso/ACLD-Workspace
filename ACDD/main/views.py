@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 import os, json, psutil, random
 from django.db.models.functions import TruncHour
 from datetime import datetime, timedelta
+from django.db import connections
 
 @require_http_methods(['GET'])
 def home(request):
@@ -90,6 +91,19 @@ def home_data(isFlag):
         dection_list = list(dection_list)
         report_list = list(report_list)
 
+        
+    with connections['default'].cursor() as cursor:
+        cursor.execute("""
+            SELECT table_schema "tableName", ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "MB"
+            FROM information_schema.tables
+            WHERE table_schema = 'acdd'
+            GROUP BY table_schema;
+        """)
+        db_use = cursor.fetchall()
+
+    use_drive = get_drive_usage()
+    bytes_received = get_network_traffic()
+
     context = {
         'dection_list' : list(dection_list),
         'report_list' : list(report_list),
@@ -99,9 +113,14 @@ def home_data(isFlag):
         'data' : data,
         'data_labels' : data_labels,
         'useCPU' : get_cpu_usage(),
+        'useDB' : db_use[0][1],
+        'useDrive' : use_drive,
+        'bytesReceived' : bytes_received,
     }
 
     return context
+
+
 
 @require_http_methods(['GET', 'POST'])
 def agent(request):
@@ -161,6 +180,22 @@ def agent(request):
 def get_cpu_usage():
     cpu_percent = psutil.cpu_percent()
     return cpu_percent
+
+
+def get_network_traffic():
+    traffic = psutil.net_io_counters()
+    bytes_received = traffic.bytes_recv / (1024 ** 2)
+
+    return bytes_received
+
+# 현재 네트워크 트래픽 확인
+get_network_traffic()
+
+def get_drive_usage():
+    usage = psutil.disk_usage('./')
+    percent = usage.percent
+    return percent
+
 
 def detail(request):
     page = request.GET.get('page', '1')
@@ -299,6 +334,7 @@ def addEmp(request):
         STATUS = 400
         fs = FileSystemStorage()
 
+
         if 'file_csv' in request.FILES:
             csv_file = request.FILES['fileCSV']
             allowed_extensions = ['csv', 'xlsx']
@@ -335,6 +371,7 @@ def addEmp(request):
         emp_img_path = os.path.join(settings.MEDIA_URL, employee_path)
         emp_no = Employee.objects.create(emp_name=emp_name, emp_no=emp_no, depmt_no=department, rank=rank, phone_no=phone_no, email=email, emp_img_path=emp_img_path)
         agent_no = Agent.objects.create(status=0)
+        
 
         identify = Identify()
         identify.emp_no = Employee.objects.last()
