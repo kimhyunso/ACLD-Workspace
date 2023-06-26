@@ -3,8 +3,8 @@
 <script>
 
 function todayDection(){
-    const data = {{ data | safe }};
-    const labels = {{ data_labels | safe }};
+    const data = {{ datasets | safe }};
+    const labels = {{ dataLabels | safe }};
 
     const todayDection = document.getElementById('today_dection').getContext('2d');
     const todayDectChart = new Chart(todayDection, {
@@ -16,17 +16,6 @@ function todayDection(){
                 fill: false,
                 data: data,
                 backgroundColor: [
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
-                    'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
@@ -58,7 +47,7 @@ function todayDection(){
             },
             title: {
                 display: true,
-                text: '금일 시간별 탐지건수',
+                text: '월별 탐지건수',
                 fontSize: 18,
                 align: 'left',
             },
@@ -283,6 +272,7 @@ function process(dect_no){
     window.location.href = url;
 }
 
+
 function convertToLocalTime(utcDateString) {
     var date = new Date(utcDateString);
     var year = date.getUTCFullYear();
@@ -330,8 +320,8 @@ $(document).ready(function () {
                 target = "report";
                 replaceTable(response.report_list, report_tableBody, target);
 
-                todayDectChart.data.labels = response.data_labels;
-                todayDectChart.data.datasets[0].data = response.data;            
+                todayDectChart.data.labels = response.dataLabels;
+                todayDectChart.data.datasets[0].data = response.datasets;            
                 todayDectChart.update();
                 
                 useCPU = response.useCPU

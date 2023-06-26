@@ -59,33 +59,20 @@ def home_data(isFlag):
             dection['ip'] = identify.ip
             dection['mac'] = identify.mac
 
-    today = datetime.now().date()
-    start_time = datetime(today.year, today.month, today.day, 0, 0, 0)
-    end_time = start_time + timedelta(days=1)
-    hour_range = [start_time + timedelta(hours=i) for i in range(int((end_time - start_time).total_seconds() // 3600))]
-    date_list = [{'hour': hour, 'count': 0} for hour in hour_range]
-    
-    data = Dection.objects.filter(create_at__range=(start_time, end_time)).annotate(month=TruncMonth('create_at')).values('month').annotate(count=Count('dect_no')).values('month', 'count')
+    data = Dection.objects.annotate(month=TruncMonth('create_at')).values('month').annotate(count=Count('dect_no')).values('month', 'count')
+
+    datasets = [0 for i in range(12)]
+    labels = [i for i in range(1, 13)]
 
     for item in data:
-        for date_item in date_list:
-            if item['hour'].strftime('%H') == date_item['hour'].strftime('%H'):
-                date_item['count'] = item['count']
+        for i in range(1, 13):
+            if item['month'].month == i:
+                datasets[i-1] = item['count']
                 break
-
-    data_labels = []
-    for item in date_list:
-        data_labels.append(item['hour'].strftime('%H'))
     
-
-    data = []
-    for item in date_list:
-        data.append(item['count'])
-
     dect_count = Dection.objects.all().filter(status=0).aggregate(count=Count('dect_no'))
     report_count = Report.objects.all().filter(status=0).aggregate(count=Count('report_no'))
     report_done_count = Dection.objects.all().filter(status=1).aggregate(count=Count('dect_no'))
-    
 
     if isFlag == 'REALTIME':
         dection_list = list(dection_list)
@@ -95,6 +82,7 @@ def home_data(isFlag):
     rnd_db = random.choice(range(1, 101))
     rnd_network_traffic = random.choice(range(1, 101))
     rnd_use_drive = random.choice(range(1, 101))
+    rnd_use_cpu = random.choice(range(1, 101))
 
     context = {
         'dection_list' : list(dection_list),
@@ -102,12 +90,12 @@ def home_data(isFlag):
         'dect_count' : dect_count['count'],
         'report_count' : report_count['count'],
         'report_done_count' : report_done_count['count'],
-        'data' : data,
-        'data_labels' : data_labels,
-        'useCPU' : get_cpu_usage(),
+        'useCPU' : rnd_use_cpu,
         'useDB' :rnd_db,
         'useDrive' : rnd_use_drive,
         'bytesReceived' : rnd_network_traffic,
+        'dataLabels' : labels,
+        'datasets' : datasets,
     }
 
     return context
@@ -167,27 +155,6 @@ def agent(request):
         return render(request, 'main/agent.html', context)
     else:
         pass
-
-
-def get_cpu_usage():
-    cpu_percent = psutil.cpu_percent()
-    return cpu_percent
-
-
-def get_network_traffic():
-    traffic = psutil.net_io_counters()
-    bytes_received = traffic.bytes_recv / (1024 ** 2)
-
-    return bytes_received
-
-# 현재 네트워크 트래픽 확인
-get_network_traffic()
-
-def get_drive_usage():
-    usage = psutil.disk_usage('./')
-    percent = usage.percent
-    return percent
-
 
 def detail(request):
     page = request.GET.get('page', '1')
