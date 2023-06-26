@@ -82,7 +82,7 @@ DATABASES = {
         'NAME': 'acdd',
         'USER': 'root',
         'PASSWORD': '1735',
-        'HOST': '192.168.0.13',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'OPTIONS': {
             'init_command': 'SET sql_mode="STRICT_TRANS_TABLES"'

@@ -39,6 +39,7 @@ function addEmpRegist(){
 		body : empDatas,
 	})
 	.then(function (response) {
+		alert("직원이 등록되었습니다.");
 		window.location.replace({% url 'main:addEmp' %});
 	})
 	.catch(function (err) {

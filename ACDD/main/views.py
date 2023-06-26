@@ -7,7 +7,7 @@ from django.conf import settings
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 import os, json, psutil, random
-from django.db.models.functions import TruncHour
+from django.db.models.functions import TruncHour, TruncMonth
 from datetime import datetime, timedelta
 from django.db import connections
 
@@ -63,9 +63,9 @@ def home_data(isFlag):
     start_time = datetime(today.year, today.month, today.day, 0, 0, 0)
     end_time = start_time + timedelta(days=1)
     hour_range = [start_time + timedelta(hours=i) for i in range(int((end_time - start_time).total_seconds() // 3600))]
-    date_list = [{'hour': hour, 'count': 0} for hour in hour_range] 
-
-    data = Dection.objects.filter(create_at__range=(start_time, end_time)).annotate(hour=TruncHour('create_at')).values('hour').annotate(count=Count('dect_no')).values('hour', 'count')
+    date_list = [{'hour': hour, 'count': 0} for hour in hour_range]
+    
+    data = Dection.objects.filter(create_at__range=(start_time, end_time)).annotate(month=TruncMonth('create_at')).values('month').annotate(count=Count('dect_no')).values('month', 'count')
 
     for item in data:
         for date_item in date_list:
@@ -92,17 +92,9 @@ def home_data(isFlag):
         report_list = list(report_list)
 
         
-    with connections['default'].cursor() as cursor:
-        cursor.execute("""
-            SELECT table_schema "tableName", ROUND(SUM(data_length + index_length) / 1024 / 1024, 1) "MB"
-            FROM information_schema.tables
-            WHERE table_schema = 'acdd'
-            GROUP BY table_schema;
-        """)
-        db_use = cursor.fetchall()
-
-    use_drive = get_drive_usage()
-    bytes_received = get_network_traffic()
+    rnd_db = random.choice(range(1, 101))
+    rnd_network_traffic = random.choice(range(1, 101))
+    rnd_use_drive = random.choice(range(1, 101))
 
     context = {
         'dection_list' : list(dection_list),
@@ -113,9 +105,9 @@ def home_data(isFlag):
         'data' : data,
         'data_labels' : data_labels,
         'useCPU' : get_cpu_usage(),
-        'useDB' : db_use[0][1],
-        'useDrive' : use_drive,
-        'bytesReceived' : bytes_received,
+        'useDB' :rnd_db,
+        'useDrive' : rnd_use_drive,
+        'bytesReceived' : rnd_network_traffic,
     }
 
     return context

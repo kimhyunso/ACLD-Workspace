@@ -88,9 +88,9 @@ function storageUse(){
             labels: ["Storage amount used", 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [useStorage, 100],
+                data: [useStorage, 100 - useStorage],
                 backgroundColor: [
-                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -114,12 +114,13 @@ function storageUse(){
             }
         }
     });
+
+    return storageChart;
 }
 
 function DBStorage(){
     const DBStorage = document.getElementById("DB_storage");
     const useDB = {{useDB | safe}}
-    const percentuseDB = useDB / 100;
 
     const DBStorageChart = new Chart(DBStorage, {
         type: 'doughnut',
@@ -127,9 +128,9 @@ function DBStorage(){
             labels: ["DB amount used", "Remaining"],
             datasets: [{
                 label: '# of Votes',
-                data: [percentuseDB, 100 - percentuseDB],
+                data: [useDB, 100 - useDB],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -163,7 +164,7 @@ function CPUUse(){
             labels: ["CPU amount used", "Remaining"],
             datasets: [{
             label: '# of Votes',
-                data: [useCPU, 100],
+                data: [useCPU, 100 - useCPU],
                 backgroundColor: [
                     'rgba(59, 130, 246, 1)'
                 ],
@@ -194,7 +195,6 @@ function CPUUse(){
 function networkTraffic(){
 
     const bytesReceived = {{ bytesReceived | safe }};  
-    const percentReceived = bytesReceived / 100;
 
     const networkTraffic = document.getElementById("network_traffic");
     const networkTrafficChart = new Chart(networkTraffic, {
@@ -203,7 +203,7 @@ function networkTraffic(){
             labels: ['Received', 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [percentReceived, 100 - percentReceived],
+                data: [bytesReceived, 100 - bytesReceived],
                 backgroundColor: [
                     'rgba(59, 130, 246, 1)'
                 ],
@@ -227,6 +227,8 @@ function networkTraffic(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
+
+    return networkTrafficChart;
 }
 
 function replaceTable(lists, tableBody, target){
@@ -302,7 +304,7 @@ $(document).ready(function () {
     storageChart = storageUse();
     DBStorageChart = DBStorage();
     CPUUsageChart = CPUUse();
-    networkTraffic();
+    networkTrafficChart = networkTraffic();
 
     function updateData() {
         $.ajax({
@@ -310,7 +312,7 @@ $(document).ready(function () {
             type: 'POST',
             headers: { "X-CSRFToken": '{{csrf_token}}' },
             processData: false, 
-            contentType: false,
+            contentType: 'text/plain',
             dataType: 'json',
             success: function(response) {
                 document.getElementById('dect_count').textContent = response.dect_count + "건";
@@ -331,18 +333,39 @@ $(document).ready(function () {
                 todayDectChart.data.labels = response.data_labels;
                 todayDectChart.data.datasets[0].data = response.data;            
                 todayDectChart.update();
-
-                useCPU = [response.useCPU, 100];
-                CPUUsageChart.data.datasets[0].data = useCPU;
+                
+                useCPU = response.useCPU
+                
+                if (useCPU > 75){
+                    CPUUsageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
+                }
+                useCPUList = [useCPU, 100 - useCPU];
+                CPUUsageChart.data.datasets[0].data = useCPUList;
                 CPUUsageChart.update();
 
-                useDB = [response.useDB, 100];
-                DBStorageChart.data.datasets[0].data = useDB;
+                useDB = response.useDB;
+                if (useDB > 75){
+                    DBStorageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
+                }
+                useDBList = [useDB, 100 - useDB];
+                DBStorageChart.data.datasets[0].data = useDBList;
                 DBStorageChart.update();
-
-                useDriver = [response.useDrive, 100];
-                storageChart.data.datasets[0].data = useDriver;
+                
+                useDrive = response.useDrive;
+                if (useDrive > 75){
+                    storageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
+                }
+                useDriveList = [useDrive, 100 - useDrive];
+                storageChart.data.datasets[0].data = useDriveList;
                 storageChart.update();
+
+                bytesReceived = response.bytesReceived;
+                if (bytesReceived > 75){
+                    networkTrafficChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
+                }
+                percentReceived = [bytesReceived, 100 - bytesReceived];
+                networkTrafficChart.data.datasets[0].data = percentReceived;
+                networkTrafficChart.update();
             },
             error : function(error) {
                 console.error(error);

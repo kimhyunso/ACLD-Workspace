@@ -10,6 +10,7 @@ function sendConfirmation(isFlag) {
         {
             method: 'POST',
             body : JSON.stringify(data),
+            contentType: 'text/plain',
             datatype : 'JSON',
             headers: { "X-CSRFToken": '{{csrf_token}}' },
         })
@@ -32,6 +33,7 @@ function confirmStatus() {
         {
             method: 'POST',
             body : JSON.stringify(data),
+            contentType: 'text/plain',
             datatype : 'JSON',
             headers: { "X-CSRFToken": '{{csrf_token}}' },
         })
