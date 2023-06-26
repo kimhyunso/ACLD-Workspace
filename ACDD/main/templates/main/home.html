@@ -3,8 +3,8 @@
 <script>
 
 function todayDection(){
-    const data = {{ data | safe }};
-    const labels = {{ data_labels | safe }};
+    const data = {{ datasets | safe }};
+    const labels = {{ dataLabels | safe }};
 
     const today_dection = document.getElementById('today_dection').getContext('2d');
     const todayDectChart = new Chart(today_dection, {
@@ -77,32 +77,26 @@ function todayDection(){
 
 function storageUse(){
     const storage = document.getElementById("storage");
+    const useStorage = {{ useDrive | safe }}
     const storageChart = new Chart(storage, {
         type: 'doughnut',
         data: {
-            labels: ["Orange", "Red"],
+            labels: ["Storage amount used", 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [100, 45],
+                data: [useStorage, 100 - useStorage],
                 backgroundColor: [
-                    'rgba(255, 164, 46, 1)',
-                    'rgba(231, 76, 60, 1)'
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)'
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
         },
         options: {
             title: { 
-                        display: true,
-                        text: '스토리지 사용량',
-                        fontSize: 16,
-    
-                        
-                    },
+                display: true,
+                text: '스토리지 사용량',
+                fontSize: 16,
+            },
             rotation: 1 * Math.PI,
             circumference: 1 * Math.PI,
             legend: {
@@ -116,25 +110,23 @@ function storageUse(){
             }
         }
     });
+
+    return storageChart;
 }
 
 function DBStorage(){
     const DBStorage = document.getElementById("DB_storage");
+    const useDB = {{useDB | safe}}
+
     const DBStorageChart = new Chart(DBStorage, {
         type: 'doughnut',
         data: {
-            labels: ["Red", "Orange",],
+            labels: ["DB amount used", "Remaining"],
             datasets: [{
                 label: '# of Votes',
-                data: [30,100],
+                data: [useDB, 100 - useDB],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
-    
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -156,26 +148,21 @@ function DBStorage(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
+    return DBStorageChart;
 }
 
 function CPUUse(){
     const CPUUsage = document.getElementById("CPU_usage");
-    const useCPU = {{useCPU}}
+    const useCPU = {{useCPU | safe}}
     const CPUUsageChart = new Chart(CPUUsage, {
         type: 'doughnut',
         data: {
-            labels: ["blue", "green",],
+            labels: ["CPU amount used", "Remaining"],
             datasets: [{
             label: '# of Votes',
-                data: [useCPU, 100],
+                data: [useCPU, 100 - useCPU],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
-    
-                ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
+                    'rgba(59, 130, 246, 1)'
                 ],
                 borderWidth: 8 // Increase the border width
             }]
@@ -197,28 +184,26 @@ function CPUUse(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
-    return CPUUsageChart
+
+    return CPUUsageChart;
 }
 
 function networkTraffic(){
+
+    const bytesReceived = {{ bytesReceived | safe }};  
+
     const networkTraffic = document.getElementById("network_traffic");
     const networkTrafficChart = new Chart(networkTraffic, {
         type: 'doughnut',
         data: {
-            labels: ["a", "b",],
+            labels: ['Received', 'Remaining'],
             datasets: [{
                 label: '# of Votes',
-                data: [40,100],
+                data: [bytesReceived, 100 - bytesReceived],
                 backgroundColor: [
-                    'rgba(231, 76, 60, 1)',
-                    'rgba(255, 164, 46, 1)',
-    
+                    'rgba(59, 130, 246, 1)'
                 ],
-                borderColor: [
-                    'rgba(255, 255, 255, 1)',
-                    'rgba(255, 255, 255, 1)',
-                ],
-                borderWidth: 8 // Increase the border width
+                borderWidth: 8
             }]
         },
         options: {
@@ -238,9 +223,12 @@ function networkTraffic(){
             cutoutPercentage: 80 // Increase the cutout percentage
         }
     });
+
+    return networkTrafficChart;
 }
 
 function replaceTable(lists, tableBody, target){
+
     tableBody.innerHTML = "";
     lists.forEach((list) => {
         const newRow = document.createElement("tr");
@@ -312,12 +300,11 @@ function convertToLocalTime(utcDateString) {
 }
 
 $(document).ready(function () {
-    todayDection();
-    storageUse();
-    DBStorage();
+    todayDectChart = todayDection();
+    storageChart = storageUse();
+    DBStorageChart = DBStorage();
     CPUUsageChart = CPUUse();
-    networkTraffic();
-    console.log(CPUUsageChart.config.data);
+    networkTrafficChart = networkTraffic();
 
     function updateData() {
         $.ajax({
@@ -328,28 +315,57 @@ $(document).ready(function () {
             contentType: false,
             dataType: 'json',
             success: function(response) {
-                document.getElementById('dect_count').textContent = response.dect_count + "건";
-                document.getElementById('report_count').textContent = response.report_count + "건";
-                document.getElementById('report_done_count').textContent = response.report_done_count + "건";
+                const dectionCount = response.dectionCount;
+                const reportCount = response.reportCount;
+                const reportDoneCount = response.reportDoneCount;
+                const dectionList = response.dectionList;
+                const reportList = response.reportList;
 
-                document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
-                document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
+                document.getElementById('dectCount').textContent = dectionCount + "건";
+                document.getElementById('reportCount').textContent = reportCount + "건";
+                document.getElementById('reportDoneCount').textContent = reportDoneCount + "건";
 
-                const dect_tableBody = document.getElementById("dect-table-body");
+                document.getElementById('dectTableCaption').textContent = '미처리 탐지건수(' + dectionCount + '건)';
+                document.getElementById('reportTableCaption').textContent = '사유서 미처리 탐지건수(' + reportCount + '건)';
+
+
+                const dectTableBody = document.getElementById("dectTableBody");
                 let target = "dection";
-                replaceTable(response.dection_list, dect_tableBody, target);
+                replaceTable(dectionList, dectTableBody, target);
             
-                const report_tableBody = document.getElementById("report-table-body");
+                const reportTableBody = document.getElementById("reportTableBody");
                 target = "report";
-                replaceTable(response.report_list, report_tableBody, target);
+                replaceTable(reportList, reportTableBody, target);
+
+                todayDectChart.data.labels = response.dataLabels;
+                todayDectChart.data.datasets[0].data = response.datasets;            
+                todayDectChart.update();
+                
+                useCPU = response.useCPU
+                CPUUsageChart.data.datasets[0].data = useCPUList;
                 CPUUsageChart.update();
+
+                useDB = response.useDB;
+                useDBList = [useDB, 100 - useDB];
+                DBStorageChart.data.datasets[0].data = useDBList;
+                DBStorageChart.update();
+                
+                useDrive = response.useDrive;
+                useDriveList = [useDrive, 100 - useDrive];
+                storageChart.data.datasets[0].data = useDriveList;
+                storageChart.update();
+
+                bytesReceived = response.bytesReceived;
+                percentReceived = [bytesReceived, 100 - bytesReceived];
+                networkTrafficChart.data.datasets[0].data = percentReceived;
+                networkTrafficChart.update();
             },
             error : function(error) {
                 console.error(error);
             }
         });
     }
-    //setInterval(updateData, 10000);
+    setInterval(updateData, 5000);
 });
 
 
@@ -366,8 +382,8 @@ $(document).ready(function () {
                     <div class="col-4" style="text-align: left; font-size: 14px;">
                         <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                             사유서 처리 대기
-                            <div id="report_count" style="text-align: right; font-size: 32px; color: #FCD34D;">
-                                {{report_count}}건</div>
+                            <div id="reportCount" style="text-align: right; font-size: 32px; color: #FCD34D;">
+                                {{reportCount}}건</div>
                         </div>
                     </div>
 
@@ -391,16 +407,16 @@ $(document).ready(function () {
     border-radius: 8px;
 ">
                             처리 완료
-                            <div id="report_done_count" style="text-align: right; font-size: 32px; color: #DC2626;">
-                                {{report_done_count}}건</div>
+                            <div id="reportDoneCount" style="text-align: right; font-size: 32px; color: #DC2626;">
+                                {{reportDoneCount}}건</div>
                         </div>
                     </div>
 
                     <div class="col-4" style="text-align: left; font-size: 14px;">
                         <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                             미처리
-                            <div id="dect_count" style="text-align: right; font-size: 32px; color: #404040;">
-                                {{dect_count}}건
+                            <div style="text-align: right; font-size: 32px; color: #404040;">
+                                <span id="dectCount">{{ dectionCount }}건</span>
                             </div>
                         </div>
                     </div>
@@ -408,8 +424,9 @@ $(document).ready(function () {
                 </div>
             </div>
         </div>
+
         <div class="today_detection">
-            <div id="today_detection_title"  class="title">금일탐지건수</div>
+            <div id="today_detection_title"  class="title">월별 탐지건수</div>
             <div id="today_detection_container">
                 <div id="today_detection_legend">탐지건수
                     <div></div>
@@ -417,6 +434,7 @@ $(document).ready(function () {
                 <canvas id="today_dection"></canvas>
             </div>                
         </div>
+
         <div class="usage">
             <div class="usage_wrapper">
                 <canvas class="row-4" id="storage" ></canvas>
@@ -442,8 +460,13 @@ $(document).ready(function () {
 
     <div class="right_side">
         <div class="table-wrapper">
-            <div class="table-title title"><caption id="dect-table-caption" style="font-size: 18px;">미처리 탐지건수({{dect_count}}건)</caption></div>
-            <table class="table table-hover  caption-top mse-5 text-center">
+            <div class="table-title title">
+                <caption style="font-size: 18px;">
+                    <span id="dectTableCaption">미처리 탐지건수({{dectionCount}}건)</span>
+                </caption>
+            </div>
+
+            <table class="table table-hover caption-top mse-5 text-center overflow-y-auto">
                 <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
                     <tr>
                         <th>번호</th>
@@ -454,8 +477,8 @@ $(document).ready(function () {
                         <th>비고</th>
                     </tr>
                 </thead>
-                <tbody id="dect-table-body">
-                    {% for dection in dection_list %}
+                <tbody id="dectTableBody">
+                    {% for dection in dectionList %}
                     <tr>
                         <td>{{dection.dect_no}}</td>
                         <td>{{dection.create_at}}</td>
@@ -470,8 +493,14 @@ $(document).ready(function () {
                 </tbody>
             </table>
         </div>
+
+
         <div class="table-wrapper">
-            <div class="table-title title"><caption id="report-table-caption" style="font-size: 18px;">사유서 미처리 탐지건수({{report_count}}건)</caption></div>
+            <div class="table-title title">
+                <caption style="font-size: 18px;">
+                    <span id="reportTableCaption">사유서 미처리 탐지건수({{reportCount}}건)</span>
+                </caption>
+            </div>
             <table class="table table-hover  caption-top mse-5 text-center">
                 <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
                     <tr>
@@ -483,15 +512,15 @@ $(document).ready(function () {
                         <th>비고</th>
                     </tr>
                     </thread>
-                <tbody id="report-table-body">
-                    {% for report in report_list %}
+                <tbody id="reportTableBody">
+                    {% for report in reportList %}
                     <tr>
                         <td>{{report.dect_no}}</td>
                         <td>{{report.create_at}}</td>
                         <td>{{report.ip}}</td>
                         <td>{{report.dect_no__emp_no__emp_name}}</td>
                         <td>{{report.dect_no__emp_no__depmt_no__depmt_name}}</td>
-                        <td><button class="btn btn-outline-primary" onclick="process(dection.dect_no);">처리하기</button>
+                        <td><button class="btn btn-outline-primary" onclick="process({{report.dect_no}});">처리하기</button>
                         </td>
                     </tr>
                     {% endfor %}

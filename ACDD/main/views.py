@@ -85,11 +85,11 @@ def home_data(isFlag):
     rnd_use_cpu = random.choice(range(1, 101))
 
     context = {
-        'dection_list' : list(dection_list),
-        'report_list' : list(report_list),
-        'dect_count' : dect_count['count'],
-        'report_count' : report_count['count'],
-        'report_done_count' : report_done_count['count'],
+        'dectionList' : list(dection_list),
+        'reportList' : list(report_list),
+        'dectionCount' : dect_count['count'],
+        'reportCount' : report_count['count'],
+        'reportDoneCount' : report_done_count['count'],
         'useCPU' : rnd_use_cpu,
         'useDB' :rnd_db,
         'useDrive' : rnd_use_drive,
