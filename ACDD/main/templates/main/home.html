@@ -100,7 +100,11 @@ function storageUse(){
             },
             cutoutPercentage: 80, // Increase the cutout percentage
             plugins: {
-            }
+            },
+            elements: {
+                borderAlign : 'center'
+            },
+
         }
     });
 
@@ -326,7 +330,8 @@ $(document).ready(function () {
                 
                 useCPU = response.useCPU
                 
-                if (useCPU > 75){
+                if (useCPU > 75.0){
+                    console.log('testst');
                     CPUUsageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
                 }
                 useCPUList = [useCPU, 100 - useCPU];
