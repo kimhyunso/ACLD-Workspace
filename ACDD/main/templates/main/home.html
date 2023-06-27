@@ -341,7 +341,6 @@ $(document).ready(function () {
                 target = "report";
                 replaceTable(reportList, reportTableBody, target);
 
-                console.log(todayDectChart.data.labels)
                 todayDectChart.data.labels = dataLabels;
                 todayDectChart.data.datasets[0].data = datasets;            
                 todayDectChart.update();
