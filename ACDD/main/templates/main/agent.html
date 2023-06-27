@@ -56,7 +56,6 @@ function goToLastPage() {
                 </thead>
                 <tbody style="font-size: 14px;">
                     {% for agent in agent_list %}
-                    {% if agent.identifies__ip %}
                     <tr>
                         <td>{{ agent.agent_no }}</td>
                         <td>{{ agent.identifies__emp_no__depmt_no__depmt_name }}</td>
@@ -88,7 +87,6 @@ function goToLastPage() {
                             <button class="btn btn-outline-danger">삭제</button>
                         </td>
                     </tr>
-                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
