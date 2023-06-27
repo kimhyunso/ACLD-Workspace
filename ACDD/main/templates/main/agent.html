@@ -20,7 +20,7 @@ function goToFirstPage() {
 }
 
 function goToLastPage() {
-    const lastPageNumber = {{ dection_list.paginator.num_pages }};
+    const lastPageNumber = {{ agent_list.paginator.num_pages | safe }};
     window.location.href = "?page=" + lastPageNumber + "{% if request.GET.search_key %}&search_key={{ request.GET.search_key }}{% endif %}";
 }
 </script>
@@ -148,5 +148,3 @@ function goToLastPage() {
 </div>
 
 {% endblock content %}
-
-

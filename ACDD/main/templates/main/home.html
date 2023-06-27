@@ -6,8 +6,8 @@ function todayDection(){
     const data = {{ datasets | safe }};
     const labels = {{ dataLabels | safe }};
 
-    const todayDection = document.getElementById('today_dection').getContext('2d');
-    const todayDectChart = new Chart(todayDection, {
+    const today_dection = document.getElementById('today_dection').getContext('2d');
+    const todayDectChart = new Chart(today_dection, {
         type: 'bar',
         data: {
             labels: labels,
@@ -16,6 +16,17 @@ function todayDection(){
                 fill: false,
                 data: data,
                 backgroundColor: [
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
+                    'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
                     'rgba(59, 130, 246, 1)',
@@ -45,12 +56,6 @@ function todayDection(){
                         }
                     }]
             },
-            title: {
-                display: true,
-                text: '월별 탐지건수',
-                fontSize: 18,
-                align: 'left',
-            },
             elements: {
                 point: {
                     radius: 0,
@@ -58,14 +63,16 @@ function todayDection(){
             },
             plugins: {
                 title: {
-                    display: true,
+                    display: false,
                     text: '금일탐지건수',
                     align: 'left',
                 }
+            },
+            legend: {
+                display: false
             }
         }
     });
-    return todayDectChart
 }
 
 function storageUse(){
@@ -100,11 +107,7 @@ function storageUse(){
             },
             cutoutPercentage: 80, // Increase the cutout percentage
             plugins: {
-            },
-            elements: {
-                borderAlign : 'center'
-            },
-
+            }
         }
     });
 
@@ -225,6 +228,7 @@ function networkTraffic(){
 }
 
 function replaceTable(lists, tableBody, target){
+
     tableBody.innerHTML = "";
     lists.forEach((list) => {
         const newRow = document.createElement("tr");
@@ -271,21 +275,23 @@ function replaceTable(lists, tableBody, target){
     });
 }
 
+
+
 function process(dect_no){
     const url = "/" + dect_no + "/process/";
     window.location.href = url;
 }
 
-
 function convertToLocalTime(utcDateString) {
     var date = new Date(utcDateString);
+
     var year = date.getUTCFullYear();
     var month = date.getUTCMonth() + 1;
     var day = date.getUTCDate();
     var hours = date.getUTCHours();
     var minutes = date.getUTCMinutes();
-    var period = hours >= 12 ? '오후' : '오전';
 
+    var period = hours >= 12 ? '오후' : '오전';
     hours = hours % 12;
     hours = hours ? hours : 12;
     
@@ -306,58 +312,50 @@ $(document).ready(function () {
             type: 'POST',
             headers: { "X-CSRFToken": '{{csrf_token}}' },
             processData: false, 
-            contentType: 'text/plain',
+            contentType: false,
             dataType: 'json',
             success: function(response) {
-                document.getElementById('dect_count').textContent = response.dect_count + "건";
-                document.getElementById('report_count').textContent = response.report_count + "건";
-                document.getElementById('report_done_count').textContent = response.report_done_count + "건";
+                const dectionCount = response.dectionCount;
+                const reportCount = response.reportCount;
+                const reportDoneCount = response.reportDoneCount;
+                const dectionList = response.dectionList;
+                const reportList = response.reportList;
 
-                document.getElementById('dect-table-caption').textContent = '미처리 탐지건수(' + response.dect_count + '건)';
-                document.getElementById('report-table-caption').textContent = '사유서 미처리 탐지건수(' + response.report_count + '건)';
+                document.getElementById('dectCount').textContent = dectionCount + "건";
+                document.getElementById('reportCount').textContent = reportCount + "건";
+                document.getElementById('reportDoneCount').textContent = reportDoneCount + "건";
 
-                const dect_tableBody = document.getElementById("dect-table-body");
+                document.getElementById('dectTableCaption').textContent = '미처리 탐지건수(' + dectionCount + '건)';
+                document.getElementById('reportTableCaption').textContent = '사유서 미처리 탐지건수(' + reportCount + '건)';
+
+
+                const dectTableBody = document.getElementById("dectTableBody");
                 let target = "dection";
-                replaceTable(response.dection_list, dect_tableBody, target);
+                replaceTable(dectionList, dectTableBody, target);
             
-                const report_tableBody = document.getElementById("report-table-body");
+                const reportTableBody = document.getElementById("reportTableBody");
                 target = "report";
-                replaceTable(response.report_list, report_tableBody, target);
+                replaceTable(reportList, reportTableBody, target);
 
                 todayDectChart.data.labels = response.dataLabels;
                 todayDectChart.data.datasets[0].data = response.datasets;            
                 todayDectChart.update();
                 
                 useCPU = response.useCPU
-                
-                if (useCPU > 75.0){
-                    console.log('testst');
-                    CPUUsageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
-                }
-                useCPUList = [useCPU, 100 - useCPU];
                 CPUUsageChart.data.datasets[0].data = useCPUList;
                 CPUUsageChart.update();
 
                 useDB = response.useDB;
-                if (useDB > 75){
-                    DBStorageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
-                }
                 useDBList = [useDB, 100 - useDB];
                 DBStorageChart.data.datasets[0].data = useDBList;
                 DBStorageChart.update();
                 
                 useDrive = response.useDrive;
-                if (useDrive > 75){
-                    storageChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
-                }
                 useDriveList = [useDrive, 100 - useDrive];
                 storageChart.data.datasets[0].data = useDriveList;
                 storageChart.update();
 
                 bytesReceived = response.bytesReceived;
-                if (bytesReceived > 75){
-                    networkTrafficChart.boxes[1].legendItems[0].fillStyle = "#FF0000";
-                }
                 percentReceived = [bytesReceived, 100 - bytesReceived];
                 networkTrafficChart.data.datasets[0].data = percentReceived;
                 networkTrafficChart.update();
@@ -369,108 +367,84 @@ $(document).ready(function () {
     }
     setInterval(updateData, 5000);
 });
+
+
+
 </script>
 
-<div class="container2" style="display: flex; margin-left: 48px; margin-right: 48px;">
-    <div class="row" style="display: flex;">
-        <div class="row-4" style="font-weight: bold;">
-            <div style="font-size: 20px; margin-top: 20px;margin-bottom: 20px ;">실시간 처리 현황</div>
+
+<div class="main_container">
+    <div class="left_side">
+        <div class="realtime">
+            <div class="title">실시간 처리 현황</div>
             <div class="row-4">
                 <div class="row">
                     <div class="col-4" style="text-align: left; font-size: 14px;">
-                        <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100" style="
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: right;
-  padding: 24px;
-  gap: 40px;
-
-  position: static;
-  width: 100%;
-  max-width: 284px;
-  height: 148px;
-  left: 48px;
-  top: 188px;
-
-  background: #FFFFFF;
-  border-radius: 8px;
-">
+                        <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                             사유서 처리 대기
-                            <div id="report_count" style="text-align: right; font-size: 32px; color: #FCD34D;">
-                                {{report_count}}건</div>
+                            <div id="reportCount" style="text-align: right; font-size: 32px; color: #FCD34D;">
+                                {{reportCount}}건</div>
                         </div>
                     </div>
 
                     <div class="col-4" style="text-align: left; font-size: 14px;">
                         <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100" style="
-  display: flex;
-  flex-direction: column;   
-  justify-content: center;
-  align-items: right;
-  padding: 24px;
-  gap: 40px;
+    display: flex;
+    flex-direction: column;   
+    justify-content: center;
+    align-items: right;
+    padding: 24px;
+    gap: 40px;
 
-  position: static;
-  width: 100%;
-  max-width: 284px;
-  height: 148px;
-  left: 48px;
-  top: 188px;
+    position: static;
+    width: 100%;
+    max-width: 284px;
+    height: 148px;
+    left: 48px;
+    top: 188px;
 
-  background: #FFFFFF;
-  border-radius: 8px;
+    background: #FFFFFF;
+    border-radius: 8px;
 ">
                             처리 완료
-                            <div id="report_done_count" style="text-align: right; font-size: 32px; color: #DC2626;">
-                                {{report_done_count}}건</div>
+                            <div id="reportDoneCount" style="text-align: right; font-size: 32px; color: #DC2626;">
+                                {{reportDoneCount}}건</div>
                         </div>
                     </div>
 
                     <div class="col-4" style="text-align: left; font-size: 14px;">
-                        <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100" style="
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: right;
-  padding: 24px;
-  gap: 40px;
-
-  position: static;
-  width: 100%;
-  max-width: 284px;
-  height: 148px;
-  left: 48px;
-  top: 188px;
-
-  background: #FFFFFF;
-  border-radius: 8px;
-">
+                        <div class="item col-2 shadow p-3 mb-5 bg-body rounded w-100">
                             미처리
-                            <div id="dect_count" style="text-align: right; font-size: 32px; color: #404040;">
-                                {{dect_count}}건
+                            <div style="text-align: right; font-size: 32px; color: #404040;">
+                                <span id="dectCount">{{ dectionCount }}건</span>
                             </div>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <div class="row-6">
-                <canvas id="today_dection"></canvas>
-            </div>
-            
-            <div class="container2">
-                <div style="display: flex; flex-direction: row; justify-content: flex-start; width: 150px;">
-                    <canvas class="row-4" id="storage" ></canvas>
-                    <canvas class="row-4" id="DB_storage"></canvas>
-                    <canvas class="row-4" id="CPU_usage"></canvas>
-                    <canvas class="row-4" id="network_traffic"> </canvas>
-                </div>
-            </div>
-
         </div>
 
-        
+        <div class="today_detection">
+            <div id="today_detection_title"  class="title">월별 탐지건수</div>
+            <div id="today_detection_container">
+                <div id="today_detection_legend">탐지건수
+                    <div></div>
+                </div>
+                <canvas id="today_dection"></canvas>
+            </div>                
+        </div>
+
+        <div class="usage">
+            <div class="usage_wrapper">
+                <canvas class="row-4" id="storage" ></canvas>
+                <canvas class="row-4" id="DB_storage"></canvas>
+                <canvas class="row-4" id="CPU_usage"></canvas>
+                <canvas class="row-4" id="network_traffic"> </canvas>
+            </div>
+        </div>
+
+<!--         
         <div class="container2">
                 <div style="display: flex; flex-direction: row; justify-content: flex-start; width: 150px;">
                     <canvas class="row-4" id="storage" ></canvas>
@@ -478,14 +452,21 @@ $(document).ready(function () {
                     <canvas class="row-4" id="CPU_usage"></canvas>
                     <canvas class="row-4" id="network_traffic"> </canvas>
                 </div>
-        </div>
+        </div> -->
+
+
     </div>
 
-    <div class="container-table" style="-ms-overflow-style: none; -webkit-scrollbardisplay: none; margin-left: 5%; margin-top: 1%;" >
-        <div class="row-6"
-            style="display: flex; overflow-y: scroll; width: 750px; height: 350px; overflow-y:auto; overflow-x:hidden">
-            <table class="table table-hover  caption-top mse-5 text-center">
-                <caption id="dect-table-caption" style="font-size: 18px;">미처리 탐지건수({{dect_count}}건)</caption>
+
+    <div class="right_side">
+        <div class="table-wrapper">
+            <div class="table-title title">
+                <caption style="font-size: 18px;">
+                    <span id="dectTableCaption">미처리 탐지건수({{dectionCount}}건)</span>
+                </caption>
+            </div>
+
+            <table class="table table-hover caption-top mse-5 text-center overflow-y-auto">
                 <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
                     <tr>
                         <th>번호</th>
@@ -496,8 +477,8 @@ $(document).ready(function () {
                         <th>비고</th>
                     </tr>
                 </thead>
-                <tbody id="dect-table-body">
-                    {% for dection in dection_list %}
+                <tbody id="dectTableBody">
+                    {% for dection in dectionList %}
                     <tr>
                         <td>{{dection.dect_no}}</td>
                         <td>{{dection.create_at}}</td>
@@ -512,12 +493,15 @@ $(document).ready(function () {
                 </tbody>
             </table>
         </div>
-  
-    <div class="container-table">
-        <div class="row-4"
-            style="display: flex; overflow-y: scroll; width: 750px; height:350px; overflow-y:auto; overflow-x:hidden">
+
+
+        <div class="table-wrapper">
+            <div class="table-title title">
+                <caption style="font-size: 18px;">
+                    <span id="reportTableCaption">사유서 미처리 탐지건수({{reportCount}}건)</span>
+                </caption>
+            </div>
             <table class="table table-hover  caption-top mse-5 text-center">
-                <caption id="report-table-caption" style="font-size: 18px;">사유서 미처리 탐지건수({{report_count}}건)</caption>
                 <thead style="background-color: #3B82F6; color: #ffffff; font-size: 14px;">
                     <tr>
                         <th>번호</th>
@@ -528,9 +512,8 @@ $(document).ready(function () {
                         <th>비고</th>
                     </tr>
                     </thread>
-
-                <tbody id="report-table-body">
-                    {% for report in report_list %}
+                <tbody id="reportTableBody">
+                    {% for report in reportList %}
                     <tr>
                         <td>{{report.dect_no}}</td>
                         <td>{{report.create_at}}</td>
