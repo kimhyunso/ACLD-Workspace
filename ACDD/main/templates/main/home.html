@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
+<link rel="stylesheet" href="{% static 'app/assets/css/home.css' %}">
 <script>
-
 function todayDection(){
     const data = {{ datasets | safe }};
     const labels = {{ dataLabels | safe }};
 
-    const today_dection = document.getElementById('today_dection').getContext('2d');
-    const todayDectChart = new Chart(today_dection, {
+    const todayDection = document.getElementById('todayDection').getContext('2d');
+    const todayDectChart = new Chart(todayDection, {
         type: 'bar',
         data: {
             labels: labels,
@@ -73,6 +74,7 @@ function todayDection(){
             }
         }
     });
+    return todayDectChart;
 }
 
 function storageUse(){
@@ -320,6 +322,8 @@ $(document).ready(function () {
                 const reportDoneCount = response.reportDoneCount;
                 const dectionList = response.dectionList;
                 const reportList = response.reportList;
+                const dataLabels = response.dataLabels;
+                const datasets = response.datasets;
 
                 document.getElementById('dectCount').textContent = dectionCount + "건";
                 document.getElementById('reportCount').textContent = reportCount + "건";
@@ -337,11 +341,13 @@ $(document).ready(function () {
                 target = "report";
                 replaceTable(reportList, reportTableBody, target);
 
-                todayDectChart.data.labels = response.dataLabels;
-                todayDectChart.data.datasets[0].data = response.datasets;            
+                console.log(todayDectChart.data.labels)
+                todayDectChart.data.labels = dataLabels;
+                todayDectChart.data.datasets[0].data = datasets;            
                 todayDectChart.update();
                 
                 useCPU = response.useCPU
+                useCPUList = [useCPU, 100 - useCPU]
                 CPUUsageChart.data.datasets[0].data = useCPUList;
                 CPUUsageChart.update();
 
@@ -431,7 +437,7 @@ $(document).ready(function () {
                 <div id="today_detection_legend">탐지건수
                     <div></div>
                 </div>
-                <canvas id="today_dection"></canvas>
+                <canvas id="todayDection"></canvas>
             </div>                
         </div>
 
