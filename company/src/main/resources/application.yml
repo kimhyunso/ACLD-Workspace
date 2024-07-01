@@ -1,6 +1,9 @@
 spring:
   application:
     name: company
+  devtools:
+    livereload:
+      enabled=true:
   h2:
     console:
       enabled: true
