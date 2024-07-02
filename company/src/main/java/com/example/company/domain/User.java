@@ -2,6 +2,7 @@ package com.example.company.domain;
 
 import com.example.company.domain.key.UserKey;
 import jakarta.persistence.*;
+import lombok.Builder;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,13 +23,20 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-
     @Column(name = "password")
     private String password;
 
+    @Column(name = "user_role")
     @Enumerated(value = EnumType.STRING)
     private UserRole userRole;
 
+    @Builder
+    public User(Long user_no, String email, String password, UserRole userRole){
+        this.user_no = user_no;
+        this.email = email;
+        this.password = password;
+        this.userRole = userRole;
+    }
 
 
     public Long getUserNo(){

@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 // @EnableJpaAuditing
 @EnableConfigurationProperties(JwtProperties.class)
 public class CompanyApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(CompanyApplication.class, args);
 	}
