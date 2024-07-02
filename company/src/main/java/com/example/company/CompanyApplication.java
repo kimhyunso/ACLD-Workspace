@@ -1,4 +1,4 @@
-package com.example.company;
+  package com.example.company;
 
 import com.example.company.domain.JwtProperties;
 import org.springframework.boot.SpringApplication;

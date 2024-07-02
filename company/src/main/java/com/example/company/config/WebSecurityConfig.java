@@ -16,7 +16,6 @@ public class WebSecurityConfig {
 
     private final UserDetailsService userDetailsService;
 
-
     @Bean
     public WebSecurityCustomizer configuration() {
         return (web) -> web.ignoring()
