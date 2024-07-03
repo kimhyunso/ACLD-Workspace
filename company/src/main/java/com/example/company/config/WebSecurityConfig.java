@@ -33,11 +33,12 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-        http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authorize) -> authorize
+
+        http.authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/login", "/signup", "/logout").permitAll()
                         .anyRequest().authenticated()
-                )
+            )
+            .csrf(AbstractHttpConfigurer::disable)
             .formLogin(form->form.loginPage("/login").permitAll().defaultSuccessUrl("/login"));
 
         return http.build();
