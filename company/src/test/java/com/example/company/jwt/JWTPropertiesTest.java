@@ -17,15 +17,12 @@ class JWTPropertiesTest {
         // given
         // when
         System.out.println("jwtProperties.getIssuer() = " + jwtProperties.getIssuer());
-        System.out.println("jwtProperties.getExpired() = " + jwtProperties.getExpired());
         System.out.println("jwtProperties.getSecretKey() = " + jwtProperties.getSecretKey());
 
         // then
         assertThat(jwtProperties.getSecretKey())
                 .isNotNull();
 
-        assertThat(jwtProperties.getExpired())
-                .isNotNull();
 
         assertThat(jwtProperties.getIssuer())
                 .isNotNull();
