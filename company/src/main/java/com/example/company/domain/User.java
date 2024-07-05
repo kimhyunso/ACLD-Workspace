@@ -3,6 +3,7 @@ package com.example.company.domain;
 import com.example.company.domain.key.UserKey;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -12,13 +13,15 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @IdClass(UserKey.class)
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
     @Column(name = "user_no")
-    private Long user_no;
+    @GeneratedValue
+    private Long userNo;
 
     @Id
     @Column(name = "email")
@@ -32,16 +35,10 @@ public class User implements UserDetails {
     private UserRole userRole;
 
     @Builder
-    public User(Long user_no, String email, String password, UserRole userRole){
-        this.user_no = user_no;
+    public User(String email, String password, UserRole userRole){
         this.email = email;
         this.password = password;
         this.userRole = userRole;
-    }
-
-
-    public Long getUserNo(){
-        return this.user_no;
     }
 
     @Override

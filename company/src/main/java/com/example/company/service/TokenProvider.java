@@ -1,6 +1,7 @@
 package com.example.company.service;
 
 import com.example.company.domain.JwtProperties;
+import com.example.company.domain.User;
 import com.example.company.domain.UserRole;
 import com.example.company.dto.RequestUser;
 import io.jsonwebtoken.Claims;
@@ -24,12 +25,12 @@ public class TokenProvider {
 
     private final JwtProperties jwtProperties;
 
-    public String generateToken(RequestUser requestUser, Duration expireAt){
+    public String generateToken(User user, Duration expireAt){
         Date now = new Date();
-        return makeToken(new Date(now.getTime() + expireAt.toMillis()), requestUser);
+        return makeToken(new Date(now.getTime() + expireAt.toMillis()), user);
     }
 
-    private String makeToken(Date expire, RequestUser requestUser){
+    private String makeToken(Date expire, User user){
         Date now = new Date();
 
         return Jwts.builder()
@@ -38,9 +39,8 @@ public class TokenProvider {
                 .setIssuer(jwtProperties.getIssuer()) // payload
                 .setIssuedAt(now)
                 .setExpiration(expire)
-                .setSubject(requestUser.getEmail())
-                .claim("email", requestUser.getEmail())
-                .claim("role", requestUser.getUserRole())
+                .setSubject(user.getUsername())
+                .claim("email", user.getUsername())
 
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey()) // sign
                 .compact();
@@ -50,7 +50,6 @@ public class TokenProvider {
         try{
             Jwts.parser()
                     .setSigningKey(jwtProperties.getSecretKey()) // 비밀값으로 복호화
-                    .build()
                     .parseClaimsJws(token);
             return true;
         }catch (Exception e){ // 복호화 중 에러시, 유효하지 않은 토큰
@@ -70,7 +69,6 @@ public class TokenProvider {
     private Claims getClaims(String token){
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())
-                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }
