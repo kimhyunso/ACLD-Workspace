@@ -4,7 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b9cc3d8a-916d-4641-83ad-d9ed2682c79c" name="Changes" comment="" />
+    <list default="true" id="b9cc3d8a-916d-4641-83ad-d9ed2682c79c" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/ACLD-Workspace.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/CompanyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/CompanyApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/SwaggerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/controller/UserRestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/controller/UserRestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/resources/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/company/src/test/java/com/example/company/service/UserServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/test/java/com/example/company/service/UserServiceTest.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,23 +30,30 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2ilITepylkk0t3JlnS0DtB3aO9f" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/kimhyunso/Downloads/ACLD-Workspace"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/kimhyunso/Downloads/ACLD-Workspace&quot;
   }
-}]]></component>
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.9-corretto-17.0.9-4caba194b151-92e50af3" />
+      </set>
+    </attachedChunks>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

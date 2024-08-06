@@ -12,6 +12,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 public class CompanyApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(CompanyApplication.class, args);
-	}
+}
 
 }

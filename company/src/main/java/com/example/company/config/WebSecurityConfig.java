@@ -28,6 +28,12 @@ import static org.springframework.boot.autoconfigure.security.servlet.PathReques
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private static final String[] AUTH_WHITELIST = {
+            "/api/**", "/graphiql", "/graphql",
+            "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
+            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html"
+    };
+
     private final UserDetailService userService;
 
     @Bean
@@ -41,7 +47,8 @@ public class WebSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 
         http.authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/login", "/signup", "/logout", "/swagger-ui/index.html").permitAll()
+                        .requestMatchers(AUTH_WHITELIST).permitAll()
+                        .requestMatchers("/login", "/signup", "/logout").permitAll()
                         .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)

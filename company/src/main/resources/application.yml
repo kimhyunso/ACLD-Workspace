@@ -53,4 +53,4 @@ springdoc:
   writer-with-default-pretty-printer: true
   model-and-view-allowed: true
   paths-to-match:
-    - /
+    - /api/**
