@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b9cc3d8a-916d-4641-83ad-d9ed2682c79c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/controller/TestRestController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/company/src/main/resources/templates/signup.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/company/src/test/java/com/example/company/controller/TestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/ACLD-Workspace.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/CompanyApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/CompanyApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/SwaggerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/SwaggerConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/company/src/main/java/com/example/company/config/WebSecurityConfig.java" afterDir="false" />
@@ -47,6 +50,21 @@
     &quot;last_opened_file_path&quot;: &quot;/Users/kimhyunso/Downloads/ACLD-Workspace&quot;
   }
 }</component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="ACLD-Workspace" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="ACLD-Workspace" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
